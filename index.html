@@ -1,0 +1,1478 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Santa María del Mar - Menú Digital</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --ocean-blue: #1e3a5f;
+            --turquoise: #2dd4bf;
+            --coral: #fb923c;
+            --sand: #fef3c7;
+            --dark-navy: #0f172a;
+            --gold: #fbbf24;
+        }
+
+        body {
+            font-family: 'Lato', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 100%);
+            color: #333;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(rgba(15, 23, 42, 0.9), rgba(30, 58, 95, 0.9)), 
+                        url('https://images.unsplash.com/photo-1514933651103-005eec06c04b?w=1920') center/cover;
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            position: relative;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+
+        .header::before {
+            content: '☠';
+            position: absolute;
+            font-size: 15rem;
+            opacity: 0.05;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--turquoise);
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .tagline {
+            font-size: 1.2rem;
+            font-style: italic;
+            color: var(--gold);
+            margin-bottom: 1rem;
+        }
+
+        .intro {
+            max-width: 800px;
+            margin: 0 auto;
+            font-size: 1rem;
+            line-height: 1.6;
+            opacity: 0.9;
+        }
+
+        /* Navigation */
+        .nav-categories {
+            background: var(--dark-navy);
+            padding: 1rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            overflow-x: auto;
+            white-space: nowrap;
+        }
+
+        .nav-categories::-webkit-scrollbar {
+            height: 6px;
+        }
+
+        .nav-categories::-webkit-scrollbar-track {
+            background: var(--ocean-blue);
+        }
+
+        .nav-categories::-webkit-scrollbar-thumb {
+            background: var(--turquoise);
+            border-radius: 3px;
+        }
+
+        .nav-btn {
+            background: transparent;
+            border: 2px solid var(--turquoise);
+            color: var(--turquoise);
+            padding: 0.75rem 1.5rem;
+            margin: 0 0.5rem;
+            border-radius: 25px;
+            cursor: pointer;
+            font-family: 'Lato', sans-serif;
+            font-weight: 700;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav-btn:hover, .nav-btn.active {
+            background: var(--turquoise);
+            color: var(--dark-navy);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(45, 212, 191, 0.4);
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Category Sections */
+        .category-section {
+            margin-bottom: 3rem;
+            scroll-margin-top: 80px;
+        }
+
+        .category-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            color: var(--turquoise);
+            text-align: center;
+            margin-bottom: 0.5rem;
+            position: relative;
+            padding-bottom: 1rem;
+        }
+
+        .category-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--coral), transparent);
+        }
+
+        .category-subtitle {
+            text-align: center;
+            color: var(--gold);
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            font-style: italic;
+        }
+
+        /* Menu Grid */
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+
+        /* Menu Item Card */
+        .menu-item {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .menu-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(45, 212, 191, 0.3);
+        }
+
+        .menu-item-image {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .menu-item-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .menu-item:hover .menu-item-image img {
+            transform: scale(1.05);
+        }
+
+        .menu-badge {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: var(--coral);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            z-index: 10;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+
+        .menu-item-content {
+            padding: 1.5rem;
+        }
+
+        .menu-item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .menu-item-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            color: var(--ocean-blue);
+            font-weight: 700;
+        }
+
+        .menu-item-name-en {
+            font-size: 0.9rem;
+            color: #666;
+            font-style: italic;
+            margin-top: 0.25rem;
+        }
+
+        .menu-item-price {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--coral);
+            white-space: nowrap;
+        }
+
+        .menu-item-description {
+            color: #555;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+            font-size: 0.95rem;
+        }
+
+        .ingredients {
+            background: var(--sand);
+            padding: 1rem;
+            border-radius: 10px;
+            border-left: 4px solid var(--turquoise);
+        }
+
+        .ingredients-title {
+            font-weight: 700;
+            color: var(--ocean-blue);
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .ingredients-list {
+            color: #666;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        /* Drinks Section */
+        .drinks-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .drink-item {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .drink-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 6px 20px rgba(45, 212, 191, 0.2);
+        }
+
+        .drink-info h4 {
+            font-family: 'Playfair Display', serif;
+            color: var(--ocean-blue);
+            font-size: 1.2rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .drink-info p {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .drink-price {
+            font-weight: 700;
+            color: var(--coral);
+            font-size: 1.2rem;
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--dark-navy);
+            color: white;
+            text-align: center;
+            padding: 3rem 2rem;
+            margin-top: 4rem;
+        }
+
+        .footer-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .footer-logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            color: var(--turquoise);
+            margin-bottom: 1rem;
+        }
+
+        .footer-info {
+            margin: 1rem 0;
+            line-height: 1.8;
+        }
+
+        .footer-contact {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-contact span {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .award-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            color: var(--dark-navy);
+            padding: 0.75rem 1.5rem;
+            border-radius: 25px;
+            font-weight: 700;
+            margin-top: 1rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .logo {
+                font-size: 2rem;
+            }
+
+            .category-title {
+                font-size: 1.8rem;
+            }
+
+            .menu-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .menu-item-header {
+                flex-direction: column;
+            }
+
+            .footer-contact {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .menu-item {
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        /* Loading Animation */
+        .skeleton {
+            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+            background-size: 200% 100%;
+            animation: loading 1.5s infinite;
+        }
+
+        @keyframes loading {
+            0% {
+                background-position: 200% 0;
+            }
+            100% {
+                background-position: -200% 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <h1 class="logo">☠ Santa María del Mar</h1>
+        <p class="tagline">"Embárcate en un viaje de sabores" / "Set sail on a journey of flavors"</p>
+        <p class="intro">
+            "Aquí, donde la brisa del Caribe acaricia los recuerdos, la cocina cartagenera se reencuentra con su alma. 
+            Cada plato es un tributo a nuestras raíces y una conversación con el mundo."
+        </p>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="nav-categories">
+        <button class="nav-btn active" onclick="scrollToCategory('entradas')">
+            <i class="fas fa-utensils"></i> Entradas & Ceviches
+        </button>
+        <button class="nav-btn" onclick="scrollToCategory('mariscos')">
+            <i class="fas fa-fish"></i> Platos del Mar
+        </button>
+        <button class="nav-btn" onclick="scrollToCategory('carnes')">
+            <i class="fas fa-drumstick-bite"></i> Carnes
+        </button>
+        <button class="nav-btn" onclick="scrollToCategory('sandwiches')">
+            <i class="fas fa-bread-slice"></i> Sándwiches
+        </button>
+        <button class="nav-btn" onclick="scrollToCategory('postres')">
+            <i class="fas fa-ice-cream"></i> Postres
+        </button>
+        <button class="nav-btn" onclick="scrollToCategory('cocteles')">
+            <i class="fas fa-cocktail"></i> Cócteles
+        </button>
+        <button class="nav-btn" onclick="scrollToCategory('bebidas')">
+            <i class="fas fa-wine-bottle"></i> Bebidas
+        </button>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container">
+        <!-- Entradas y Ceviches -->
+        <section id="entradas" class="category-section">
+            <h2 class="category-title">Entradas y Ceviches</h2>
+            <p class="category-subtitle">Starters & Ceviches</p>
+            
+            <div class="menu-grid">
+                <div class="menu-item">
+                    <div class="menu-item-image">
+                        <img src="https://images.unsplash.com/photo-1535400255456-984241443b29?w=800" alt="Garras del Capitán">
+                        <span class="menu-badge">Popular</span>
+                    </div>
+                    <div class="menu-item-content">
+                        <div class="menu-item-header">
+                            <div>
+                                <h3 class="menu-item-name">Garras del Capitán</h3>
+                                <p class="menu-item-name-en">Captain's Claws</p>
+                            </div>
+                            <div class="menu-item-price">$45.000</div>
+                        </div>
+                        <p class="menu-item-description">
+                            Muelitas de cangrejo frescas, marinadas con limón y especias del Caribe.
+                        </p>
+                        <div class="ingredients">
+                            <div class="ingredients-title">
+                                <i class="fas fa-leaf"></i> Ingredientes / Ingredients
+                            </div>
+                            <div class="ingredients-list">
+                                Fresh crab claws, lime, Caribbean spices / Muelitas de cangrejo frescas, limón, especias del Caribe
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-item">
+                    <div class="menu-item-image">
+                        <img src="https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=800" alt="Botín del Mar">
+                    </div>
+                    <div class="menu-item-content">
+                        <div class="menu-item-header">
+                            <div>
+                                <h3 class="menu-item-name">Botín del Mar</h3>
+                                <p class="menu-item-name-en">Sea Booty</p>
+                            </div>
+                            <div class="menu-item-price">$80.000</div>
+                        </div>
+                        <p class="menu-item-description">
+                            Filete de pescado de mar (corvina o robalo) con salsa de tamarindo o estragón.
+                        </p>
+                        <div class="ingredients">
+                            <div class="ingredients-title">
+                                <i class="fas fa-leaf"></i> Ingredientes / Ingredients
+                            </div>
+                            <div class="ingredients-list">
+                                Sea fish fillet (corvina or snook), tamarind or tarragon sauce / Filete de pescado, salsa de tamarindo o estragón
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-item">
+                    <div class="menu-item-image">
+                        <img src="https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=800" alt="Ceviche del Corsario">
+                    </div>
+                    <div class="menu-item-content">
+                        <div class="menu-item-header">
+                            <div>
+                                <h3 class="menu-item-name">Ceviche del Corsario</h3>
+                                <p class="menu-item-name-en">Corsair's Ceviche</p>
+                            </div>
+                            <div class="menu-item-price">$55.000</div>
+                        </div>
+                        <p class="menu-item-description">
+                            Mariscos frescos en leche de tigre con mango, cilantro y ají dulce.
+                        </p>
+                        <div class="ingredients">
+                            <div class="ingredients-title">
+                                <i class="fas fa-leaf"></i> Ingredientes / Ingredients
+                            </div>
+                            <div class="ingredients-list">
+                                Fresh seafood, tiger's milk, mango, cilantro, sweet chili / Mariscos frescos, leche de tigre, mango, cilantro, ají dulce
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-item">
+                    <div class="menu-item-image">
+                        <img src="https://images.unsplash.com/photo-1535400255456-984241443b29?w=800" alt="Ceviche Santa María">
+                        <span class="menu-badge">Especialidad</span>
+                    </div>
+                    <div class="menu-item-content">
+                        <div class="menu-item-header">
+                            <div>
+                                <h3 class="menu-item-name">Ceviche Santa María</h3>
+                                <p class="menu-item-name-en">Santa María's Ceviche</p>
+                            </div>
+                            <div class="menu-item-price">$65.000</div>
+                        </div>
+                        <p class="menu-item-description">
+                            Pescado blanco en leche de coco, limón, cebolla, pimentón, cilantro, hierbabuena, maíz crocante, mango, aceite de oliva y chips de plátano.
+                        </p>
+                        <div class="ingredients">
+                            <div class="ingredients-title">
+                                <i class="fas fa-leaf"></i> Ingredientes / Ingredients
+                            </div>
+                            <div class="ingredients-list">
+                                White fish, coconut milk, lemon, onion, bell pepper, cilantro, spearmint, crispy corn, mango, olive oil, plantain chips
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-item">
+                    <div class="menu-item-image">
+                        <img src="https://images.unsplash.com/photo-1599084993091-1cb5c0721cc6?w=800" alt="Botín del Corsario">
+                    </div>
+                    <div class="menu-item-content">
+                        <div class="menu-item-header">
+                            <div>
+                                <h3 class="menu-item-name">Botín del Corsario</h3>
+                                <p class="menu-item-name-en">Corsair's Loot</p>
+                            </div>
+                            <div class="menu-item-price">$65.000</div>
+                        </div>
+                        <p class="menu-item-description">
+                            Cazuela de almejas y mejillones.
+                        </p>
+                        <div class="ingredients">
+                            <div class="ingredients-title">
+                                <i class="fas fa-leaf"></i> Ingredientes / Ingredients
+                            </div>
+                            <div class="ingredients-list">
+                                Clams, mussels, cream sauce / Almejas, mejillones, crema
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-item">
+                    <div class="menu-item-image">
+                        <img src="https://images.unsplash.com/photo-1565557623262-b51c2513a641?w=800" alt="Perla Rosada">
+                    </div>
+                    <div class="menu-item-content">
+                        <div class="menu-item-header">
+                            <div>
+                                <h3 class="menu-item-name">Perla Rosada</h3>
+                                <p class="menu-item-name-en">Pink Pearl</p>
+                            </div>
+                            <div class="menu-item-price">$40.000</div>
+                        </div>
+                        <p class="menu-item-description">
+                            Cóctel de camarones clásico.
+                        </p>
+                        <div class="ingredients">
+                            <div class="ingredients-title">
+                                <i class="fas fa-leaf"></i> Ingredientes / Ingredients
+                            </div>
+                            <div class="ingredients-list">
+                                Shrimp, cocktail sauce, vegetables / Camarones, salsa de cóctel, vegetales
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-item">
+                    <div class="menu-item-image">
+                        <img src="https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?w=800" alt="Camarones del Capitán">
+                    </div>
+                    <div class="menu-item-content">
+                        <div class="menu-item-header">
+                            <div>
+                                <h3 class="menu-item-name">Camarones del Capitán</h3>
+                                <p class="menu-item-name-en">Captain's Shrimps</p>
+                            </div>
+                            <div class="menu-item-price">$40.000 (entrada) / $65.000 (plato)</div>
+                        </div>
+                        <p class="menu-item-description">
+                            Cazuelita de camarones al ajillo.
+                        </p>
+                        <div class="ingredients">
+                            <div class="ingredients-title">
+                                <i class="fas fa-leaf"></i> Ingredientes / Ingredients
+                            </div>
+                            <div class="ingredients-list">
+                                Shrimp, garlic, olive oil, herbs / Camarones, ajo, aceite de oliva, hierbas
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Platos Fuertes del Mar -->
+        <section id="mariscos" class="category-section">
+            <h2 class="category-title">Platos Fuertes del Mar</h2>
+            <p class="category-subtitle">Main Sea Dishes</p>
+            
+            <div class="menu-grid">
+                <div class="menu-item">
+                    <div class="menu-item-image">
+                        <img src="https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=800" alt="Arroz del Galeón">
+                        <span class="menu-badge">Especialidad</span>
+                    </div>
+                    <div class="menu-item-content">
+                        <div class="menu-item-header">
+                            <div>
+                                <h3 class="menu-item-name">Arroz del Galeón</h3>
+                                <p class="menu-item-name-en">Galleon's Rice</p>
+                            </div>
+                            <div class="menu-item-price">$95.000</div>
+                        </div>
+                        <p class="menu-item-description">
+                            Arroz cremoso con mariscos, estilo cartagenero.
+                        </p>
+                        <div class="ingredients">
+                            <div class="ingredients-title">
+                                <i class="fas fa-leaf"></i> Ingredientes / Ingredients
+                            </div>
+                            <div class="ingredients-list">
+                                Creamy rice, mixed seafood, Cartagena spices / Arroz cremoso, mariscos, especias cartageneras
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-item">
+                    <div class="menu-item-image">
+                        <img src="https://images.unsplash.com/photo-1559339352-11b0109f9c9c?w=800" alt="Cazuela del Corsario">
+                    </div>
+                    <div class="menu-item-content">
+                        <div class="menu-item-header">
+                            <div>
+                                <h3 class="menu-item-name">Cazuela del Corsario</h3>
+                                <p class="menu-item-name-en">Corsair's Casserole</p>
+                            </div>
+                            <div class="menu-item-price">$95.000</div>
+                        </div>
+                        <p class="menu-item-description">
+                            Mariscos frescos en crema de coco y bisque de langostinos.
+                        </p>
+                        <div class="ingredients">
+                            <div class="ingredients-title">
+                                <i class="fas fa-leaf"></i> Ingredientes / Ingredients
+                            </div>
+                            <div class="ingredients-list">
+                                Fresh seafood, coconut cream, prawn bisque / Mariscos frescos, crema de coco, bisque de langostinos
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-item">
+                    <div class="menu-item-image">
+                        <img src="https://images.unsplash.com/photo-1565557623262-b51c2513a641?w=800" alt="Camarones Mar Caribe">
+                    </div>
+                    <div class="menu-item-content">
+                        <div class="menu-item-header">
+                            <div>
+                                <h3 class="menu-item-name">Camarones Mar Caribe</h3>
+                                <p class="menu-item-name-en">Caribbean Sea Shrimp</p>
+                            </div>
+                            <div class="menu-item-price">$60.000</div>
+                        </div>
+                        <p class="menu-item-description">
+                            Camarones en leche de coco sobre boronia.
+                        </p>
+                        <div class="ingredients">
+                            <div class="ingredients-title">
+                                <i class="fas fa-leaf"></i> Ingredientes / Ingredients
+                            </div>
+                            <div class="ingredients-list">
+                                Shrimp, coconut milk, boronía / Camarones, leche de coco, boronia
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-item">
+                    <div class="menu-item-image">
+                        <img src="https://images.unsplash.com/photo-1612874742237-652653928a52?w=800" alt="Pasta Vongole del Pirata">
+                    </div>
+                    <div class="menu-item-content">
+                        <div class="menu-item-header">
+                            <div>
+                                <h3 class="menu-item-name">Pasta Vongole del Pirata</h3>
+                                <p class="menu-item-name-en">Pirate's Vongole</p>
+                            </div>
+                            <div class="menu-item-price">$70.000</div>
+                        </div>
+                        <p class="menu-item-description">
+                            Pasta larga con almejas, vino blanco y perejil.
+                        </p>
+                        <div class="ingredients">
+                            <div class="ingredients-title">
+                                <i class="fas fa-leaf"></i> Ingredientes / Ingredients
+                            </div>
+                            <div class="ingredients-list">
+                                Long pasta, clams, white wine, parsley / Pasta larga, almejas, vino blanco, perejil
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-item">
+                    <div class="menu-item-image">
+                        <img src="https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=800" alt="Pasta Mar Abierto">
+                    </div>
+                    <div class="menu-item-content">
+                        <div class="menu-item-header">
+                            <div>
+                                <h3 class="menu-item-name">Pasta Mar Abierto</h3>
+                                <p class="menu-item-name-en">Open Sea Pasta</p>
+                            </div>
+                            <div class="menu-item-price">$95.000</div>
+                        </div>
+                        <p class="menu-item-description">
+                            Pasta larga con mezcla de mariscos y bisque de langostinos.
+                        </p>
+                        <div class="ingredients">
+                            <div class="ingredients-title">
+                                <i class="fas fa-leaf"></i> Ingredientes / Ingredients
+                            </div>
+                            <div class="ingredients-list">
+                                Long pasta, mixed seafood, prawn bisque / Pasta larga, mariscos, bisque de langostinos
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-item">
+                    <div class="menu-item-image">
+                        <img src="https://images.unsplash.com/photo-1551183053-bf91b1dca034?w=800" alt="Pasta del Grumete">
+                        <span class="menu-badge">Niños</span>
+                    </div>
+                    <div class="menu-item-content">
+                        <div class="menu-item-header">
+                            <div>
+                                <h3 class="menu-item-name">Pasta del Grumete</h3>
+                                <p class="menu-item-name-en">Cabin Boy's Pasta (Kids)</p>
+                            </div>
+                            <div class="menu-item-price">$35.000</div>
+                        </div>
+                        <p class="menu-item-description">
+                            Pasta corta con salsa boloñesa o napolitana.
+                        </p>
+                        <div class="ingredients">
+                            <div class="ingredients-title">
+                                <i class="fas fa-leaf"></i> Ingredientes / Ingredients
+                            </div>
+                            <div class="ingredients-list">
+                                Short pasta, Bolognese or Neapolitan sauce / Pasta corta, salsa boloñesa o napolitana
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Carnes y Sabores de Tierra -->
+        <section id="carnes" class="category-section">
+            <h2 class="category-title">Carnes y Sabores de Tierra</h2>
+            <p class="category-subtitle">Land & Treasure Flavors</p>
+            
+            <div class="menu-grid">
+                <div class="menu-item">
+                    <div class="menu-item-image">
+                        <img src="https://images.unsplash.com/photo-1544025162-d76694265947?w=800" alt="Posta Negra Cartagenera">
+                        <span class="menu-badge">Plato Estrella</span>
+                    </div>
+                    <div class="menu-item-content">
+                        <div class="menu-item-header">
+                            <div>
+                                <h3 class="menu-item-name">Posta Negra Cartagenera</h3>
+                                <p class="menu-item-name-en">Cartagena Black Beef</p>
+                            </div>
+                            <div class="menu-item-price">$70.000</div>
+                        </div>
+                        <p class="menu-item-description">
+                            Res braseada en panela y especias, con arroz con coco.
+                        </p>
+                        <div class="ingredients">
+                            <div class="ingredients-title">
+                                <i class="fas fa-leaf"></i> Ingredientes / Ingredients
+                            </div>
+                            <div class="ingredients-list">
+                                Braised beef, panela, spices, coconut rice / Res braseada, panela, especias, arroz con coco
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-item">
+                    <div class="menu-item-image">
+                        <img src="https://images.unsplash.com/photo-1604908176997-12a6b484b2f6?w=800" alt="Pollo Encocado de la Isla">
+                    </div>
+                    <div class="menu-item-content">
+                        <div class="menu-item-header">
+                            <div>
+                                <h3 class="menu-item-name">Pollo Encocado de la Isla</h3>
+                                <p class="menu-item-name-en">Island Coconut Chicken</p>
+                            </div>
+                            <div class="menu-item-price">$65.000</div>
+                        </div>
+                        <p class="menu-item-description">
+                            Pierna pernil con vegetales en salsa de coco.
+                        </p>
+                        <div class="ingredients">
+                            <div class="ingredients-title">
+                                <i class="fas fa-leaf"></i> Ingredientes / Ingredients
+                            </div>
+                            <div class="ingredients-list">
+                                Chicken leg quarter, vegetables, coconut sauce / Pierna pernil, vegetales, salsa de coco
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-item">
+                    <div class="menu-item-image">
+                        <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=800" alt="Hamburguesa del Bucanero">
+                    </div>
+                    <div class="menu-item-content">
+                        <div class="menu-item-header">
+                            <div>
+                                <h3 class="menu-item-name">Hamburguesa del Bucanero</h3>
+                                <p class="menu-item-name-en">Buccaneer's Burger</p>
+                            </div>
+                            <div class="menu-item-price">$60.000</div>
+                        </div>
+                        <p class="menu-item-description">
+                            Carne jugosa, queso costeño, cebolla caramelizada y salsa secreta del Caribe.
+                        </p>
+                        <div class="ingredients">
+                            <div class="ingredients-title">
+                                <i class="fas fa-leaf"></i> Ingredientes / Ingredients
+                            </div>
+                            <div class="ingredients-list">
+                                Juicy beef, costeño cheese, caramelized onion, Caribbean secret sauce
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-item">
+                    <div class="menu-item-image">
+                        <img src="https://images.unsplash.com/photo-1529006557810-274b9b2fc783?w=800" alt="Sándwich Botín de Bondiola">
+                    </div>
+                    <div class="menu-item-content">
+                        <div class="menu-item-header">
+                            <div>
+                                <h3 class="menu-item-name">Sándwich Botín de Bondiola</h3>
+                                <p class="menu-item-name-en">Pulled Pork Treasure</p>
+                            </div>
+                            <div class="menu-item-price">$60.000</div>
+                        </div>
+                        <p class="menu-item-description">
+                            Bondiola de cerdo desmechada con BBQ de panela y ron.
+                        </p>
+                        <div class="ingredients">
+                            <div class="ingredients-title">
+                                <i class="fas fa-leaf"></i> Ingredientes / Ingredients
+                            </div>
+                            <div class="ingredients-list">
+                                Shredded pork shoulder, panela & rum BBQ / Bondiola de cerdo desmechada, BBQ de panela y ron
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-item">
+                    <div class="menu-item-image">
+                        <img src="https://images.unsplash.com/photo-1525351484163-7529414344d8?w=800" alt="Ensalada Thai">
+                    </div>
+                    <div class="menu-item-content">
+                        <div class="menu-item-header">
+                            <div>
+                                <h3 class="menu-item-name">Ensalada Thai</h3>
+                                <p class="menu-item-name-en">Thai Salad</p>
+                            </div>
+                            <div class="menu-item-price">$60.000 (pollo) / $65.000 (camarón)</div>
+                        </div>
+                        <p class="menu-item-description">
+                            Con pechuga de pollo o camarones, vegetales frescos y aderezo oriental.
+                        </p>
+                        <div class="ingredients">
+                            <div class="ingredients-title">
+                                <i class="fas fa-leaf"></i> Ingredientes / Ingredients
+                            </div>
+                            <div class="ingredients-list">
+                                Chicken breast or shrimp, fresh vegetables, oriental dressing / Pechuga de pollo o camarones, vegetales frescos, aderezo oriental
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sándwiches -->
+        <section id="sandwiches" class="category-section">
+            <h2 class="category-title">Sándwiches</h2>
+            <p class="category-subtitle">Sandwiches</p>
+            
+            <div class="menu-grid">
+                <div class="menu-item">
+                    <div class="menu-item-image">
+                        <img src="https://images.unsplash.com/photo-1528735602780-2552fd46c7af?w=800" alt="Sándwich del Grumete">
+                    </div>
+                    <div class="menu-item-content">
+                        <div class="menu-item-header">
+                            <div>
+                                <h3 class="menu-item-name">Sándwich del Grumete</h3>
+                                <p class="menu-item-name-en">Cabin Boy's Sandwich</p>
+                            </div>
+                            <div class="menu-item-price">$40.000</div>
+                        </div>
+                        <p class="menu-item-description">
+                            Huevos, queso mozzarella y tomate fresco en pan de la casa.
+                        </p>
+                        <div class="ingredients">
+                            <div class="ingredients-title">
+                                <i class="fas fa-leaf"></i> Ingredientes / Ingredients
+                            </div>
+                            <div class="ingredients-list">
+                                Eggs, mozzarella cheese, fresh tomato, homemade bread / Huevos, queso mozzarella, tomate fresco, pan de la casa
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-item">
+                    <div class="menu-item-image">
+                        <img src="https://images.unsplash.com/photo-1553909450-2802d25d60f9?w=800" alt="Sándwich del Almirante">
+                    </div>
+                    <div class="menu-item-content">
+                        <div class="menu-item-header">
+                            <div>
+                                <h3 class="menu-item-name">Sándwich del Almirante</h3>
+                                <p class="menu-item-name-en">Admiral's Sandwich</p>
+                            </div>
+                            <div class="menu-item-price">$45.000</div>
+                        </div>
+                        <p class="menu-item-description">
+                            Pollo jugoso en pan artesanal con alioli de cilantro.
+                        </p>
+                        <div class="ingredients">
+                            <div class="ingredients-title">
+                                <i class="fas fa-leaf"></i> Ingredientes / Ingredients
+                            </div>
+                            <div class="ingredients-list">
+                                Juicy chicken, artisan bread, cilantro aioli / Pollo jugoso, pan artesanal, alioli de cilantro
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Postres -->
+        <section id="postres" class="category-section">
+            <h2 class="category-title">Postres</h2>
+            <p class="category-subtitle">Desserts</p>
+            
+            <div class="menu-grid">
+                <div class="menu-item">
+                    <div class="menu-item-image">
+                        <img src="https://images.unsplash.com/photo-1488477181946-6428a029177b?w=800" alt="Tesoro Dulce">
+                    </div>
+                    <div class="menu-item-content">
+                        <div class="menu-item-header">
+                            <div>
+                                <h3 class="menu-item-name">Tesoro Dulce</h3>
+                                <p class="menu-item-name-en">Sweet Treasure</p>
+                            </div>
+                            <div class="menu-item-price">$35.000</div>
+                        </div>
+                        <p class="menu-item-description">
+                            Postre 3 leche con fresa.
+                        </p>
+                        <div class="ingredients">
+                            <div class="ingredients-title">
+                                <i class="fas fa-leaf"></i> Ingredientes / Ingredients
+                            </div>
+                            <div class="ingredients-list">
+                                Three-milk dessert with strawberry / Postre 3 leche con fresa
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-item">
+                    <div class="menu-item-image">
+                        <img src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=800" alt="Torta del Pirata">
+                    </div>
+                    <div class="menu-item-content">
+                        <div class="menu-item-header">
+                            <div>
+                                <h3 class="menu-item-name">Torta del Pirata</h3>
+                                <p class="menu-item-name-en">Pirate's Cake</p>
+                            </div>
+                            <div class="menu-item-price">$30.000</div>
+                        </div>
+                        <p class="menu-item-description">
+                            Torta de banano con caramelo.
+                        </p>
+                        <div class="ingredients">
+                            <div class="ingredients-title">
+                                <i class="fas fa-leaf"></i> Ingredientes / Ingredients
+                            </div>
+                            <div class="ingredients-list">
+                                Banana cake with caramel / Torta de banano con caramelo
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Cócteles Piratas -->
+        <section id="cocteles" class="category-section">
+            <h2 class="category-title">Cócteles Piratas</h2>
+            <p class="category-subtitle">Pirate Cocktails</p>
+            
+            <div class="drinks-grid">
+                <div class="drink-item">
+                    <div class="drink-info">
+                        <h4>El Tesoro Escondido</h4>
+                        <p>Ron añejo, piña, maracuyá, jarabe de canela, limón</p>
+                        <small>Aged rum, pineapple, passion fruit, cinnamon syrup, lime</small>
+                    </div>
+                    <div class="drink-price">$45.000</div>
+                </div>
+
+                <div class="drink-item">
+                    <div class="drink-info">
+                        <h4>Tormenta del Caribe</h4>
+                        <p>Ron blanco, ron oscuro, jugo de naranja, limón, granadina</p>
+                        <small>White rum, dark rum, orange juice, lime, grenadine</small>
+                    </div>
+                    <div class="drink-price">$55.000</div>
+                </div>
+
+                <div class="drink-item">
+                    <div class="drink-info">
+                        <h4>Barba Negra</h4>
+                        <p>Ron especiado, cerveza de jengibre, lima, angostura</p>
+                        <small>Spiced rum, ginger beer, lime, Angostura</small>
+                    </div>
+                    <div class="drink-price">$55.000</div>
+                </div>
+
+                <div class="drink-item">
+                    <div class="drink-info">
+                        <h4>Brisa de Altamar</h4>
+                        <p>Vodka, arándanos, limón, soda</p>
+                        <small>Vodka, cranberries, lemon, soda</small>
+                    </div>
+                    <div class="drink-price">$35.000</div>
+                </div>
+
+                <div class="drink-item">
+                    <div class="drink-info">
+                        <h4>Corsario Dorado</h4>
+                        <p>Ron dorado, miel, limón, jengibre fresco</p>
+                        <small>Golden rum, honey, lemon, fresh ginger</small>
+                    </div>
+                    <div class="drink-price">$50.000</div>
+                </div>
+
+                <div class="drink-item">
+                    <div class="drink-info">
+                        <h4>Perla Negra</h4>
+                        <p>Vodka, licor de café, crema de coco, hielo frappé</p>
+                        <small>Vodka, coffee liqueur, coconut cream, crushed ice</small>
+                    </div>
+                    <div class="drink-price">$50.000</div>
+                </div>
+
+                <div class="drink-item">
+                    <div class="drink-info">
+                        <h4>Sirena Encantada</h4>
+                        <p>Ginebra, pepino, albahaca fresca, limón, soda</p>
+                        <small>Gin, cucumber, fresh basil, lemon, soda</small>
+                    </div>
+                    <div class="drink-price">$40.000</div>
+                </div>
+
+                <div class="drink-item">
+                    <div class="drink-info">
+                        <h4>Mapa del Tesoro</h4>
+                        <p>Tequila, triple sec, maracuyá, limón, sal marina</p>
+                        <small>Tequila, triple sec, passion fruit, lemon, sea salt</small>
+                    </div>
+                    <div class="drink-price">$50.000</div>
+                </div>
+
+                <div class="drink-item">
+                    <div class="drink-info">
+                        <h4>Cañonazo</h4>
+                        <p>Mezcal, jugo de tamarindo, chile en polvo, limón</p>
+                        <small>Mezcal, tamarind juice, chili powder, lemon</small>
+                    </div>
+                    <div class="drink-price">$60.000</div>
+                </div>
+
+                <div class="drink-item">
+                    <div class="drink-info">
+                        <h4>Isla Perdida</h4>
+                        <p>Ron blanco Havana, piña, mango, crema de coco</p>
+                        <small>Havana white rum, pineapple, mango, coconut cream</small>
+                    </div>
+                    <div class="drink-price">$45.000</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Bebidas -->
+        <section id="bebidas" class="category-section">
+            <h2 class="category-title">Bebidas</h2>
+            <p class="category-subtitle">Beverages</p>
+            
+            <div class="menu-grid">
+                <div class="menu-item">
+                    <div class="menu-item-content">
+                        <h3 class="menu-item-name"><i class="fas fa-wine-bottle"></i> Vinos / Wines</h3>
+                        <div class="drinks-grid" style="margin-top: 1rem;">
+                            <div class="drink-item">
+                                <div class="drink-info">
+                                    <h4>Vino Tinto Rosaleda Merlot</h4>
+                                    <p>Botella/Bottle: $90.000 | Copa/Glass: $20.000</p>
+                                </div>
+                            </div>
+                            <div class="drink-item">
+                                <div class="drink-info">
+                                    <h4>Vino Rosado Rosaleda Cabernet</h4>
+                                    <p>Botella/Bottle: $90.000 | Copa/Glass: $20.000</p>
+                                </div>
+                            </div>
+                            <div class="drink-item">
+                                <div class="drink-info">
+                                    <h4>Vino Blanco Rosaleda Sauvignon</h4>
+                                    <p>Botella/Bottle: $90.000 | Copa/Glass: $20.000</p>
+                                </div>
+                            </div>
+                            <div class="drink-item">
+                                <div class="drink-info">
+                                    <h4>Santa Carolina Reservado Chardonnay</h4>
+                                    <p>Botella/Bottle: $140.000 | Copa/Glass: $30.000</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-item">
+                    <div class="menu-item-content">
+                        <h3 class="menu-item-name"><i class="fas fa-glass-whiskey"></i> Whisky</h3>
+                        <div class="drinks-grid" style="margin-top: 1rem;">
+                            <div class="drink-item">
+                                <div class="drink-info">
+                                    <h4>Singleton 12 años (Single Malt)</h4>
+                                    <p>Trago: $40.000 | Botella: $420.000</p>
+                                </div>
+                            </div>
+                            <div class="drink-item">
+                                <div class="drink-info">
+                                    <h4>Johnny Walker Black Label 12 años</h4>
+                                    <p>Trago: $35.000 | Botella: $360.000</p>
+                                </div>
+                            </div>
+                            <div class="drink-item">
+                                <div class="drink-info">
+                                    <h4>Old Parr 12 años</h4>
+                                    <p>Trago: $35.000 | Botella: $360.000</p>
+                                </div>
+                            </div>
+                            <div class="drink-item">
+                                <div class="drink-info">
+                                    <h4>Buchanans De Luxe 12 años</h4>
+                                    <p>Trago: $40.000 | Botella: $380.000</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-item">
+                    <div class="menu-item-content">
+                        <h3 class="menu-item-name"><i class="fas fa-beer"></i> Cervezas / Beers</h3>
+                        <div class="drinks-grid" style="margin-top: 1rem;">
+                            <div class="drink-item">
+                                <div class="drink-info">
+                                    <h4>Club Colombia Dorado</h4>
+                                    <p>$16.000</p>
+                                </div>
+                            </div>
+                            <div class="drink-item">
+                                <div class="drink-info">
+                                    <h4>Águila Original / Light</h4>
+                                    <p>$12.000</p>
+                                </div>
+                            </div>
+                            <div class="drink-item">
+                                <div class="drink-info">
+                                    <h4>Corona</h4>
+                                    <p>$20.000 | Corona Cero: $16.000</p>
+                                </div>
+                            </div>
+                            <div class="drink-item">
+                                <div class="drink-info">
+                                    <h4>Heineken</h4>
+                                    <p>$14.000</p>
+                                </div>
+                            </div>
+                            <div class="drink-item">
+                                <div class="drink-info">
+                                    <h4>Stella Artois</h4>
+                                    <p>$16.000</p>
+                                </div>
+                            </div>
+                            <div class="drink-item">
+                                <div class="drink-info">
+                                    <h4>3 Cordilleras (Variedades)</h4>
+                                    <p>$20.000</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-item">
+                    <div class="menu-item-content">
+                        <h3 class="menu-item-name"><i class="fas fa-glass-citrus"></i> Jugos Naturales / Fresh Juices</h3>
+                        <div class="drinks-grid" style="margin-top: 1rem;">
+                            <div class="drink-item">
+                                <div class="drink-info">
+                                    <h4>Mango, Guanábana, Lulo, Fresa</h4>
+                                    <p>$16.000 c/u</p>
+                                </div>
+                            </div>
+                            <div class="drink-item">
+                                <div class="drink-info">
+                                    <h4>Maracuyá, Corozo, Piña</h4>
+                                    <p>$16.000 c/u</p>
+                                </div>
+                            </div>
+                            <div class="drink-item">
+                                <div class="drink-info">
+                                    <h4>Mandarina, Mango Biche, Mora</h4>
+                                    <p>$16.000 c/u</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-item">
+                    <div class="menu-item-content">
+                        <h3 class="menu-item-name"><i class="fas fa-lemon"></i> Limonadas</h3>
+                        <div class="drinks-grid" style="margin-top: 1rem;">
+                            <div class="drink-item">
+                                <div class="drink-info">
+                                    <h4>Limonada de Coco</h4>
+                                    <p>$20.000</p>
+                                </div>
+                            </div>
+                            <div class="drink-item">
+                                <div class="drink-info">
+                                    <h4>Limonada Cerezada</h4>
+                                    <p>$20.000</p>
+                                </div>
+                            </div>
+                            <div class="drink-item">
+                                <div class="drink-info">
+                                    <h4>Limonada de Hierbabuena / Brasilera</h4>
+                                    <p>$18.000</p>
+                                </div>
+                            </div>
+                            <div class="drink-item">
+                                <div class="drink-info">
+                                    <h4>Limonada Natural</h4>
+                                    <p>$15.000</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-item">
+                    <div class="menu-item-content">
+                        <h3 class="menu-item-name"><i class="fas fa-coffee"></i> Café</h3>
+                        <div class="drinks-grid" style="margin-top: 1rem;">
+                            <div class="drink-item">
+                                <div class="drink-info">
+                                    <h4>Americano</h4>
+                                    <p>$10.000</p>
+                                </div>
+                            </div>
+                            <div class="drink-item">
+                                <div class="drink-info">
+                                    <h4>Cappuccino</h4>
+                                    <p>$12.000</p>
+                                </div>
+                            </div>
+                            <div class="drink-item">
+                                <div class="drink-info">
+                                    <h4>Expreso / Expreso Doble</h4>
+                                    <p>$8.000 / $14.000</p>
+                                </div>
+                            </div>
+                            <div class="drink-item">
+                                <div class="drink-info">
+                                    <h4>Café con Leche</h4>
+                                    <p>$12.000</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-logo">☠ Santa María del Mar</div>
+            <div class="award-badge">
+                <i class="fas fa-award"></i>
+                Travellers Choice Awards Winner 2024 - Tripadvisor
+            </div>
+            <div class="footer-info">
+                <p>"Mi nombre es Letty Moreno y tengo el honor de recibirte en este lugar dónde se vive la tradición."</p>
+                <p style="margin-top: 1rem;">Ubicado junto al Museo Naval del Caribe, en plena ciudad amurallada de Cartagena.</p>
+            </div>
+            <div class="footer-contact">
+                <span><i class="fas fa-phone"></i> 310 707 1720 / 300 779 8886</span>
+                <span><i class="fas fa-map-marker-alt"></i> Cartagena, Colombia</span>
+                <span><i class="fas fa-globe"></i> santamariadelmar.co</span>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scroll to category
+        function scrollToCategory(categoryId) {
+            const element = document.getElementById(categoryId);
+            if (element) {
+                element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                
+                // Update active button
+                document.querySelectorAll('.nav-btn').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                event.target.closest('.nav-btn').classList.add('active');
+            }
+        }
+
+        // Add scroll spy to update active nav button
+        window.addEventListener('scroll', () => {
+            const sections = document.querySelectorAll('.category-section');
+            const navBtns = document.querySelectorAll('.nav-btn');
+            
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (scrollY >= (sectionTop - 150)) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navBtns.forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.getAttribute('onclick').includes(current)) {
+                    btn.classList.add('active');
+                }
+            });
+        });
+
+        // Add animation on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.menu-item').forEach(item => {
+            item.style.opacity = '0';
+            item.style.transform = 'translateY(20px)';
+            item.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+            observer.observe(item);
+        });
+    </script>
+</body>
+</html>
