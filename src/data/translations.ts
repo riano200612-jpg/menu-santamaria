@@ -1,0 +1,129 @@
+import { CategoriaFiltro, Idioma } from '../types';
+
+export const TEXTOS_UI = {
+  es: {
+    nombreRestaurante: 'Santa María del Mar',
+    subtituloRestaurante: 'Restaurante & Bar • Carta Pirata • Cartagena',
+    modoClaro: 'Modo Claro',
+    modoOscuro: 'Modo Oscuro',
+    verQR: 'Ver QR',
+    tituloQRModal: 'Código QR del Menú',
+    subtituloQRModal: 'Escanea para abrir la carta en tu dispositivo móvil',
+    instruccionesQR:
+      'Apunta con la cámara de tu smartphone o tableta para acceder y explorar la carta interactiva de Santa María del Mar en tiempo real.',
+    copiarEnlace: 'Copiar',
+    enlaceCopiado: '¡Copiado!',
+    compartirEnlace: 'Compartir enlace',
+    enlaceCompartido: '¡Compartido!',
+    cerrar: 'Cerrar',
+    platoSingular: 'plato',
+    platoPlural: 'platos',
+    totalAcumulado: 'Total:',
+    placeholderBuscar: 'Buscar por plato, ingrediente o maridaje...',
+    limpiarBusqueda: 'Limpiar búsqueda',
+    resultadosPara: 'Resultados para',
+    limpiar: 'Limpiar',
+    ordenarPor: 'Ordenar:',
+    ordenOriginal: 'Carta original',
+    ordenMenorPrecio: 'Menor precio',
+    ordenMayorPrecio: 'Mayor precio',
+    verNutricionMaridaje: 'Nutrición & Maridaje',
+    ordenar: 'Ordenar',
+    ordenado: '¡Ordenado!',
+    ordenarEstePlato: 'Ordenar este plato',
+    calorias: 'Calorías',
+    proteinas: 'Proteínas',
+    grasas: 'Grasas',
+    carbohidratos: 'Carbohidratos',
+    infoNutricionalTitulo: 'Información Nutricional (Por porción)',
+    alergenosTitulo: 'Alérgenos e ingredientes clave:',
+    sinAlergenos: 'Sin alérgenos comunes declarados.',
+    maridajeTitulo: 'Sugerencia de Maridaje de la Casa:',
+    sinResultadosBusqueda: (q: string) => `No se encontraron platos que coincidan con "${q}".`,
+    sinPlatosCategoria: 'No hay platos en esta categoría seleccionada.',
+    idiomaActual: 'Español',
+    cambiarIdioma: 'Cambiar idioma',
+  },
+  en: {
+    nombreRestaurante: 'Santa María del Mar',
+    subtituloRestaurante: 'Restaurant & Bar • Pirate Menu • Cartagena',
+    modoClaro: 'Light Mode',
+    modoOscuro: 'Dark Mode',
+    verQR: 'QR Code',
+    tituloQRModal: 'Menu QR Code',
+    subtituloQRModal: 'Scan to open the menu on your mobile device',
+    instruccionesQR:
+      'Point your smartphone or tablet camera to access and browse the interactive menu of Santa María del Mar in real time.',
+    copiarEnlace: 'Copy',
+    enlaceCopiado: 'Copied!',
+    compartirEnlace: 'Share link',
+    enlaceCompartido: 'Shared!',
+    cerrar: 'Close',
+    platoSingular: 'dish',
+    platoPlural: 'dishes',
+    totalAcumulado: 'Total:',
+    placeholderBuscar: 'Search by dish, ingredient, or pairing...',
+    limpiarBusqueda: 'Clear search',
+    resultadosPara: 'Results for',
+    limpiar: 'Clear',
+    ordenarPor: 'Sort:',
+    ordenOriginal: 'Original menu',
+    ordenMenorPrecio: 'Lowest price',
+    ordenMayorPrecio: 'Highest price',
+    verNutricionMaridaje: 'Nutrition & Pairing',
+    ordenar: 'Order',
+    ordenado: 'Ordered!',
+    ordenarEstePlato: 'Order this dish',
+    calorias: 'Calories',
+    proteinas: 'Protein',
+    grasas: 'Fats',
+    carbohidratos: 'Carbs',
+    infoNutricionalTitulo: 'Nutritional Information (Per serving)',
+    alergenosTitulo: 'Allergens & Key Ingredients:',
+    sinAlergenos: 'No common allergens declared.',
+    maridajeTitulo: 'Chef\'s Pairing Recommendation:',
+    sinResultadosBusqueda: (q: string) => `No dishes found matching "${q}".`,
+    sinPlatosCategoria: 'No dishes available in this selected category.',
+    idiomaActual: 'English',
+    cambiarIdioma: 'Switch language',
+  },
+};
+
+export const CATEGORIAS_SELECTOR_I18N: Record<Idioma, { id: CategoriaFiltro; label: string }[]> = {
+  es: [
+    { id: 'todos', label: 'Todos' },
+    { id: 'entradas', label: 'Entradas' },
+    { id: 'ceviches', label: 'Ceviches' },
+    { id: 'sopas', label: 'Sopas' },
+    { id: 'aperitivos', label: 'Aperitivos' },
+    { id: 'fuertes', label: 'Platos Fuertes' },
+    { id: 'postres', label: 'Postres' },
+    { id: 'bebidas', label: 'Bebidas' },
+  ],
+  en: [
+    { id: 'todos', label: 'All' },
+    { id: 'entradas', label: 'Starters' },
+    { id: 'ceviches', label: 'Ceviches' },
+    { id: 'sopas', label: 'Soups' },
+    { id: 'aperitivos', label: 'Appetizers' },
+    { id: 'fuertes', label: 'Main Courses' },
+    { id: 'postres', label: 'Desserts' },
+    { id: 'bebidas', label: 'Beverages' },
+  ],
+};
+
+export function formatearPrecio(precioCop: number, idioma: Idioma): string {
+  if (idioma === 'en') {
+    const usd = Math.round(precioCop / 4000);
+    return `$${precioCop.toLocaleString('en-US')} COP (~$${usd} USD)`;
+  }
+  return `${precioCop.toLocaleString('es-CO')} COP`;
+}
+
+export function formatearTotal(precioCop: number, idioma: Idioma): string {
+  if (idioma === 'en') {
+    const usd = (precioCop / 4000).toFixed(2);
+    return `$${precioCop.toLocaleString('en-US')} COP (~$${usd} USD)`;
+  }
+  return `${precioCop.toLocaleString('es-CO')} COP`;
+}

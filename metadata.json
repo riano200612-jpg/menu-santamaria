@@ -1,0 +1,6 @@
+{
+  "name": "Menú Interactivo para Restaurante",
+  "description": "Menú digital interactivo para restaurante con soporte bilingüe (Español/Inglés), modo claro/oscuro, código QR y detalles nutricionales.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
