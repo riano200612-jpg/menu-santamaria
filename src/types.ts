@@ -5,11 +5,11 @@ export type CriterioOrden = 'original' | 'menor-mayor' | 'mayor-menor';
 export type CategoriaFiltro =
   | 'todos'
   | 'entradas'
-  | 'ceviches'
-  | 'sopas'
-  | 'aperitivos'
-  | 'fuertes'
+  | 'fuertes-mar'
+  | 'sabores-tierra'
   | 'postres'
+  | 'cocteles'
+  | 'licores'
   | 'bebidas';
 
 export interface InformacionNutricional {
@@ -45,8 +45,19 @@ export interface PlatoEntrada {
     en: string;
   };
   precioNumerico: number; // en pesos colombianos (COP)
-  categoria: 'entradas' | 'fuertes' | 'postres' | 'bebidas';
-  subcategoria: 'ceviches' | 'sopas' | 'aperitivos' | 'fuertes' | 'postres' | 'bebidas';
+  categoria:
+    | 'entradas'
+    | 'fuertes-mar'
+    | 'sabores-tierra'
+    | 'postres'
+    | 'cocteles'
+    | 'licores'
+    | 'bebidas';
+  subcategoria?: string;
+  presentacion?: {
+    es: string;
+    en: string;
+  };
   etiqueta: {
     es: string;
     en: string;

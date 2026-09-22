@@ -44,6 +44,7 @@ import {
 import { LanguageSwitcher } from './components/LanguageSwitcher';
 import { ResumenPedido } from './components/ResumenPedido';
 import { BannerPromociones } from './components/BannerPromociones';
+import { RestauranteHistoria } from './components/RestauranteHistoria';
 
 // Exportación de tipos y platos para compatibilidad con pruebas o extensiones
 export * from './types';
@@ -148,6 +149,17 @@ export function Entrada({
           >
             {etiquetaPlato}
           </span>
+          {plato.presentacion && (
+            <span
+              className={`text-[10px] font-semibold px-1.5 py-0.5 rounded-md border ${
+                darkMode
+                  ? 'bg-amber-950/60 text-amber-300 border-amber-800/60'
+                  : 'bg-amber-200/80 text-amber-950 border-amber-400/70'
+              }`}
+            >
+              {plato.presentacion[idioma]}
+            </span>
+          )}
         </div>
         <span
           id={`precio-${plato.id}`}
@@ -930,14 +942,10 @@ export default function App() {
 
   const platosFiltradosYOrdenados = useMemo(() => {
     const filtrados = PLATOS_MENU.filter((plato) => {
-      // Filtrado por categoría y subcategoría
-      if (categoriaSeleccionada === 'entradas' && plato.categoria !== 'entradas') return false;
-      if (categoriaSeleccionada === 'fuertes' && plato.categoria !== 'fuertes') return false;
-      if (categoriaSeleccionada === 'postres' && plato.categoria !== 'postres') return false;
-      if (categoriaSeleccionada === 'bebidas' && plato.categoria !== 'bebidas') return false;
-      if (categoriaSeleccionada === 'ceviches' && plato.subcategoria !== 'ceviches') return false;
-      if (categoriaSeleccionada === 'sopas' && plato.subcategoria !== 'sopas') return false;
-      if (categoriaSeleccionada === 'aperitivos' && plato.subcategoria !== 'aperitivos') return false;
+      // Filtrado por categoría de la Carta Pirata
+      if (categoriaSeleccionada !== 'todos') {
+        if (plato.categoria !== categoriaSeleccionada) return false;
+      }
 
       // Filtrado por búsqueda en tiempo real (busca en ambos idiomas para conveniencia del usuario)
       if (busqueda.trim()) {
@@ -950,6 +958,8 @@ export default function App() {
         const coincideEtiquetaEn = plato.etiqueta.en.toLowerCase().includes(q);
         const coincideBebidaEs = plato.maridaje.bebida.es.toLowerCase().includes(q);
         const coincideBebidaEn = plato.maridaje.bebida.en.toLowerCase().includes(q);
+        const coincidePresEs = plato.presentacion?.es.toLowerCase().includes(q) ?? false;
+        const coincidePresEn = plato.presentacion?.en.toLowerCase().includes(q) ?? false;
 
         if (
           !coincideNombreEs &&
@@ -959,7 +969,9 @@ export default function App() {
           !coincideEtiquetaEs &&
           !coincideEtiquetaEn &&
           !coincideBebidaEs &&
-          !coincideBebidaEn
+          !coincideBebidaEn &&
+          !coincidePresEs &&
+          !coincidePresEn
         ) {
           return false;
         }
@@ -1328,6 +1340,9 @@ export default function App() {
             </div>
           )}
         </section>
+
+        {/* Sección de Historia, Citas Poéticas de Leti y Lacydes Moreno, y Premios */}
+        <RestauranteHistoria idioma={idioma} darkMode={darkMode} />
       </div>
 
       {/* Modal interactivo con Información Nutricional y Maridaje */}
