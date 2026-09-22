@@ -48,7 +48,7 @@ import { RestauranteHistoria } from './components/RestauranteHistoria';
 import { RatingEstrellas } from './components/RatingEstrellas';
 import { ToastNotificacion, ToastNotificacionData } from './components/ToastNotificacion';
 import { SeccionRecomendados } from './components/SeccionRecomendados';
-import { LogoCartaSantaMaria, EmblemaSMM } from './components/LogoSantaMaria';
+import { LogoCartaSantaMaria } from './components/LogoSantaMaria';
 
 // Exportación de tipos y platos para compatibilidad con pruebas o extensiones
 export * from './types';
@@ -1224,47 +1224,27 @@ export default function App() {
             : 'bg-white/95 border border-amber-200/90 shadow-xl shadow-amber-950/5 text-stone-900'
         }`}
       >
-        {/* Logo oficial de la portada de la carta pirata */}
+        {/* Logo principal oficial de la portada de la carta pirata */}
         <LogoCartaSantaMaria idioma={idioma} darkMode={darkMode} />
 
-        {/* Cabecera del Restaurante con Selector de Idioma, Tema, QR y Totales */}
+        {/* Barra superior de controles: Selector de Idioma, Tema, QR y Totales */}
         <header
-          className={`flex flex-col sm:flex-row sm:items-center justify-between border-b pb-5 gap-4 ${
+          className={`flex flex-wrap items-center justify-between border-b pb-4 gap-3 ${
             darkMode ? 'border-stone-800' : 'border-amber-200/80'
           }`}
         >
-          <div className="flex items-center gap-3.5">
-            <div
-              className={`p-1.5 rounded-xl border ${
-                darkMode
-                  ? 'bg-amber-950/40 border-amber-500/30'
-                  : 'bg-amber-100/90 border-amber-300/80'
-              }`}
-            >
-              <EmblemaSMM className="w-9 h-9 sm:w-10 sm:h-10" />
-            </div>
-            <div>
-              <h1
-                className={`text-2xl font-serif font-bold tracking-wide ${
-                  darkMode ? 'text-amber-100' : 'text-amber-950'
-                }`}
-              >
-                {t.nombreRestaurante}
-              </h1>
-              <p className={`text-xs ${darkMode ? 'text-stone-400' : 'text-stone-600'}`}>
-                {t.subtituloRestaurante}
-              </p>
-            </div>
-          </div>
+          <h1 className="sr-only">
+            {t.nombreRestaurante} - {t.subtituloRestaurante}
+          </h1>
+
+          {/* Componente selector de idioma (ES / EN) */}
+          <LanguageSwitcher
+            idioma={idioma}
+            onCambiarIdioma={setIdioma}
+            darkMode={darkMode}
+          />
 
           <div className="flex flex-wrap items-center gap-2">
-            {/* Componente selector de idioma (ES / EN) */}
-            <LanguageSwitcher
-              idioma={idioma}
-              onCambiarIdioma={setIdioma}
-              darkMode={darkMode}
-            />
-
             {/* Botón de alternancia de tema Light/Dark con los colores de la carta original */}
             <button
               type="button"
