@@ -27,12 +27,20 @@ export function RestauranteHistoria({ idioma, darkMode }: RestauranteHistoriaPro
 
         <div className="relative z-10 space-y-4">
           <div className="flex items-start gap-3">
-            <Quote className="w-5 h-5 text-amber-500 shrink-0 mt-0.5" />
+            <Quote className={`w-5 h-5 shrink-0 mt-0.5 ${darkMode ? 'text-amber-500' : 'text-amber-700'}`} />
             <div className="space-y-1">
-              <p className="text-xs sm:text-sm italic leading-relaxed font-serif text-amber-200/90 dark:text-amber-200/90 text-stone-800">
+              <p
+                className={`text-xs sm:text-sm italic leading-relaxed font-serif ${
+                  darkMode ? 'text-amber-100' : 'text-black'
+                }`}
+              >
                 {t.poemaLeti}
               </p>
-              <p className="text-[11px] font-semibold text-amber-500 tracking-wide">
+              <p
+                className={`text-[11px] font-semibold tracking-wide ${
+                  darkMode ? 'text-amber-400' : 'text-stone-950 font-bold'
+                }`}
+              >
                 — Leti Moreno
               </p>
             </div>
@@ -40,11 +48,15 @@ export function RestauranteHistoria({ idioma, darkMode }: RestauranteHistoriaPro
 
           <div
             className={`pt-3 border-t text-[11px] sm:text-xs flex items-center justify-between gap-2 italic ${
-              darkMode ? 'border-stone-800 text-stone-400' : 'border-amber-200 text-stone-600'
+              darkMode ? 'border-stone-800 text-stone-300' : 'border-amber-300 text-black'
             }`}
           >
             <span>{t.citaLacydes}</span>
-            <span className="font-semibold text-amber-600 dark:text-amber-400 not-italic shrink-0">
+            <span
+              className={`font-semibold not-italic shrink-0 ${
+                darkMode ? 'text-amber-400' : 'text-stone-950 font-bold'
+              }`}
+            >
               — {t.autorLacydes}
             </span>
           </div>
@@ -70,7 +82,11 @@ export function RestauranteHistoria({ idioma, darkMode }: RestauranteHistoriaPro
             {t.historiaTitulo}
           </h2>
         </div>
-        <p className="text-xs leading-relaxed text-justify mb-4">
+        <p
+          className={`text-xs leading-relaxed text-justify mb-4 ${
+            darkMode ? 'text-stone-300' : 'text-stone-900'
+          }`}
+        >
           {t.historiaTexto}
         </p>
 
