@@ -211,10 +211,10 @@ export function SeccionRecomendados({
             <div
               key={`rec-${plato.id}`}
               id={`card-recomendado-${plato.id}`}
-              className={`rounded-xl p-3.5 flex flex-col justify-between border transition duration-200 group relative ${
+              className={`rounded-xl p-3.5 flex flex-col justify-between border transition-all duration-300 ease-out transform hover:scale-[1.02] group relative ${
                 darkMode
-                  ? 'bg-stone-900/80 hover:bg-stone-850 border-stone-800 hover:border-amber-500/50 text-stone-200'
-                  : 'bg-white hover:bg-amber-50/50 border-amber-200 hover:border-amber-400 text-stone-850 shadow-xs'
+                  ? 'bg-stone-900/80 hover:bg-stone-850 border-stone-800 hover:border-amber-500/50 text-stone-200 hover:shadow-lg hover:shadow-black/50'
+                  : 'bg-white hover:bg-amber-50/50 border-amber-200 hover:border-amber-400 text-stone-850 shadow-xs hover:shadow-md hover:shadow-amber-950/10'
               }`}
             >
               {/* Badge superior de frecuencia o especialidad */}

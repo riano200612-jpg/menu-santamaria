@@ -33,7 +33,6 @@ import {
   CategoriaFiltro,
   PlatoEntrada,
   ItemPedido,
-  TagAlergeno,
 } from './types';
 import { PLATOS_MENU } from './data/menu';
 import {
@@ -49,11 +48,7 @@ import { RestauranteHistoria } from './components/RestauranteHistoria';
 import { RatingEstrellas } from './components/RatingEstrellas';
 import { ToastNotificacion, ToastNotificacionData } from './components/ToastNotificacion';
 import { SeccionRecomendados } from './components/SeccionRecomendados';
-import { ChipsAlergenos } from './components/ChipsAlergenos';
-import {
-  verificarPlatoCumpleTag,
-  verificarPlatoCumpleTodosLosTags,
-} from './utils/alergenos';
+import { LogoCartaSantaMaria, EmblemaSMM } from './components/LogoSantaMaria';
 
 // Exportación de tipos y platos para compatibilidad con pruebas o extensiones
 export * from './types';
@@ -130,18 +125,18 @@ export function Entrada({
   return (
     <article
       id={`entrada-${plato.id}`}
-      className={`rounded-xl p-5 shadow-sm space-y-3 transition-all duration-300 transform ${
+      className={`rounded-xl p-5 shadow-xs space-y-3 transition-all duration-300 ease-out transform hover:scale-[1.02] ${
         darkMode
-          ? 'bg-stone-900/90 text-stone-100'
-          : 'bg-amber-50/70 text-stone-800'
+          ? 'bg-stone-900/90 text-stone-100 hover:shadow-lg hover:shadow-black/50'
+          : 'bg-amber-50/70 text-stone-800 hover:shadow-md hover:shadow-amber-950/10'
       } ${
         animando
           ? darkMode
             ? 'scale-[1.02] border border-amber-400/80 ring-2 ring-amber-400/30 shadow-lg shadow-amber-500/10 animate-pulse'
             : 'scale-[1.02] border border-amber-500 ring-2 ring-amber-400/50 shadow-md shadow-amber-500/20 animate-pulse'
           : darkMode
-            ? 'border border-amber-900/40 hover:border-amber-700/60'
-            : 'border border-amber-200/90 hover:border-amber-400/80 hover:shadow-md'
+            ? 'border border-amber-900/40 hover:border-amber-600/70'
+            : 'border border-amber-200/90 hover:border-amber-400/80'
       }`}
     >
       <div
@@ -984,7 +979,6 @@ export default function App() {
   });
 
   const [categoriaSeleccionada, setCategoriaSeleccionada] = useState<CategoriaFiltro>('todos');
-  const [tagsAlergenosSeleccionados, setTagsAlergenosSeleccionados] = useState<TagAlergeno[]>([]);
   const [criterioOrden, setCriterioOrden] = useState<CriterioOrden>('original');
   const [busqueda, setBusqueda] = useState<string>('');
   const [platoDetalle, setPlatoDetalle] = useState<PlatoEntrada | null>(null);
@@ -1168,59 +1162,11 @@ export default function App() {
     }, 450);
   };
 
-  const handleToggleTagAlergeno = (tag: TagAlergeno) => {
-    setTagsAlergenosSeleccionados((prev) =>
-      prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag]
-    );
-  };
-
-  const handleLimpiarTagsAlergenos = () => {
-    setTagsAlergenosSeleccionados([]);
-  };
-
-  const conteoPorTag = useMemo(() => {
-    const platosBaseCategoria = PLATOS_MENU.filter((plato) => {
-      if (categoriaSeleccionada === 'todos') return true;
-      return plato.categoria === categoriaSeleccionada;
-    });
-
-    const conteos: Record<TagAlergeno, number> = {
-      'sin-gluten': 0,
-      'vegano': 0,
-      'sin-lactosa': 0,
-      'vegetariano': 0,
-      'sin-mariscos': 0,
-      'sin-huevo': 0,
-    };
-
-    const tags: TagAlergeno[] = [
-      'sin-gluten',
-      'vegano',
-      'sin-lactosa',
-      'vegetariano',
-      'sin-mariscos',
-      'sin-huevo',
-    ];
-
-    tags.forEach((tag) => {
-      conteos[tag] = platosBaseCategoria.filter((p) => verificarPlatoCumpleTag(p, tag)).length;
-    });
-
-    return conteos;
-  }, [categoriaSeleccionada]);
-
   const platosFiltradosYOrdenados = useMemo(() => {
     const filtrados = PLATOS_MENU.filter((plato) => {
       // Filtrado por categoría de la Carta Pirata
       if (categoriaSeleccionada !== 'todos') {
         if (plato.categoria !== categoriaSeleccionada) return false;
-      }
-
-      // Filtrado por chips de alérgenos y dietas
-      if (tagsAlergenosSeleccionados.length > 0) {
-        if (!verificarPlatoCumpleTodosLosTags(plato, tagsAlergenosSeleccionados)) {
-          return false;
-        }
       }
 
       // Filtrado por búsqueda en tiempo real (busca en ambos idiomas para conveniencia del usuario)
@@ -1263,7 +1209,7 @@ export default function App() {
       return [...filtrados].sort((a, b) => b.precioNumerico - a.precioNumerico);
     }
     return filtrados;
-  }, [categoriaSeleccionada, tagsAlergenosSeleccionados, criterioOrden, busqueda]);
+  }, [categoriaSeleccionada, criterioOrden, busqueda]);
 
   return (
     <div
@@ -1278,6 +1224,9 @@ export default function App() {
             : 'bg-white/95 border border-amber-200/90 shadow-xl shadow-amber-950/5 text-stone-900'
         }`}
       >
+        {/* Logo oficial de la portada de la carta pirata */}
+        <LogoCartaSantaMaria idioma={idioma} darkMode={darkMode} />
+
         {/* Cabecera del Restaurante con Selector de Idioma, Tema, QR y Totales */}
         <header
           className={`flex flex-col sm:flex-row sm:items-center justify-between border-b pb-5 gap-4 ${
@@ -1286,13 +1235,13 @@ export default function App() {
         >
           <div className="flex items-center gap-3.5">
             <div
-              className={`p-2.5 rounded-xl border ${
+              className={`p-1.5 rounded-xl border ${
                 darkMode
-                  ? 'bg-amber-500/20 text-amber-400 border-amber-500/30'
-                  : 'bg-amber-100 text-amber-800 border-amber-300/80'
+                  ? 'bg-amber-950/40 border-amber-500/30'
+                  : 'bg-amber-100/90 border-amber-300/80'
               }`}
             >
-              <Compass className="w-6 h-6" />
+              <EmblemaSMM className="w-9 h-9 sm:w-10 sm:h-10" />
             </div>
             <div>
               <h1
@@ -1497,16 +1446,6 @@ export default function App() {
             })}
           </div>
 
-          {/* Chips de etiquetas (tags) para filtrar rápidamente los platos por alérgenos y dietas */}
-          <ChipsAlergenos
-            tagsSeleccionados={tagsAlergenosSeleccionados}
-            onToggleTag={handleToggleTagAlergeno}
-            onLimpiarTags={handleLimpiarTagsAlergenos}
-            idioma={idioma}
-            darkMode={darkMode}
-            conteoPorTag={conteoPorTag}
-          />
-
           {/* Barra de Ordenamiento por Precio */}
           <div
             id="barra-ordenamiento-precio"
@@ -1614,18 +1553,48 @@ export default function App() {
           )}
 
           {platosFiltradosYOrdenados.length > 0 ? (
-            <div className="space-y-4">
-              {platosFiltradosYOrdenados.map((plato) => (
-                <Entrada
+            <motion.div
+              key={categoriaSeleccionada}
+              initial="hidden"
+              animate="visible"
+              variants={{
+                hidden: { opacity: 0 },
+                visible: {
+                  opacity: 1,
+                  transition: {
+                    staggerChildren: 0.05,
+                  },
+                },
+              }}
+              className="space-y-4"
+            >
+              {platosFiltradosYOrdenados.map((plato, index) => (
+                <motion.div
                   key={plato.id}
-                  plato={plato}
-                  idioma={idioma}
-                  darkMode={darkMode}
-                  onOrdenar={handleOrdenar}
-                  onVerDetalles={(p) => setPlatoDetalle(p)}
-                />
+                  variants={{
+                    hidden: { opacity: 0, y: 18 },
+                    visible: {
+                      opacity: 1,
+                      y: 0,
+                      transition: {
+                        duration: 0.35,
+                        ease: [0.16, 1, 0.3, 1],
+                      },
+                    },
+                  }}
+                  className="animate-fade-in-up"
+                  style={{ animationDelay: `${Math.min(index * 40, 400)}ms` }}
+                >
+                  <Entrada
+                    plato={plato}
+                    idioma={idioma}
+                    darkMode={darkMode}
+                    onOrdenar={handleOrdenar}
+                    onVerDetalles={(p) => setPlatoDetalle(p)}
+                  />
+                </motion.div>
               ))}
-            </div>
+            </motion.div>
           ) : (
             <div
               className={`text-center py-8 rounded-xl border text-xs ${
@@ -1634,23 +1603,9 @@ export default function App() {
                   : 'bg-amber-50/80 border-amber-200 text-stone-600'
               }`}
             >
-              {busqueda ? (
-                t.sinResultadosBusqueda(busqueda)
-              ) : tagsAlergenosSeleccionados.length > 0 ? (
-                <div className="space-y-3 py-2">
-                  <p>{t.sinResultadosAlergenos}</p>
-                  <button
-                    type="button"
-                    id="btn-limpiar-filtros-vacio"
-                    onClick={handleLimpiarTagsAlergenos}
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-amber-500 text-stone-950 font-bold rounded-lg text-xs hover:bg-amber-400 cursor-pointer transition shadow-xs active:scale-95"
-                  >
-                    <span>{t.limpiarFiltrosAlergenos}</span>
-                  </button>
-                </div>
-              ) : (
-                t.sinPlatosCategoria
-              )}
+              {busqueda
+                ? t.sinResultadosBusqueda(busqueda)
+                : t.sinPlatosCategoria}
             </div>
           )}
         </section>
