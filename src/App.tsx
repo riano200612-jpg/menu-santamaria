@@ -5,6 +5,7 @@
 
 import { useState, useMemo, useEffect } from 'react';
 import { QRCodeSVG } from 'qrcode.react';
+import { motion, AnimatePresence } from 'motion/react';
 import {
   Compass,
   Plus,
@@ -31,6 +32,7 @@ import {
   CriterioOrden,
   CategoriaFiltro,
   PlatoEntrada,
+  ItemPedido,
 } from './types';
 import { PLATOS_MENU } from './data/menu';
 import {
@@ -40,11 +42,23 @@ import {
   formatearTotal,
 } from './data/translations';
 import { LanguageSwitcher } from './components/LanguageSwitcher';
+import { ResumenPedido } from './components/ResumenPedido';
+import { BannerPromociones } from './components/BannerPromociones';
 
 // Exportación de tipos y platos para compatibilidad con pruebas o extensiones
 export * from './types';
-export { PLATOS_MENU };
+export { PLATOS_MENU, BannerPromociones };
 export const ENTRADAS = PLATOS_MENU;
+
+export interface ItemVolando {
+  id: string;
+  startX: number;
+  startY: number;
+  endX: number;
+  endY: number;
+  midX: number;
+  midY: number;
+}
 
 export function Entrada({
   plato,
@@ -55,16 +69,16 @@ export function Entrada({
 }: {
   plato: PlatoEntrada;
   idioma: Idioma;
-  onOrdenar: (plato: PlatoEntrada) => void;
+  onOrdenar: (plato: PlatoEntrada, sourceElement?: HTMLElement) => void;
   onVerDetalles?: (plato: PlatoEntrada) => void;
   darkMode?: boolean;
 }) {
   const [animando, setAnimando] = useState<boolean>(false);
   const t = TEXTOS_UI[idioma];
 
-  const handleOrdenar = () => {
+  const handleOrdenar = (e: React.MouseEvent<HTMLButtonElement>) => {
     setAnimando(true);
-    onOrdenar(plato);
+    onOrdenar(plato, e.currentTarget);
     setTimeout(() => {
       setAnimando(false);
     }, 500);
@@ -204,7 +218,7 @@ export function ModalDetallePlato({
   plato: PlatoEntrada;
   idioma: Idioma;
   onCerrar: () => void;
-  onOrdenar: (plato: PlatoEntrada) => void;
+  onOrdenar: (plato: PlatoEntrada, sourceElement?: HTMLElement) => void;
   darkMode?: boolean;
 }) {
   const t = TEXTOS_UI[idioma];
@@ -507,8 +521,8 @@ export function ModalDetallePlato({
           <button
             type="button"
             id="btn-modal-ordenar"
-            onClick={() => {
-              onOrdenar(plato);
+            onClick={(e) => {
+              onOrdenar(plato, e.currentTarget);
               onCerrar();
             }}
             className="inline-flex items-center gap-1.5 px-4 py-2 bg-amber-500 hover:bg-amber-400 text-stone-950 font-semibold text-xs rounded-xl transition shadow-md cursor-pointer active:scale-95"
@@ -785,16 +799,28 @@ export default function App() {
     return true; // Predeterminado oscuro
   });
 
-  const [totalSeleccionados, setTotalSeleccionados] = useState<number>(0);
-  const [precioTotal, setPrecioTotal] = useState<number>(0);
   const [categoriaSeleccionada, setCategoriaSeleccionada] = useState<CategoriaFiltro>('todos');
   const [criterioOrden, setCriterioOrden] = useState<CriterioOrden>('original');
   const [busqueda, setBusqueda] = useState<string>('');
   const [platoDetalle, setPlatoDetalle] = useState<PlatoEntrada | null>(null);
   const [mostrarQR, setMostrarQR] = useState<boolean>(false);
+  const [pedidos, setPedidos] = useState<Record<string, ItemPedido>>({});
+  const [mostrarResumen, setMostrarResumen] = useState<boolean>(false);
+  const [itemsVolando, setItemsVolando] = useState<ItemVolando[]>([]);
+  const [badgeBump, setBadgeBump] = useState<boolean>(false);
 
   const t = TEXTOS_UI[idioma];
   const categorias = CATEGORIAS_SELECTOR_I18N[idioma];
+
+  const itemsPedido = useMemo(() => Object.values(pedidos), [pedidos]);
+  const totalSeleccionados = useMemo(
+    () => itemsPedido.reduce((acc, curr) => acc + curr.cantidad, 0),
+    [itemsPedido]
+  );
+  const precioTotal = useMemo(
+    () => itemsPedido.reduce((acc, curr) => acc + curr.plato.precioNumerico * curr.cantidad, 0),
+    [itemsPedido]
+  );
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -808,9 +834,98 @@ export default function App() {
     }
   }, [idioma]);
 
-  const handleOrdenar = (plato: PlatoEntrada) => {
-    setTotalSeleccionados((prev) => prev + 1);
-    setPrecioTotal((prev) => prev + plato.precioNumerico);
+  const handleOrdenar = (plato: PlatoEntrada, sourceElement?: HTMLElement) => {
+    setPedidos((prev) => {
+      const actual = prev[plato.id];
+      return {
+        ...prev,
+        [plato.id]: {
+          plato,
+          cantidad: (actual ? actual.cantidad : 0) + 1,
+        },
+      };
+    });
+
+    if (sourceElement && typeof window !== 'undefined') {
+      const badgeElem = document.getElementById('badge-total-seleccionados');
+      if (badgeElem) {
+        const sourceRect = sourceElement.getBoundingClientRect();
+        const targetRect = badgeElem.getBoundingClientRect();
+
+        const startX = sourceRect.left + sourceRect.width / 2;
+        const startY = sourceRect.top + sourceRect.height / 2;
+        const endX = targetRect.left + targetRect.width / 2;
+        const endY = targetRect.top + targetRect.height / 2;
+
+        const deltaX = endX - startX;
+        const midX = startX + deltaX * 0.45 + (deltaX > 0 ? -25 : 25);
+        const midY = Math.max(15, Math.min(startY, endY) - 55);
+
+        const nuevoItem: ItemVolando = {
+          id: `fly-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`,
+          startX,
+          startY,
+          endX,
+          endY,
+          midX,
+          midY,
+        };
+
+        setItemsVolando((prev) => [...prev, nuevoItem]);
+      }
+    }
+  };
+
+  const handleIncrementarItem = (plato: PlatoEntrada) => {
+    setPedidos((prev) => {
+      const actual = prev[plato.id];
+      return {
+        ...prev,
+        [plato.id]: {
+          plato,
+          cantidad: (actual ? actual.cantidad : 0) + 1,
+        },
+      };
+    });
+  };
+
+  const handleDecrementarItem = (platoId: string) => {
+    setPedidos((prev) => {
+      const actual = prev[platoId];
+      if (!actual) return prev;
+      if (actual.cantidad <= 1) {
+        const copia = { ...prev };
+        delete copia[platoId];
+        return copia;
+      }
+      return {
+        ...prev,
+        [platoId]: {
+          ...actual,
+          cantidad: actual.cantidad - 1,
+        },
+      };
+    });
+  };
+
+  const handleEliminarItem = (platoId: string) => {
+    setPedidos((prev) => {
+      const copia = { ...prev };
+      delete copia[platoId];
+      return copia;
+    });
+  };
+
+  const handleVaciarPedido = () => {
+    setPedidos({});
+  };
+
+  const handleAnimacionCompletada = (id: string) => {
+    setItemsVolando((prev) => prev.filter((item) => item.id !== id));
+    setBadgeBump(true);
+    setTimeout(() => {
+      setBadgeBump(false);
+    }, 450);
   };
 
   const platosFiltradosYOrdenados = useMemo(() => {
@@ -956,38 +1071,59 @@ export default function App() {
               <span>{t.verQR}</span>
             </button>
 
-            {/* Badge de cantidad total de platos seleccionados */}
-            <div
+            {/* Badge de cantidad total de platos seleccionados con reacción visual al vuelo y apertura de ResumenPedido */}
+            <motion.button
+              type="button"
               id="badge-total-seleccionados"
-              className={`flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold transition-all duration-200 border ${
+              onClick={() => setMostrarResumen(true)}
+              animate={
+                badgeBump
+                  ? {
+                      scale: [1, 1.25, 0.94, 1.06, 1],
+                      boxShadow: [
+                        '0 0 0 rgba(245, 158, 11, 0)',
+                        '0 0 20px rgba(245, 158, 11, 0.85)',
+                        '0 0 0 rgba(245, 158, 11, 0)',
+                      ],
+                    }
+                  : { scale: 1 }
+              }
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              transition={{ duration: 0.45, ease: 'easeOut' }}
+              className={`flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold transition-colors duration-200 border cursor-pointer ${
                 totalSeleccionados > 0
-                  ? 'bg-amber-500 text-stone-950 border-amber-400 shadow-md'
+                  ? 'bg-amber-500 text-stone-950 border-amber-400 shadow-md hover:bg-amber-400'
                   : darkMode
-                    ? 'bg-stone-800/70 text-stone-400 border-stone-700'
-                    : 'bg-stone-200/80 text-stone-600 border-stone-300'
+                    ? 'bg-stone-800/70 text-stone-400 border-stone-700 hover:border-stone-600'
+                    : 'bg-stone-200/80 text-stone-600 border-stone-300 hover:border-stone-400'
               }`}
-              title={idioma === 'es' ? 'Total de platos seleccionados' : 'Total ordered dishes'}
+              title={t.verResumenPedido}
+              aria-label={t.verResumenPedido}
             >
               <ShoppingBag className="w-3.5 h-3.5" />
               <span>
                 {totalSeleccionados}{' '}
                 {totalSeleccionados === 1 ? t.platoSingular : t.platoPlural}
               </span>
-            </div>
+            </motion.button>
 
-            {/* Etiqueta con el precio total acumulado */}
-            <div
+            {/* Etiqueta con el precio total acumulado que también permite abrir el resumen */}
+            <button
+              type="button"
               id="badge-precio-total"
-              className={`flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold transition-all duration-200 border ${
+              onClick={() => setMostrarResumen(true)}
+              className={`flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold transition-all duration-200 border cursor-pointer hover:scale-105 active:scale-95 ${
                 precioTotal > 0
                   ? darkMode
-                    ? 'bg-amber-950/70 text-amber-300 border-amber-700/60 shadow-xs'
-                    : 'bg-amber-100 text-amber-900 border-amber-300/80 shadow-xs'
+                    ? 'bg-amber-950/70 text-amber-300 border-amber-700/60 shadow-xs hover:bg-amber-900/80'
+                    : 'bg-amber-100 text-amber-900 border-amber-300/80 shadow-xs hover:bg-amber-200'
                   : darkMode
                     ? 'bg-stone-850/60 text-stone-500 border-stone-800'
                     : 'bg-stone-200/60 text-stone-500 border-stone-300'
               }`}
-              title={idioma === 'es' ? 'Precio total acumulado' : 'Accumulated total price'}
+              title={t.verResumenPedido}
+              aria-label={t.verResumenPedido}
             >
               <span
                 className={`text-[11px] font-normal ${
@@ -1003,9 +1139,17 @@ export default function App() {
               >
                 {formatearTotal(precioTotal, idioma)}
               </span>
-            </div>
+            </button>
           </div>
         </header>
+
+        {/* Banner de Promociones Rotativas de Ofertas del Día */}
+        <BannerPromociones
+          idioma={idioma}
+          darkMode={darkMode}
+          onOrdenarPlato={handleOrdenar}
+          onVerDetallePlato={setPlatoDetalle}
+        />
 
         {/* Buscador y Selector de Categorías */}
         <div id="controles-filtrado" className="space-y-3">
@@ -1205,6 +1349,67 @@ export default function App() {
           onCerrar={() => setMostrarQR(false)}
         />
       )}
+
+      {/* Modal con Resumen Detallado del Pedido y Subtotal Final Calculado */}
+      <AnimatePresence>
+        {mostrarResumen && (
+          <ResumenPedido
+            items={itemsPedido}
+            idioma={idioma}
+            darkMode={darkMode}
+            onCerrar={() => setMostrarResumen(false)}
+            onIncrementar={handleIncrementarItem}
+            onDecrementar={handleDecrementarItem}
+            onEliminar={handleEliminarItem}
+            onVaciar={handleVaciarPedido}
+          />
+        )}
+      </AnimatePresence>
+
+      {/* Contenedor de partículas y animación de platos volando hacia badge-total-seleccionados */}
+      <div
+        id="contenedor-animaciones-vuelo"
+        className="pointer-events-none fixed inset-0 z-50 overflow-hidden"
+        aria-hidden="true"
+      >
+        <AnimatePresence>
+          {itemsVolando.map((item) => (
+            <motion.div
+              key={item.id}
+              initial={{
+                x: item.startX - 18,
+                y: item.startY - 18,
+                scale: 0.6,
+                opacity: 0.9,
+                rotate: 0,
+              }}
+              animate={{
+                x: [item.startX - 18, item.midX - 18, item.endX - 18],
+                y: [item.startY - 18, item.midY - 18, item.endY - 18],
+                scale: [0.6, 1.28, 0.85, 0.35],
+                opacity: [0.9, 1, 1, 0.75],
+                rotate: [0, -15, 12, 0],
+              }}
+              exit={{
+                opacity: 0,
+                scale: 0.1,
+              }}
+              transition={{
+                duration: 0.72,
+                ease: [0.22, 1, 0.36, 1],
+              }}
+              onAnimationComplete={() => handleAnimacionCompletada(item.id)}
+              className="fixed top-0 left-0 flex items-center justify-center w-9 h-9 rounded-full bg-linear-to-tr from-amber-500 via-amber-400 to-amber-300 text-stone-950 font-bold shadow-xl shadow-amber-500/60 border-2 border-amber-100 ring-2 ring-amber-400/50"
+            >
+              <span className="absolute inset-0 rounded-full bg-amber-400/40 animate-ping opacity-60 pointer-events-none" />
+              <div className="relative flex items-center justify-center gap-0.5">
+                <ShoppingBag className="w-3.5 h-3.5 fill-stone-950/30 text-stone-950" />
+                <span className="text-[10px] font-black leading-none">+1</span>
+              </div>
+            </motion.div>
+          ))}
+        </AnimatePresence>
+      </div>
     </div>
   );
 }

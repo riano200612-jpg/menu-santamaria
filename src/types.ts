@@ -58,3 +58,35 @@ export interface PlatoEntrada {
   nutricion: InformacionNutricional;
   maridaje: SugerenciaMaridaje;
 }
+
+export interface ItemPedido {
+  plato: PlatoEntrada;
+  cantidad: number;
+}
+
+export interface Promocion {
+  id: string;
+  platoId?: string;
+  titulo: {
+    es: string;
+    en: string;
+  };
+  descripcion: {
+    es: string;
+    en: string;
+  };
+  descuentoTexto: {
+    es: string;
+    en: string;
+  };
+  badge: {
+    es: string;
+    en: string;
+  };
+  precioOriginal?: number;
+  precioPromocional?: number;
+  validezHoraria?: {
+    es: string;
+    en: string;
+  };
+}
