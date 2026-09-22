@@ -33,6 +33,7 @@ import {
   CategoriaFiltro,
   PlatoEntrada,
   ItemPedido,
+  TagAlergeno,
 } from './types';
 import { PLATOS_MENU } from './data/menu';
 import {
@@ -45,6 +46,14 @@ import { LanguageSwitcher } from './components/LanguageSwitcher';
 import { ResumenPedido } from './components/ResumenPedido';
 import { BannerPromociones } from './components/BannerPromociones';
 import { RestauranteHistoria } from './components/RestauranteHistoria';
+import { RatingEstrellas } from './components/RatingEstrellas';
+import { ToastNotificacion, ToastNotificacionData } from './components/ToastNotificacion';
+import { SeccionRecomendados } from './components/SeccionRecomendados';
+import { ChipsAlergenos } from './components/ChipsAlergenos';
+import {
+  verificarPlatoCumpleTag,
+  verificarPlatoCumpleTodosLosTags,
+} from './utils/alergenos';
 
 // Exportación de tipos y platos para compatibilidad con pruebas o extensiones
 export * from './types';
@@ -75,11 +84,39 @@ export function Entrada({
   darkMode?: boolean;
 }) {
   const [animando, setAnimando] = useState<boolean>(false);
+  const [opcionSeleccionadaId, setOpcionSeleccionadaId] = useState<string>(() => {
+    return plato.opcionesPresentacion && plato.opcionesPresentacion.length > 0
+      ? plato.opcionesPresentacion[0].id
+      : '';
+  });
   const t = TEXTOS_UI[idioma];
+
+  const opcionSeleccionada =
+    plato.opcionesPresentacion && plato.opcionesPresentacion.length > 0
+      ? plato.opcionesPresentacion.find((o) => o.id === opcionSeleccionadaId) ||
+        plato.opcionesPresentacion[0]
+      : null;
+
+  const precioActual = opcionSeleccionada
+    ? opcionSeleccionada.precioNumerico
+    : plato.precioNumerico;
 
   const handleOrdenar = (e: React.MouseEvent<HTMLButtonElement>) => {
     setAnimando(true);
-    onOrdenar(plato, e.currentTarget);
+    const platoParaOrdenar: PlatoEntrada = opcionSeleccionada
+      ? {
+          ...plato,
+          id: `${plato.id}-${opcionSeleccionada.id}`,
+          nombre: {
+            es: `${plato.nombre.es} (${opcionSeleccionada.nombre.es})`,
+            en: `${plato.nombre.en} (${opcionSeleccionada.nombre.en})`,
+          },
+          precioNumerico: opcionSeleccionada.precioNumerico,
+          presentacion: opcionSeleccionada.nombre,
+        }
+      : plato;
+
+    onOrdenar(platoParaOrdenar, e.currentTarget);
     setTimeout(() => {
       setAnimando(false);
     }, 500);
@@ -88,7 +125,7 @@ export function Entrada({
   const nombrePlato = plato.nombre[idioma];
   const descripcionPlato = plato.descripcion[idioma];
   const etiquetaPlato = plato.etiqueta[idioma];
-  const precioFormateado = formatearPrecio(plato.precioNumerico, idioma);
+  const precioFormateado = formatearPrecio(precioActual, idioma);
 
   return (
     <article
@@ -178,6 +215,52 @@ export function Entrada({
       >
         {descripcionPlato}
       </p>
+
+      {/* Selector de opciones de presentación si existen */}
+      {plato.opcionesPresentacion && plato.opcionesPresentacion.length > 0 && (
+        <div className="flex items-center gap-2 pt-1 flex-wrap">
+          <span
+            className={`text-[11px] font-medium shrink-0 ${
+              darkMode ? 'text-stone-400' : 'text-stone-600'
+            }`}
+          >
+            {idioma === 'es' ? 'Presentación:' : 'Portion:'}
+          </span>
+          <div className="flex items-center gap-1.5 flex-wrap">
+            {plato.opcionesPresentacion.map((opcion) => {
+              const esActiva = (opcionSeleccionada?.id || plato.opcionesPresentacion![0].id) === opcion.id;
+              return (
+                <button
+                  key={opcion.id}
+                  type="button"
+                  id={`btn-opcion-${plato.id}-${opcion.id}`}
+                  onClick={() => setOpcionSeleccionadaId(opcion.id)}
+                  className={`text-xs px-2.5 py-1 rounded-lg font-medium transition cursor-pointer border ${
+                    esActiva
+                      ? darkMode
+                        ? 'bg-amber-500 text-stone-950 font-bold border-amber-400 shadow-xs'
+                        : 'bg-amber-500 text-stone-950 font-bold border-amber-500 shadow-xs'
+                      : darkMode
+                        ? 'bg-stone-800 text-stone-300 border-stone-700 hover:border-amber-500/60'
+                        : 'bg-white text-stone-700 border-stone-300 hover:border-amber-400'
+                  }`}
+                >
+                  {opcion.nombre[idioma]} • {formatearPrecio(opcion.precioNumerico, idioma)}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
+      {/* Sistema de calificación por estrellas con persistencia local */}
+      <RatingEstrellas
+        platoId={plato.id}
+        nombrePlato={nombrePlato}
+        idioma={idioma}
+        darkMode={darkMode}
+      />
+
       <div className="flex items-center justify-between pt-1">
         <button
           type="button"
@@ -233,6 +316,11 @@ export function ModalDetallePlato({
   onOrdenar: (plato: PlatoEntrada, sourceElement?: HTMLElement) => void;
   darkMode?: boolean;
 }) {
+  const [opcionSeleccionadaId, setOpcionSeleccionadaId] = useState<string>(() => {
+    return plato.opcionesPresentacion && plato.opcionesPresentacion.length > 0
+      ? plato.opcionesPresentacion[0].id
+      : '';
+  });
   const t = TEXTOS_UI[idioma];
 
   useEffect(() => {
@@ -245,10 +333,20 @@ export function ModalDetallePlato({
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [onCerrar]);
 
+  const opcionSeleccionada =
+    plato.opcionesPresentacion && plato.opcionesPresentacion.length > 0
+      ? plato.opcionesPresentacion.find((o) => o.id === opcionSeleccionadaId) ||
+        plato.opcionesPresentacion[0]
+      : null;
+
+  const precioActual = opcionSeleccionada
+    ? opcionSeleccionada.precioNumerico
+    : plato.precioNumerico;
+
   const nombrePlato = plato.nombre[idioma];
   const descripcionPlato = plato.descripcion[idioma];
   const etiquetaPlato = plato.etiqueta[idioma];
-  const precioFormateado = formatearPrecio(plato.precioNumerico, idioma);
+  const precioFormateado = formatearPrecio(precioActual, idioma);
   const alergenos = plato.nutricion.alergenos[idioma] || [];
   const maridaje = plato.maridaje;
 
@@ -330,6 +428,68 @@ export function ModalDetallePlato({
         >
           "{descripcionPlato}"
         </p>
+
+        {/* Selector de opciones de presentación en el Modal si existen */}
+        {plato.opcionesPresentacion && plato.opcionesPresentacion.length > 0 && (
+          <div
+            className={`p-3 rounded-xl border space-y-2 ${
+              darkMode
+                ? 'bg-stone-950/40 border-stone-800/60'
+                : 'bg-amber-50/60 border-amber-200/70'
+            }`}
+          >
+            <div className="flex items-center justify-between">
+              <span
+                className={`text-xs font-semibold ${
+                  darkMode ? 'text-amber-300' : 'text-amber-900'
+                }`}
+              >
+                {idioma === 'es' ? 'Seleccionar presentación / porción:' : 'Select portion / size:'}
+              </span>
+            </div>
+            <div className="flex items-center gap-2 flex-wrap">
+              {plato.opcionesPresentacion.map((opcion) => {
+                const esActiva =
+                  (opcionSeleccionada?.id || plato.opcionesPresentacion![0].id) === opcion.id;
+                return (
+                  <button
+                    key={opcion.id}
+                    type="button"
+                    id={`btn-modal-opcion-${plato.id}-${opcion.id}`}
+                    onClick={() => setOpcionSeleccionadaId(opcion.id)}
+                    className={`text-xs px-3 py-1.5 rounded-lg font-medium transition cursor-pointer border ${
+                      esActiva
+                        ? darkMode
+                          ? 'bg-amber-500 text-stone-950 font-bold border-amber-400 shadow-xs'
+                          : 'bg-amber-500 text-stone-950 font-bold border-amber-500 shadow-xs'
+                        : darkMode
+                          ? 'bg-stone-800 text-stone-300 border-stone-700 hover:border-amber-500/60'
+                          : 'bg-white text-stone-700 border-stone-300 hover:border-amber-400'
+                    }`}
+                  >
+                    {opcion.nombre[idioma]} • {formatearPrecio(opcion.precioNumerico, idioma)}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        )}
+
+        {/* Calificación interactiva dentro del modal */}
+        <div
+          className={`p-3 rounded-xl border ${
+            darkMode
+              ? 'bg-stone-950/40 border-stone-800/60'
+              : 'bg-amber-50/60 border-amber-200/70'
+          }`}
+        >
+          <RatingEstrellas
+            platoId={plato.id}
+            nombrePlato={nombrePlato}
+            idioma={idioma}
+            darkMode={darkMode}
+          />
+        </div>
 
         {/* Sección de Información Nutricional */}
         <div id="seccion-info-nutricional" className="space-y-2.5">
@@ -534,7 +694,19 @@ export function ModalDetallePlato({
             type="button"
             id="btn-modal-ordenar"
             onClick={(e) => {
-              onOrdenar(plato, e.currentTarget);
+              const platoParaOrdenar: PlatoEntrada = opcionSeleccionada
+                ? {
+                    ...plato,
+                    id: `${plato.id}-${opcionSeleccionada.id}`,
+                    nombre: {
+                      es: `${plato.nombre.es} (${opcionSeleccionada.nombre.es})`,
+                      en: `${plato.nombre.en} (${opcionSeleccionada.nombre.en})`,
+                    },
+                    precioNumerico: opcionSeleccionada.precioNumerico,
+                    presentacion: opcionSeleccionada.nombre,
+                  }
+                : plato;
+              onOrdenar(platoParaOrdenar, e.currentTarget);
               onCerrar();
             }}
             className="inline-flex items-center gap-1.5 px-4 py-2 bg-amber-500 hover:bg-amber-400 text-stone-950 font-semibold text-xs rounded-xl transition shadow-md cursor-pointer active:scale-95"
@@ -812,12 +984,25 @@ export default function App() {
   });
 
   const [categoriaSeleccionada, setCategoriaSeleccionada] = useState<CategoriaFiltro>('todos');
+  const [tagsAlergenosSeleccionados, setTagsAlergenosSeleccionados] = useState<TagAlergeno[]>([]);
   const [criterioOrden, setCriterioOrden] = useState<CriterioOrden>('original');
   const [busqueda, setBusqueda] = useState<string>('');
   const [platoDetalle, setPlatoDetalle] = useState<PlatoEntrada | null>(null);
   const [mostrarQR, setMostrarQR] = useState<boolean>(false);
   const [pedidos, setPedidos] = useState<Record<string, ItemPedido>>({});
+  const [frecuenciaPedidos, setFrecuenciaPedidos] = useState<Record<string, number>>(() => {
+    if (typeof window !== 'undefined') {
+      try {
+        const guardado = localStorage.getItem('santamaria_frecuencia_pedidos');
+        if (guardado) return JSON.parse(guardado);
+      } catch (e) {
+        console.warn('Error al cargar frecuencia de pedidos', e);
+      }
+    }
+    return {};
+  });
   const [mostrarResumen, setMostrarResumen] = useState<boolean>(false);
+  const [toastNotificacion, setToastNotificacion] = useState<ToastNotificacionData | null>(null);
   const [itemsVolando, setItemsVolando] = useState<ItemVolando[]>([]);
   const [badgeBump, setBadgeBump] = useState<boolean>(false);
 
@@ -846,7 +1031,20 @@ export default function App() {
     }
   }, [idioma]);
 
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      try {
+        localStorage.setItem('santamaria_frecuencia_pedidos', JSON.stringify(frecuenciaPedidos));
+      } catch (e) {
+        console.warn('Error al persistir frecuencia de pedidos', e);
+      }
+    }
+  }, [frecuenciaPedidos]);
+
   const handleOrdenar = (plato: PlatoEntrada, sourceElement?: HTMLElement) => {
+    const cantActual = pedidos[plato.id]?.cantidad ?? 0;
+    const nuevaCantidad = cantActual + 1;
+
     setPedidos((prev) => {
       const actual = prev[plato.id];
       return {
@@ -856,6 +1054,20 @@ export default function App() {
           cantidad: (actual ? actual.cantidad : 0) + 1,
         },
       };
+    });
+
+    // Registrar e incrementar frecuencia de adición para recomendaciones inteligentes
+    setFrecuenciaPedidos((prev) => ({
+      ...prev,
+      [plato.id]: (prev[plato.id] || 0) + 1,
+    }));
+
+    // Confirmación visual mediante notificación tipo toast
+    setToastNotificacion({
+      id: `toast-${plato.id}-${Date.now()}`,
+      plato,
+      cantidad: nuevaCantidad,
+      timestamp: Date.now(),
     });
 
     if (sourceElement && typeof window !== 'undefined') {
@@ -889,6 +1101,9 @@ export default function App() {
   };
 
   const handleIncrementarItem = (plato: PlatoEntrada) => {
+    const cantActual = pedidos[plato.id]?.cantidad ?? 0;
+    const nuevaCantidad = cantActual + 1;
+
     setPedidos((prev) => {
       const actual = prev[plato.id];
       return {
@@ -898,6 +1113,19 @@ export default function App() {
           cantidad: (actual ? actual.cantidad : 0) + 1,
         },
       };
+    });
+
+    // Incrementar frecuencia de adición para recomendaciones inteligentes
+    setFrecuenciaPedidos((prev) => ({
+      ...prev,
+      [plato.id]: (prev[plato.id] || 0) + 1,
+    }));
+
+    setToastNotificacion({
+      id: `toast-${plato.id}-${Date.now()}`,
+      plato,
+      cantidad: nuevaCantidad,
+      timestamp: Date.now(),
     });
   };
 
@@ -940,11 +1168,59 @@ export default function App() {
     }, 450);
   };
 
+  const handleToggleTagAlergeno = (tag: TagAlergeno) => {
+    setTagsAlergenosSeleccionados((prev) =>
+      prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag]
+    );
+  };
+
+  const handleLimpiarTagsAlergenos = () => {
+    setTagsAlergenosSeleccionados([]);
+  };
+
+  const conteoPorTag = useMemo(() => {
+    const platosBaseCategoria = PLATOS_MENU.filter((plato) => {
+      if (categoriaSeleccionada === 'todos') return true;
+      return plato.categoria === categoriaSeleccionada;
+    });
+
+    const conteos: Record<TagAlergeno, number> = {
+      'sin-gluten': 0,
+      'vegano': 0,
+      'sin-lactosa': 0,
+      'vegetariano': 0,
+      'sin-mariscos': 0,
+      'sin-huevo': 0,
+    };
+
+    const tags: TagAlergeno[] = [
+      'sin-gluten',
+      'vegano',
+      'sin-lactosa',
+      'vegetariano',
+      'sin-mariscos',
+      'sin-huevo',
+    ];
+
+    tags.forEach((tag) => {
+      conteos[tag] = platosBaseCategoria.filter((p) => verificarPlatoCumpleTag(p, tag)).length;
+    });
+
+    return conteos;
+  }, [categoriaSeleccionada]);
+
   const platosFiltradosYOrdenados = useMemo(() => {
     const filtrados = PLATOS_MENU.filter((plato) => {
       // Filtrado por categoría de la Carta Pirata
       if (categoriaSeleccionada !== 'todos') {
         if (plato.categoria !== categoriaSeleccionada) return false;
+      }
+
+      // Filtrado por chips de alérgenos y dietas
+      if (tagsAlergenosSeleccionados.length > 0) {
+        if (!verificarPlatoCumpleTodosLosTags(plato, tagsAlergenosSeleccionados)) {
+          return false;
+        }
       }
 
       // Filtrado por búsqueda en tiempo real (busca en ambos idiomas para conveniencia del usuario)
@@ -987,7 +1263,7 @@ export default function App() {
       return [...filtrados].sort((a, b) => b.precioNumerico - a.precioNumerico);
     }
     return filtrados;
-  }, [categoriaSeleccionada, criterioOrden, busqueda]);
+  }, [categoriaSeleccionada, tagsAlergenosSeleccionados, criterioOrden, busqueda]);
 
   return (
     <div
@@ -1221,6 +1497,16 @@ export default function App() {
             })}
           </div>
 
+          {/* Chips de etiquetas (tags) para filtrar rápidamente los platos por alérgenos y dietas */}
+          <ChipsAlergenos
+            tagsSeleccionados={tagsAlergenosSeleccionados}
+            onToggleTag={handleToggleTagAlergeno}
+            onLimpiarTags={handleLimpiarTagsAlergenos}
+            idioma={idioma}
+            darkMode={darkMode}
+            conteoPorTag={conteoPorTag}
+          />
+
           {/* Barra de Ordenamiento por Precio */}
           <div
             id="barra-ordenamiento-precio"
@@ -1313,6 +1599,20 @@ export default function App() {
 
         {/* Lista dinámica de Platos */}
         <section id="lista-entradas" className="space-y-4" aria-label="Platos del menú">
+          {/* Sección 'Recomendados para ti' al principio de la lista de platos */}
+          {!busqueda && (
+            <SeccionRecomendados
+              platos={PLATOS_MENU}
+              frecuenciaPedidos={frecuenciaPedidos}
+              pedidosActuales={pedidos}
+              idioma={idioma}
+              darkMode={darkMode}
+              categoriaFiltro={categoriaSeleccionada}
+              onOrdenar={handleOrdenar}
+              onVerDetalles={(p) => setPlatoDetalle(p)}
+            />
+          )}
+
           {platosFiltradosYOrdenados.length > 0 ? (
             <div className="space-y-4">
               {platosFiltradosYOrdenados.map((plato) => (
@@ -1334,9 +1634,23 @@ export default function App() {
                   : 'bg-amber-50/80 border-amber-200 text-stone-600'
               }`}
             >
-              {busqueda
-                ? t.sinResultadosBusqueda(busqueda)
-                : t.sinPlatosCategoria}
+              {busqueda ? (
+                t.sinResultadosBusqueda(busqueda)
+              ) : tagsAlergenosSeleccionados.length > 0 ? (
+                <div className="space-y-3 py-2">
+                  <p>{t.sinResultadosAlergenos}</p>
+                  <button
+                    type="button"
+                    id="btn-limpiar-filtros-vacio"
+                    onClick={handleLimpiarTagsAlergenos}
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-amber-500 text-stone-950 font-bold rounded-lg text-xs hover:bg-amber-400 cursor-pointer transition shadow-xs active:scale-95"
+                  >
+                    <span>{t.limpiarFiltrosAlergenos}</span>
+                  </button>
+                </div>
+              ) : (
+                t.sinPlatosCategoria
+              )}
             </div>
           )}
         </section>
@@ -1425,6 +1739,15 @@ export default function App() {
           ))}
         </AnimatePresence>
       </div>
+
+      {/* Notificación Toast interactiva de confirmación de plato añadido */}
+      <ToastNotificacion
+        toast={toastNotificacion}
+        idioma={idioma}
+        darkMode={darkMode}
+        onCerrar={() => setToastNotificacion(null)}
+        onVerPedido={() => setMostrarResumen(true)}
+      />
     </div>
   );
 }

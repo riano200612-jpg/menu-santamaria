@@ -10,10 +10,14 @@ import {
   Sparkles,
   ArrowRight,
   Receipt,
+  Printer,
+  Share2,
+  Check,
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Idioma, PlatoEntrada, ItemPedido } from '../types';
 import { TEXTOS_UI, formatearPrecio, formatearTotal } from '../data/translations';
+import { TicketSimplificado } from './TicketSimplificado';
 
 export interface ResumenPedidoProps {
   items: ItemPedido[];
@@ -37,6 +41,9 @@ export function ResumenPedido({
   onVaciar,
 }: ResumenPedidoProps) {
   const [pedidoEnviado, setPedidoEnviado] = useState<boolean>(false);
+  const [mostrarVersionImprimible, setMostrarVersionImprimible] = useState<boolean>(false);
+  const [compartidoEstado, setCompartidoEstado] = useState<string | null>(null);
+  const [compartiendo, setCompartiendo] = useState<boolean>(false);
   const t = TEXTOS_UI[idioma];
 
   // Escuchar la tecla Escape para cerrar
@@ -64,6 +71,83 @@ export function ResumenPedido({
     }, 4000);
   };
 
+  const generarTextoCompartir = () => {
+    const separador = '------------------------------------------';
+    const lineas = [
+      '🍽️ *SANTA MARÍA DEL MAR by Lety Moreno*',
+      '📍 Cartagena de Indias - Baluarte San Francisco Javier',
+      separador,
+      idioma === 'es' ? '📋 *Resumen de mi pedido:*' : '📋 *My Order Summary:*',
+      ...items.map((item) => {
+        const nombre = item.plato.nombre[idioma];
+        const precio = formatearPrecio(item.plato.precioNumerico * item.cantidad, idioma);
+        return `• ${item.cantidad}x ${nombre} — ${precio}`;
+      }),
+      separador,
+      `💰 *${t.totalPagar.toUpperCase()}:* ${formatearTotal(subtotalFinal, idioma)}`,
+      `(${totalCantidad} ${totalCantidad === 1 ? t.platoSingular : t.platoPlural})`,
+      separador,
+      idioma === 'es'
+        ? '🌊 ¡Descubre nuestra carta pirata y gastronomía tradicional!'
+        : '🌊 Discover our pirate menu & traditional Caribbean cuisine!',
+    ];
+    return lineas.join('\n');
+  };
+
+  const copiarAlPortapapeles = async (texto: string) => {
+    try {
+      if (navigator?.clipboard?.writeText) {
+        await navigator.clipboard.writeText(texto);
+        setCompartidoEstado(t.pedidoCopiadoPortapapeles);
+      } else {
+        const textArea = document.createElement('textarea');
+        textArea.value = texto;
+        document.body.appendChild(textArea);
+        textArea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textArea);
+        setCompartidoEstado(t.pedidoCopiadoPortapapeles);
+      }
+    } catch {
+      setCompartidoEstado(t.pedidoCopiadoPortapapeles);
+    }
+    setTimeout(() => setCompartidoEstado(null), 3500);
+  };
+
+  const handleCompartirPedido = async () => {
+    if (items.length === 0 || compartiendo) return;
+    setCompartiendo(true);
+
+    const textoCompartir = generarTextoCompartir();
+    const titulo = t.compartirTituloSocial;
+    const url = typeof window !== 'undefined' ? window.location.href : '';
+
+    // Utilizar la API nativa navigator.share si está soportada en el navegador
+    if (typeof navigator !== 'undefined' && typeof navigator.share === 'function') {
+      try {
+        await navigator.share({
+          title: titulo,
+          text: textoCompartir,
+          url: url,
+        });
+        setCompartidoEstado(t.pedidoCompartidoExito);
+        setTimeout(() => setCompartidoEstado(null), 3000);
+      } catch (err: unknown) {
+        // Si el usuario canceló la hoja de compartir (AbortError), no mostramos error
+        if (err instanceof Error && err.name === 'AbortError') {
+          setCompartiendo(false);
+          return;
+        }
+        // Si falla por permisos o restricciones de iframe, copiamos al portapapeles
+        await copiarAlPortapapeles(textoCompartir);
+      }
+    } else {
+      // Fallback para navegadores de escritorio o entornos sin soporte de Web Share API
+      await copiarAlPortapapeles(textoCompartir);
+    }
+    setCompartiendo(false);
+  };
+
   return (
     <div
       id="modal-backdrop-resumen-pedido"
@@ -86,67 +170,129 @@ export function ResumenPedido({
             : 'bg-white border-amber-300 text-stone-900 shadow-amber-950/15'
         }`}
       >
-        {/* Cabecera del Resumen */}
-        <div
-          className={`flex items-center justify-between px-6 py-4 border-b shrink-0 ${
-            darkMode
-              ? 'border-stone-800 bg-stone-900/90'
-              : 'border-amber-200/80 bg-amber-50/70'
-          }`}
-        >
-          <div className="flex items-center gap-3">
+        {mostrarVersionImprimible ? (
+          <TicketSimplificado
+            items={items}
+            idioma={idioma}
+            darkMode={darkMode}
+            onVolver={() => setMostrarVersionImprimible(false)}
+          />
+        ) : (
+          <>
+            {/* Cabecera del Resumen */}
             <div
-              className={`p-2 rounded-xl flex items-center justify-center ${
+              className={`flex items-center justify-between px-6 py-4 border-b shrink-0 ${
                 darkMode
-                  ? 'bg-amber-500/20 text-amber-400 border border-amber-500/30'
-                  : 'bg-amber-100 text-amber-900 border border-amber-300'
+                  ? 'border-stone-800 bg-stone-900/90'
+                  : 'border-amber-200/80 bg-amber-50/70'
               }`}
             >
-              <Receipt className="w-5 h-5" />
-            </div>
-            <div>
-              <div className="flex items-center gap-2">
-                <h2
-                  id="titulo-resumen-pedido"
-                  className={`text-lg font-serif font-bold tracking-tight ${
-                    darkMode ? 'text-stone-100' : 'text-stone-900'
+              <div className="flex items-center gap-3">
+                <div
+                  className={`p-2 rounded-xl flex items-center justify-center ${
+                    darkMode
+                      ? 'bg-amber-500/20 text-amber-400 border border-amber-500/30'
+                      : 'bg-amber-100 text-amber-900 border border-amber-300'
                   }`}
                 >
-                  {t.resumenPedidoTitulo}
-                </h2>
-                {totalCantidad > 0 && (
-                  <span
-                    id="badge-conteo-modal-resumen"
-                    className="px-2 py-0.5 text-xs font-bold rounded-full bg-amber-500 text-stone-950 shadow-xs"
+                  <Receipt className="w-5 h-5" />
+                </div>
+                <div>
+                  <div className="flex items-center gap-2">
+                    <h2
+                      id="titulo-resumen-pedido"
+                      className={`text-lg font-serif font-bold tracking-tight ${
+                        darkMode ? 'text-stone-100' : 'text-stone-900'
+                      }`}
+                    >
+                      {t.resumenPedidoTitulo}
+                    </h2>
+                    {totalCantidad > 0 && (
+                      <span
+                        id="badge-conteo-modal-resumen"
+                        className="px-2 py-0.5 text-xs font-bold rounded-full bg-amber-500 text-stone-950 shadow-xs"
+                      >
+                        {totalCantidad} {totalCantidad === 1 ? t.platoSingular : t.platoPlural}
+                      </span>
+                    )}
+                  </div>
+                  <p
+                    className={`text-xs ${
+                      darkMode ? 'text-stone-400' : 'text-stone-600'
+                    }`}
                   >
-                    {totalCantidad} {totalCantidad === 1 ? t.platoSingular : t.platoPlural}
-                  </span>
-                )}
+                    {t.resumenPedidoSubtitulo}
+                  </p>
+                </div>
               </div>
-              <p
-                className={`text-xs ${
-                  darkMode ? 'text-stone-400' : 'text-stone-600'
-                }`}
-              >
-                {t.resumenPedidoSubtitulo}
-              </p>
-            </div>
-          </div>
 
-          <button
-            type="button"
-            id="btn-cerrar-resumen"
-            onClick={onCerrar}
-            className={`p-2 rounded-xl transition cursor-pointer ${
-              darkMode
-                ? 'text-stone-400 hover:text-white hover:bg-stone-800'
-                : 'text-stone-600 hover:text-stone-950 hover:bg-stone-100 border border-stone-200'
-            }`}
-            aria-label={t.cerrar}
-          >
-            <X className="w-4 h-4" />
-          </button>
-        </div>
+              <div className="flex items-center gap-2">
+                {items.length > 0 && (
+                  <>
+                    <button
+                      type="button"
+                      id="btn-compartir-pedido-cabecera"
+                      onClick={handleCompartirPedido}
+                      className={`p-2 rounded-xl transition cursor-pointer flex items-center gap-1.5 text-xs font-semibold ${
+                        darkMode
+                          ? 'text-sky-300 hover:text-sky-200 bg-sky-950/40 hover:bg-sky-900/60 border border-sky-800/80'
+                          : 'text-sky-900 hover:text-sky-950 bg-sky-100 hover:bg-sky-200 border border-sky-300'
+                      }`}
+                      title={t.compartirPedido}
+                      aria-label={t.compartirPedido}
+                    >
+                      <Share2 className="w-4 h-4 text-sky-400" />
+                      <span className="hidden sm:inline">{t.compartirPedidoBoton}</span>
+                    </button>
+
+                    <button
+                      type="button"
+                      id="btn-version-imprimible-cabecera"
+                      onClick={() => setMostrarVersionImprimible(true)}
+                      className={`p-2 rounded-xl transition cursor-pointer flex items-center gap-1.5 text-xs font-semibold ${
+                        darkMode
+                          ? 'text-amber-300 hover:text-amber-200 bg-amber-950/40 hover:bg-amber-900/60 border border-amber-800/80'
+                          : 'text-amber-900 hover:text-amber-950 bg-amber-100 hover:bg-amber-200 border border-amber-300'
+                      }`}
+                      title={t.versionImprimible}
+                      aria-label={t.versionImprimible}
+                    >
+                      <Printer className="w-4 h-4 text-amber-500" />
+                      <span className="hidden sm:inline">{t.versionImprimible}</span>
+                    </button>
+                  </>
+                )}
+
+                <button
+                  type="button"
+                  id="btn-cerrar-resumen"
+                  onClick={onCerrar}
+                  className={`p-2 rounded-xl transition cursor-pointer ${
+                    darkMode
+                      ? 'text-stone-400 hover:text-white hover:bg-stone-800'
+                      : 'text-stone-600 hover:text-stone-950 hover:bg-stone-100 border border-stone-200'
+                  }`}
+                  aria-label={t.cerrar}
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
+            </div>
+
+        {/* Notificación de compartir / portapapeles */}
+        <AnimatePresence>
+          {compartidoEstado && (
+            <motion.div
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: 'auto', opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              className="bg-sky-600 text-white px-5 py-2.5 text-xs flex items-center gap-2.5 shrink-0 shadow-inner"
+            >
+              <Share2 className="w-4 h-4 shrink-0 text-white" />
+              <p className="font-semibold">{compartidoEstado}</p>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
         {/* Notificación de pedido enviado */}
         <AnimatePresence>
@@ -403,21 +549,53 @@ export function ResumenPedido({
             </div>
 
             {/* Acciones principales */}
-            <div className="flex items-center justify-between gap-3 pt-1">
-              <button
-                type="button"
-                id="btn-vaciar-pedido"
-                onClick={onVaciar}
-                className={`inline-flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-medium transition cursor-pointer ${
-                  darkMode
-                    ? 'text-stone-400 hover:text-red-400 hover:bg-stone-800 border border-stone-700'
-                    : 'text-stone-600 hover:text-red-600 hover:bg-stone-100 border border-stone-200'
-                }`}
-                title={t.vaciarPedido}
-              >
-                <RotateCcw className="w-3.5 h-3.5" />
-                <span>{t.vaciarPedido}</span>
-              </button>
+            <div className="flex flex-wrap items-center justify-between gap-3 pt-1">
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  id="btn-vaciar-pedido"
+                  onClick={onVaciar}
+                  className={`inline-flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-medium transition cursor-pointer ${
+                    darkMode
+                      ? 'text-stone-400 hover:text-red-400 hover:bg-stone-800 border border-stone-700'
+                      : 'text-stone-600 hover:text-red-600 hover:bg-stone-100 border border-stone-200'
+                  }`}
+                  title={t.vaciarPedido}
+                >
+                  <RotateCcw className="w-3.5 h-3.5" />
+                  <span>{t.vaciarPedido}</span>
+                </button>
+
+                <button
+                  type="button"
+                  id="btn-version-imprimible"
+                  onClick={() => setMostrarVersionImprimible(true)}
+                  className={`inline-flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold transition cursor-pointer ${
+                    darkMode
+                      ? 'text-amber-300 hover:text-amber-200 bg-amber-950/40 hover:bg-amber-900/60 border border-amber-800/80'
+                      : 'text-amber-900 hover:text-amber-950 bg-amber-100 hover:bg-amber-200 border border-amber-300'
+                  }`}
+                  title={t.versionImprimible}
+                >
+                  <Printer className="w-3.5 h-3.5 text-amber-500" />
+                  <span>{t.versionImprimible}</span>
+                </button>
+
+                <button
+                  type="button"
+                  id="btn-compartir-pedido"
+                  onClick={handleCompartirPedido}
+                  className={`inline-flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold transition cursor-pointer ${
+                    darkMode
+                      ? 'text-sky-300 hover:text-sky-200 bg-sky-950/40 hover:bg-sky-900/60 border border-sky-800/80'
+                      : 'text-sky-900 hover:text-sky-950 bg-sky-100 hover:bg-sky-200 border border-sky-300'
+                  }`}
+                  title={t.compartirPedido}
+                >
+                  <Share2 className="w-3.5 h-3.5 text-sky-400" />
+                  <span>{t.compartirPedido}</span>
+                </button>
+              </div>
 
               <div className="flex items-center gap-2">
                 <button
@@ -444,6 +622,8 @@ export function ResumenPedido({
               </div>
             </div>
           </div>
+        )}
+          </>
         )}
       </motion.div>
     </div>

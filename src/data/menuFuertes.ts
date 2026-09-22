@@ -11,35 +11,35 @@ export const PLATOS_FUERTES_MAR: PlatoEntrada[] = [
     categoria: 'fuertes-mar',
     subcategoria: 'cazuelas',
     etiqueta: {
-      es: 'Insigne del Mar',
-      en: 'Sea Signature',
+      es: 'Insigne de la Casa',
+      en: 'House Signature',
     },
     descripcion: {
       es: 'Mariscos frescos en crema de coco y bisque de langostinos.',
       en: 'Fresh seafood in coconut cream and prawn bisque.',
     },
     nutricion: {
-      calorias: 580,
-      proteinas: '44g',
-      grasas: '26g',
-      carbohidratos: '22g',
+      calorias: 720,
+      proteinas: '48g',
+      grasas: '36g',
+      carbohidratos: '42g',
       alergenos: {
-        es: ['Crustáceos (Langostinos)', 'Moluscos', 'Pescado', 'Coco'],
-        en: ['Crustaceans (Prawns)', 'Mollusks', 'Fish', 'Coconut'],
+        es: ['Crustáceos (Langostinos, Camarones)', 'Moluscos', 'Pescado', 'Coco'],
+        en: ['Crustaceans (Prawns, Shrimp)', 'Mollusks', 'Fish', 'Coconut'],
       },
     },
     maridaje: {
       bebida: {
-        es: 'Santa Carolina Reservado Chardonnay',
-        en: 'Santa Carolina Reservado Chardonnay',
+        es: 'Rosaleda Rosado Cabernet Sauvignon',
+        en: 'Rosaleda Rosé Cabernet Sauvignon',
       },
       tipo: {
         es: 'Vino',
         en: 'Wine',
       },
       descripcion: {
-        es: 'La riqueza y notas frutales del Chardonnay complementan la suntuosa crema de coco y el bisque.',
-        en: 'Fruity richness that enhances the opulent prawn bisque and coconut cream.',
+        es: 'Elegante acidez que corta la riqueza cremosa de la leche de coco y el bisque.',
+        en: 'Crisp fruitiness that balances the lush richness of seafood coconut chowder.',
       },
     },
   },
@@ -53,63 +53,21 @@ export const PLATOS_FUERTES_MAR: PlatoEntrada[] = [
     categoria: 'fuertes-mar',
     subcategoria: 'arroces',
     etiqueta: {
-      es: 'Especial Cartagenero',
-      en: 'Cartagena Special',
+      es: 'Especialidad',
+      en: 'House Specialty',
     },
     descripcion: {
       es: 'Arroz cremoso con mariscos, estilo cartagenero.',
       en: 'Creamy rice with seafood, Cartagena style.',
     },
     nutricion: {
-      calorias: 620,
-      proteinas: '38g',
-      grasas: '18g',
-      carbohidratos: '65g',
+      calorias: 760,
+      proteinas: '42g',
+      grasas: '22g',
+      carbohidratos: '98g',
       alergenos: {
-        es: ['Mariscos', 'Pescado'],
-        en: ['Seafood', 'Fish'],
-      },
-    },
-    maridaje: {
-      bebida: {
-        es: 'Rosaleda Rosado Cabernet Sauvignon',
-        en: 'Rosaleda Rosé Cabernet Sauvignon',
-      },
-      tipo: {
-        es: 'Vino',
-        en: 'Wine',
-      },
-      descripcion: {
-        es: 'Vino rosado fresco cuya acidez balancea el almidón y la cremosidad del arroz marinero.',
-        en: 'A chilled rosé whose crispness balances the creamy seafood rice.',
-      },
-    },
-  },
-  {
-    id: 'camarones-mar-caribe',
-    nombre: {
-      es: 'Camarones Mar Caribe',
-      en: 'Caribbean Sea Shrimp',
-    },
-    precioNumerico: 60000,
-    categoria: 'fuertes-mar',
-    subcategoria: 'camarones',
-    etiqueta: {
-      es: 'Receta Tradicional',
-      en: 'Traditional Heritage',
-    },
-    descripcion: {
-      es: 'Camarones en leche de coco sobre boronia.',
-      en: 'Shrimp in coconut milk over boronía.',
-    },
-    nutricion: {
-      calorias: 460,
-      proteinas: '34g',
-      grasas: '18g',
-      carbohidratos: '28g',
-      alergenos: {
-        es: ['Crustáceos (Camarones)', 'Plátano', 'Berenjena'],
-        en: ['Crustaceans (Shrimp)', 'Plantain', 'Eggplant'],
+        es: ['Crustáceos', 'Moluscos', 'Pescado'],
+        en: ['Crustaceans', 'Mollusks', 'Fish'],
       },
     },
     maridaje: {
@@ -122,8 +80,50 @@ export const PLATOS_FUERTES_MAR: PlatoEntrada[] = [
         en: 'Wine',
       },
       descripcion: {
-        es: 'La boronia agridulce y el coco se elevan con la acidez aromática del vino blanco.',
-        en: 'Sweet-savory boronia and coconut milk pair gracefully with aromatic crisp wine.',
+        es: 'Toques herbáceos y cítricos que potencian las especias y mariscos del arroz caribeño.',
+        en: 'Citrus accents that brighten the aromatic spices in coastal rice.',
+      },
+    },
+  },
+  {
+    id: 'camarones-mar-caribe',
+    nombre: {
+      es: 'Camarones Mar Caribe',
+      en: 'Caribbean Sea Shrimps',
+    },
+    precioNumerico: 60000,
+    categoria: 'fuertes-mar',
+    subcategoria: 'mariscos',
+    etiqueta: {
+      es: 'Herencia Ancestral',
+      en: 'Ancestral Heritage',
+    },
+    descripcion: {
+      es: 'Camarones en leche de coco sobre boronia.',
+      en: 'Shrimp in coconut milk over boronía.',
+    },
+    nutricion: {
+      calorias: 490,
+      proteinas: '36g',
+      grasas: '18g',
+      carbohidratos: '44g',
+      alergenos: {
+        es: ['Crustáceos (Camarones)', 'Plátano maduro', 'Berenjena', 'Coco'],
+        en: ['Crustaceans (Shrimp)', 'Plantain', 'Eggplant', 'Coconut'],
+      },
+    },
+    maridaje: {
+      bebida: {
+        es: 'De los Ríos Chardonnay',
+        en: 'De los Ríos Chardonnay',
+      },
+      tipo: {
+        es: 'Vino',
+        en: 'Wine',
+      },
+      descripcion: {
+        es: 'La boronia tradicional con plátano y berenjena se ensambla exquisitamente con un blanco untuoso.',
+        en: 'The rich plantain and eggplant mash marries smoothly with a buttery white wine.',
       },
     },
   },
@@ -131,24 +131,24 @@ export const PLATOS_FUERTES_MAR: PlatoEntrada[] = [
     id: 'pasta-vongole-del-pirata',
     nombre: {
       es: 'Pasta Vongole del Pirata',
-      en: "Pirate's Vongole",
+      en: "Pirate's Vongole Pasta",
     },
     precioNumerico: 70000,
     categoria: 'fuertes-mar',
     subcategoria: 'pastas',
     etiqueta: {
-      es: 'Con Almejas',
-      en: 'With Fresh Clams',
+      es: 'Pasta Marina',
+      en: 'Seafood Pasta',
     },
     descripcion: {
       es: 'Pasta larga con almejas, vino blanco y perejil.',
       en: 'Long pasta with clams, white wine, and parsley.',
     },
     nutricion: {
-      calorias: 510,
-      proteinas: '28g',
-      grasas: '12g',
-      carbohidratos: '68g',
+      calorias: 580,
+      proteinas: '32g',
+      grasas: '14g',
+      carbohidratos: '76g',
       alergenos: {
         es: ['Gluten (Trigo)', 'Moluscos (Almejas)'],
         en: ['Gluten (Wheat)', 'Mollusks (Clams)'],
@@ -156,16 +156,16 @@ export const PLATOS_FUERTES_MAR: PlatoEntrada[] = [
     },
     maridaje: {
       bebida: {
-        es: 'De los Ríos Chardonnay (Argentina)',
-        en: 'De los Ríos Chardonnay (Argentina)',
+        es: 'Rosaleda Sauvignon Blanc',
+        en: 'Rosaleda Sauvignon Blanc',
       },
       tipo: {
         es: 'Vino',
         en: 'Wine',
       },
       descripcion: {
-        es: 'Perfección mediterráneo-caribeña con almejas al vino blanco.',
-        en: 'A timeless pairing echoing Mediterranean and Caribbean seafaring traditions.',
+        es: 'Compañero idóneo para salsas al vino blanco y almejas aromáticas.',
+        en: 'Ideal companion for white-wine scented pasta and succulent clams.',
       },
     },
   },
@@ -179,21 +179,21 @@ export const PLATOS_FUERTES_MAR: PlatoEntrada[] = [
     categoria: 'fuertes-mar',
     subcategoria: 'pastas',
     etiqueta: {
-      es: 'Bisque Especial',
-      en: 'Special Bisque',
+      es: 'Bisque Imperial',
+      en: 'Imperial Bisque',
     },
     descripcion: {
       es: 'Pasta larga con mezcla de mariscos y bisque de langostinos.',
       en: 'Long pasta with mixed seafood and prawn bisque.',
     },
     nutricion: {
-      calorias: 610,
-      proteinas: '42g',
-      grasas: '21g',
-      carbohidratos: '70g',
+      calorias: 710,
+      proteinas: '44g',
+      grasas: '22g',
+      carbohidratos: '82g',
       alergenos: {
-        es: ['Gluten', 'Crustáceos (Langostinos)', 'Moluscos', 'Pescado'],
-        en: ['Gluten', 'Crustaceans (Prawns)', 'Mollusks', 'Fish'],
+        es: ['Gluten (Trigo)', 'Crustáceos (Langostinos, Camarones)', 'Moluscos', 'Pescado'],
+        en: ['Gluten (Wheat)', 'Crustaceans (Prawns, Shrimp)', 'Mollusks', 'Fish'],
       },
     },
     maridaje: {
@@ -335,8 +335,8 @@ export const CARNES_Y_SABORES_TIERRA: PlatoEntrada[] = [
         en: 'Wine',
       },
       descripcion: {
-        es: 'Equilibrio jugoso entre el pollo braseado y la salsa de coco costeña.',
-        en: 'Juicy, fruit-forward harmony with slow-simmered coconut poultry.',
+        es: 'Frutalidad fresca que armoniza con la textura jugosa del pollo al coco.',
+        en: 'Fresh red fruits pairing with savory tropical coconut sauce.',
       },
     },
   },
@@ -350,8 +350,8 @@ export const CARNES_Y_SABORES_TIERRA: PlatoEntrada[] = [
     categoria: 'sabores-tierra',
     subcategoria: 'hamburguesas',
     etiqueta: {
-      es: 'Queso Costeño',
-      en: 'Costeño Cheese',
+      es: 'Caribeña Gourmet',
+      en: 'Gourmet Caribbean',
     },
     descripcion: {
       es: 'Carne jugosa, queso costeño, cebolla caramelizada y salsa secreta del Caribe.',
@@ -359,26 +359,26 @@ export const CARNES_Y_SABORES_TIERRA: PlatoEntrada[] = [
     },
     nutricion: {
       calorias: 740,
-      proteinas: '42g',
-      grasas: '36g',
+      proteinas: '45g',
+      grasas: '38g',
       carbohidratos: '48g',
       alergenos: {
-        es: ['Gluten (Trigo)', 'Lácteos (Queso costeño)', 'Sésamo'],
-        en: ['Gluten (Wheat)', 'Dairy (Costeño cheese)', 'Sesame'],
+        es: ['Gluten (Pan)', 'Lácteos (Queso costeño)'],
+        en: ['Gluten (Bun)', 'Dairy (Costeño cheese)'],
       },
     },
     maridaje: {
       bebida: {
-        es: 'Cerveza 3 Cordilleras Mestiza o Mulata',
-        en: '3 Cordilleras Mestiza or Mulata Ale',
+        es: 'Cerveza Club Colombia Dorado',
+        en: 'Club Colombia Gold Beer',
       },
       tipo: {
         es: 'Cerveza',
         en: 'Beer',
       },
       descripcion: {
-        es: 'Cerveza artesanal de malta tostada perfecta para carne a la brasa y queso costeño.',
-        en: 'Artisan malt beer that complements grilled beef and savory melted cheese.',
+        es: 'Maltas doradas y amargor equilibrado para acompañar la carne asada y el queso.',
+        en: 'Golden malt character that cuts through the savory burger and artisan cheese.',
       },
     },
   },
@@ -386,14 +386,14 @@ export const CARNES_Y_SABORES_TIERRA: PlatoEntrada[] = [
     id: 'sandwich-botin-de-bondiola',
     nombre: {
       es: 'Sándwich Botín de Bondiola',
-      en: 'Pulled Pork Treasure',
+      en: "Pork Shoulder Booty Sandwich",
     },
     precioNumerico: 60000,
     categoria: 'sabores-tierra',
     subcategoria: 'sandwiches',
     etiqueta: {
-      es: 'BBQ Panela & Ron',
-      en: 'Panela & Rum BBQ',
+      es: 'Cerdo Desmechado',
+      en: 'Pulled Pork',
     },
     descripcion: {
       es: 'Bondiola de cerdo desmechada con BBQ de panela y ron.',
@@ -401,26 +401,26 @@ export const CARNES_Y_SABORES_TIERRA: PlatoEntrada[] = [
     },
     nutricion: {
       calorias: 690,
-      proteinas: '38g',
-      grasas: '30g',
+      proteinas: '42g',
+      grasas: '28g',
       carbohidratos: '56g',
       alergenos: {
-        es: ['Gluten (Trigo)', 'Cerdo'],
-        en: ['Gluten (Wheat)', 'Pork'],
+        es: ['Gluten (Pan artesanal)', 'Carne de cerdo'],
+        en: ['Gluten (Artisan bread)', 'Pork'],
       },
     },
     maridaje: {
       bebida: {
-        es: 'Coctel Barbanegra con cerveza de jengibre',
-        en: 'Blackbeard Cocktail with ginger beer',
+        es: 'Cóctel Barbanegra',
+        en: 'Barbanegra Cocktail',
       },
       tipo: {
         es: 'Coctel',
         en: 'Cocktail',
       },
       descripcion: {
-        es: 'El jengibre y el ron especiado enaltecen la bondiola ahumada.',
-        en: 'Spiced rum and fiery ginger complement the rich pulled pork.',
+        es: 'Ron especiado y ginger beer con notas tostadas que complementan la BBQ de ron y panela.',
+        en: 'Spiced rum and ginger beer backing the caramelized rum BBQ notes.',
       },
     },
   },
@@ -434,8 +434,8 @@ export const CARNES_Y_SABORES_TIERRA: PlatoEntrada[] = [
     categoria: 'sabores-tierra',
     subcategoria: 'sandwiches',
     etiqueta: {
-      es: 'Pan Artesanal',
-      en: 'Artisan Bread',
+      es: 'Pollo Artesanal',
+      en: 'Artisan Chicken',
     },
     descripcion: {
       es: 'Pollo jugoso en pan artesanal con alioli de cilantro.',
@@ -443,12 +443,12 @@ export const CARNES_Y_SABORES_TIERRA: PlatoEntrada[] = [
     },
     nutricion: {
       calorias: 520,
-      proteinas: '34g',
-      grasas: '20g',
-      carbohidratos: '44g',
+      proteinas: '38g',
+      grasas: '19g',
+      carbohidratos: '46g',
       alergenos: {
-        es: ['Gluten (Trigo)', 'Huevo (Alioli)', 'Pollo'],
-        en: ['Gluten (Wheat)', 'Egg (Aioli)', 'Chicken'],
+        es: ['Gluten (Pan artesanal)', 'Huevo (Alioli)'],
+        en: ['Gluten (Artisan bread)', 'Egg (Aioli)'],
       },
     },
     maridaje: {
@@ -461,8 +461,8 @@ export const CARNES_Y_SABORES_TIERRA: PlatoEntrada[] = [
         en: 'Non-Alcoholic',
       },
       descripcion: {
-        es: 'Hierbabuena fresca que resalta el alioli verde de cilantro.',
-        en: 'Fresh herbal mint that matches the herbaceous cilantro aioli.',
+        es: 'Frescura mentolada perfecta para realzar el alioli de cilantro.',
+        en: 'Spearmint notes lifting the herbaceous cilantro aioli.',
       },
     },
   },
@@ -476,27 +476,27 @@ export const CARNES_Y_SABORES_TIERRA: PlatoEntrada[] = [
     categoria: 'sabores-tierra',
     subcategoria: 'sandwiches',
     etiqueta: {
-      es: 'Casero',
-      en: 'Homemade',
+      es: 'Clásico Ligero',
+      en: 'Light Classic',
     },
     descripcion: {
       es: 'Huevos, queso mozzarella y tomate fresco en pan de la casa.',
       en: 'Eggs, mozzarella cheese, and fresh tomato on homemade bread.',
     },
     nutricion: {
-      calorias: 450,
-      proteinas: '22g',
+      calorias: 440,
+      proteinas: '24g',
       grasas: '18g',
       carbohidratos: '42g',
       alergenos: {
-        es: ['Gluten (Trigo)', 'Huevo', 'Lácteos (Mozzarella)'],
-        en: ['Gluten (Wheat)', 'Egg', 'Dairy (Mozzarella)'],
+        es: ['Gluten (Pan)', 'Lácteos (Mozzarella)', 'Huevo'],
+        en: ['Gluten (Bread)', 'Dairy (Mozzarella)', 'Egg'],
       },
     },
     maridaje: {
       bebida: {
-        es: 'Café Latte o Capuccino',
-        en: 'Café Latte or Cappuccino',
+        es: 'Café con Leche / Cappuccino',
+        en: 'Café con Leche / Cappuccino',
       },
       tipo: {
         es: 'Sin Alcohol',
@@ -509,25 +509,33 @@ export const CARNES_Y_SABORES_TIERRA: PlatoEntrada[] = [
     },
   },
   {
-    id: 'ensalada-thai-pollo',
+    id: 'ensalada-thai',
     nombre: {
-      es: 'Ensalada Thai (con Pollo)',
-      en: 'Thai Salad (with Chicken)',
+      es: 'Ensalada Thai',
+      en: 'Thai Salad',
     },
     precioNumerico: 60000,
     categoria: 'sabores-tierra',
     subcategoria: 'ensaladas',
-    presentacion: {
-      es: 'Pollo',
-      en: 'Chicken',
-    },
+    opcionesPresentacion: [
+      {
+        id: 'pollo',
+        nombre: { es: 'Pollo', en: 'Chicken' },
+        precioNumerico: 60000,
+      },
+      {
+        id: 'camaron',
+        nombre: { es: 'Camarón', en: 'Shrimp' },
+        precioNumerico: 65000,
+      },
+    ],
     etiqueta: {
       es: 'Fresca & Crujiente',
       en: 'Fresh & Crisp',
     },
     descripcion: {
-      es: 'Con pechuga de pollo, vegetales frescos y aderezo oriental.',
-      en: 'With chicken breast, fresh vegetables, and oriental dressing.',
+      es: 'Con vegetales frescos, aderezo oriental y proteína a elección (Pollo $60.000 / Camarón $65.000).',
+      en: 'With fresh vegetables, oriental dressing, and choice of protein (Chicken $60.000 / Shrimp $65.000).',
     },
     nutricion: {
       calorias: 410,
@@ -535,8 +543,8 @@ export const CARNES_Y_SABORES_TIERRA: PlatoEntrada[] = [
       grasas: '14g',
       carbohidratos: '24g',
       alergenos: {
-        es: ['Sésamo', 'Soya', 'Pollo'],
-        en: ['Sesame', 'Soy', 'Chicken'],
+        es: ['Sésamo', 'Soya', 'Pollo o Camarones según elección'],
+        en: ['Sesame', 'Soy', 'Chicken or Shrimp according to choice'],
       },
     },
     maridaje: {
@@ -551,52 +559,6 @@ export const CARNES_Y_SABORES_TIERRA: PlatoEntrada[] = [
       descripcion: {
         es: 'Frescura cítrica que armoniza con los toques orientales del aderezo.',
         en: 'Bright acidity pairing with crisp vegetables and ginger-lime dressing.',
-      },
-    },
-  },
-  {
-    id: 'ensalada-thai-camaron',
-    nombre: {
-      es: 'Ensalada Thai (con Camarón)',
-      en: 'Thai Salad (with Shrimp)',
-    },
-    precioNumerico: 65000,
-    categoria: 'sabores-tierra',
-    subcategoria: 'ensaladas',
-    presentacion: {
-      es: 'Camarón',
-      en: 'Shrimp',
-    },
-    etiqueta: {
-      es: 'Del Mar',
-      en: 'Seafood',
-    },
-    descripcion: {
-      es: 'Con camarones tiernos, vegetales frescos y aderezo oriental.',
-      en: 'With tender shrimp, fresh vegetables, and oriental dressing.',
-    },
-    nutricion: {
-      calorias: 380,
-      proteinas: '32g',
-      grasas: '12g',
-      carbohidratos: '24g',
-      alergenos: {
-        es: ['Crustáceos (Camarones)', 'Sésamo', 'Soya'],
-        en: ['Crustaceans (Shrimp)', 'Sesame', 'Soy'],
-      },
-    },
-    maridaje: {
-      bebida: {
-        es: 'Copa de Vino Rosado Rosaleda',
-        en: 'Glass of Rosaleda Rosé Wine',
-      },
-      tipo: {
-        es: 'Vino',
-        en: 'Wine',
-      },
-      descripcion: {
-        es: 'Maridaje sutil para mariscos con vegetales frescos y aderezo asiático.',
-        en: 'Gentle red fruit notes balancing the oriental spices and tender shrimp.',
       },
     },
   },

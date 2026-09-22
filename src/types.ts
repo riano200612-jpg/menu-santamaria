@@ -38,6 +38,15 @@ export interface SugerenciaMaridaje {
   };
 }
 
+export interface OpcionPresentacion {
+  id: string;
+  nombre: {
+    es: string;
+    en: string;
+  };
+  precioNumerico: number;
+}
+
 export interface PlatoEntrada {
   id: string;
   nombre: {
@@ -58,6 +67,7 @@ export interface PlatoEntrada {
     es: string;
     en: string;
   };
+  opcionesPresentacion?: OpcionPresentacion[];
   etiqueta: {
     es: string;
     en: string;
@@ -97,6 +107,26 @@ export interface Promocion {
   precioOriginal?: number;
   precioPromocional?: number;
   validezHoraria?: {
+    es: string;
+    en: string;
+  };
+}
+
+export type TagAlergeno =
+  | 'sin-gluten'
+  | 'vegano'
+  | 'sin-lactosa'
+  | 'vegetariano'
+  | 'sin-mariscos'
+  | 'sin-huevo';
+
+export interface FiltroAlergenoConfig {
+  id: TagAlergeno;
+  label: {
+    es: string;
+    en: string;
+  };
+  descripcion: {
     es: string;
     en: string;
   };
