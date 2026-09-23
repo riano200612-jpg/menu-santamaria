@@ -188,14 +188,14 @@ export function SeccionRecomendados({
                 </span>
               )}
             </div>
-            <p className={`text-xs ${darkMode ? 'text-stone-400' : 'text-stone-600'}`}>
+            <p className={`text-xs sm:text-sm ${darkMode ? 'text-stone-300' : 'text-stone-700'}`}>
               {t.recomendadosSubtitulo}
             </p>
           </div>
         </div>
 
-        <div className="flex items-center gap-1.5 self-start sm:self-auto text-[11px] font-medium text-amber-600 dark:text-amber-400">
-          <Heart className="w-3.5 h-3.5 fill-amber-500/30 text-amber-500" />
+        <div className="flex items-center gap-1.5 self-start sm:self-auto text-xs sm:text-sm font-semibold text-amber-600 dark:text-amber-400">
+          <Heart className="w-4 h-4 fill-amber-500/30 text-amber-500" />
           <span>Lety Moreno Selection</span>
         </div>
       </div>
@@ -222,7 +222,7 @@ export function SeccionRecomendados({
                 {vecesAñadido > 0 ? (
                   <span
                     id={`badge-frecuencia-${plato.id}`}
-                    className={`inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-md ${
+                    className={`inline-flex items-center gap-1 text-xs font-bold px-2.5 py-0.5 rounded-md ${
                       esElMasPedido
                         ? 'bg-amber-500 text-stone-950 font-black shadow-xs'
                         : darkMode
@@ -238,26 +238,26 @@ export function SeccionRecomendados({
                 ) : (
                   <span
                     id={`badge-insignia-${plato.id}`}
-                    className={`inline-flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded-md ${
+                    className={`inline-flex items-center gap-1 text-xs font-semibold px-2.5 py-0.5 rounded-md ${
                       darkMode
                         ? 'bg-stone-800 text-stone-300 border border-stone-700'
                         : 'bg-amber-100/90 text-amber-900 border border-amber-300'
                     }`}
                   >
-                    <Award className="w-3 h-3 text-amber-500" />
+                    <Award className="w-3.5 h-3.5 text-amber-500" />
                     <span>{t.insigniaDeLaCasa}</span>
                   </span>
                 )}
 
                 <div
-                  className={`w-6 h-6 rounded-lg flex items-center justify-center shrink-0 ${
+                  className={`w-7 h-7 rounded-lg flex items-center justify-center shrink-0 ${
                     darkMode
                       ? 'bg-stone-800/80 text-amber-400'
                       : 'bg-amber-100/70 text-amber-800'
                   }`}
                   title={plato.etiqueta[idioma]}
                 >
-                  <Icono className="w-3.5 h-3.5" />
+                  <Icono className="w-4 h-4" />
                 </div>
               </div>
 
@@ -267,18 +267,18 @@ export function SeccionRecomendados({
                   type="button"
                   id={`btn-detalle-recomendado-${plato.id}`}
                   onClick={() => onVerDetalles?.(plato)}
-                  className={`font-serif font-bold text-sm text-left group-hover:text-amber-400 transition cursor-pointer flex items-center gap-1.5 ${
+                  className={`font-serif font-bold text-base sm:text-lg text-left group-hover:text-amber-400 transition cursor-pointer flex items-center gap-1.5 ${
                     darkMode ? 'text-stone-100' : 'text-stone-900'
                   }`}
                   title={t.verDetalle}
                 >
                   <span className="line-clamp-1">{plato.nombre[idioma]}</span>
-                  <Info className="w-3 h-3 text-stone-500 group-hover:text-amber-400 shrink-0" />
+                  <Info className="w-3.5 h-3.5 text-stone-500 group-hover:text-amber-400 shrink-0" />
                 </button>
 
                 <p
-                  className={`text-[11px] line-clamp-2 leading-relaxed ${
-                    darkMode ? 'text-stone-400' : 'text-stone-600'
+                  className={`text-xs sm:text-sm line-clamp-2 leading-relaxed ${
+                    darkMode ? 'text-stone-300' : 'text-stone-700'
                   }`}
                 >
                   {plato.descripcion[idioma]}
@@ -290,16 +290,16 @@ export function SeccionRecomendados({
                 <div>
                   <div
                     id={`precio-recomendado-${plato.id}`}
-                    className="font-mono text-xs font-bold text-amber-500 dark:text-amber-400"
+                    className="font-mono text-sm sm:text-base font-bold text-amber-500 dark:text-amber-400"
                   >
                     {formatearPrecio(plato.precioNumerico, idioma)}
                   </div>
                   {cantidadEnPedido > 0 && (
                     <span
                       id={`badge-en-pedido-${plato.id}`}
-                      className="text-[10px] text-emerald-500 font-semibold flex items-center gap-0.5"
+                      className="text-xs text-emerald-500 font-semibold flex items-center gap-0.5"
                     >
-                      <ShoppingBag className="w-2.5 h-2.5" />
+                      <ShoppingBag className="w-3 h-3" />
                       <span>{cantidadEnPedido} en pedido</span>
                     </span>
                   )}
@@ -309,10 +309,10 @@ export function SeccionRecomendados({
                   type="button"
                   id={`btn-ordenar-recomendado-${plato.id}`}
                   onClick={(e) => onOrdenar(plato, e.currentTarget)}
-                  className="inline-flex items-center gap-1 px-3 py-1.5 bg-amber-500 hover:bg-amber-400 text-stone-950 font-bold text-xs rounded-lg transition shadow-xs active:scale-95 cursor-pointer"
+                  className="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-amber-500 hover:bg-amber-400 text-stone-950 font-bold text-xs sm:text-sm rounded-lg transition shadow-xs active:scale-95 cursor-pointer"
                   title={`${t.agregarRapido} ${plato.nombre[idioma]}`}
                 >
-                  <Plus className="w-3.5 h-3.5 stroke-[2.5]" />
+                  <Plus className="w-4 h-4 stroke-[2.5]" />
                   <span>{t.agregarRapido}</span>
                 </button>
               </div>

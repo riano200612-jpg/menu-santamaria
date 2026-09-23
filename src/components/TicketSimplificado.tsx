@@ -141,13 +141,13 @@ export function TicketSimplificado({
           type="button"
           id="btn-volver-resumen-ticket"
           onClick={onVolver}
-          className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold transition cursor-pointer ${
+          className={`inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition cursor-pointer ${
             darkMode
               ? 'text-stone-300 hover:text-white bg-stone-800 hover:bg-stone-700'
               : 'text-stone-700 hover:text-stone-950 bg-white hover:bg-stone-100 border border-stone-300'
           }`}
         >
-          <ArrowLeft className="w-3.5 h-3.5" />
+          <ArrowLeft className="w-4 h-4" />
           <span>{t.volverAlResumen}</span>
         </button>
 
@@ -156,7 +156,7 @@ export function TicketSimplificado({
             type="button"
             id="btn-compartir-ticket-social"
             onClick={handleCompartirTicket}
-            className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold transition cursor-pointer ${
+            className={`inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition cursor-pointer ${
               darkMode
                 ? 'text-sky-300 hover:text-sky-200 bg-sky-950/40 hover:bg-sky-900/60 border border-sky-800/80'
                 : 'text-sky-900 hover:text-sky-950 bg-sky-100 hover:bg-sky-200 border border-sky-300'
@@ -165,12 +165,12 @@ export function TicketSimplificado({
           >
             {compartido ? (
               <>
-                <Check className="w-3.5 h-3.5 text-sky-400" />
+                <Check className="w-4 h-4 text-sky-400" />
                 <span className="text-sky-400 font-bold">{t.pedidoCompartidoExito}</span>
               </>
             ) : (
               <>
-                <Share2 className="w-3.5 h-3.5 text-sky-400" />
+                <Share2 className="w-4 h-4 text-sky-400" />
                 <span>{t.compartirPedidoBoton}</span>
               </>
             )}
@@ -180,7 +180,7 @@ export function TicketSimplificado({
             type="button"
             id="btn-copiar-ticket-texto"
             onClick={handleCopiar}
-            className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-medium transition cursor-pointer ${
+            className={`inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition cursor-pointer ${
               darkMode
                 ? 'text-stone-300 hover:text-white bg-stone-800 hover:bg-stone-700 border border-stone-700'
                 : 'text-stone-700 hover:text-stone-950 bg-white hover:bg-stone-100 border border-stone-300'
@@ -189,12 +189,12 @@ export function TicketSimplificado({
           >
             {copiado ? (
               <>
-                <Check className="w-3.5 h-3.5 text-emerald-400" />
+                <Check className="w-4 h-4 text-emerald-400" />
                 <span className="text-emerald-400 font-bold">{t.enlaceCopiado}</span>
               </>
             ) : (
               <>
-                <Copy className="w-3.5 h-3.5" />
+                <Copy className="w-4 h-4" />
                 <span className="hidden sm:inline">{t.copiarEnlace}</span>
               </>
             )}
@@ -204,10 +204,10 @@ export function TicketSimplificado({
             type="button"
             id="btn-imprimir-ticket-ahora"
             onClick={handleImprimir}
-            className="inline-flex items-center gap-1.5 px-4 py-1.5 bg-amber-500 hover:bg-amber-400 text-stone-950 font-bold text-xs rounded-xl transition shadow-md cursor-pointer active:scale-95"
+            className="inline-flex items-center gap-1.5 px-4 py-2 bg-amber-500 hover:bg-amber-400 text-stone-950 font-bold text-xs sm:text-sm rounded-xl transition shadow-md cursor-pointer active:scale-95"
             title={t.imprimirAhora}
           >
-            <Printer className="w-3.5 h-3.5" />
+            <Printer className="w-4 h-4" />
             <span>{t.imprimirAhora}</span>
           </button>
         </div>
@@ -217,29 +217,29 @@ export function TicketSimplificado({
       <div className="flex-1 overflow-y-auto p-4 sm:p-6 flex justify-center bg-stone-950/20">
         <div
           id="ticket-impresion-simplificado"
-          className="w-full max-w-md bg-white text-stone-900 rounded-xl p-6 sm:p-8 shadow-xl font-mono text-xs border border-stone-300 space-y-4"
+          className="w-full max-w-md bg-white text-stone-900 rounded-xl p-6 sm:p-8 shadow-xl font-mono text-xs sm:text-sm border border-stone-300 space-y-4"
         >
           {/* Cabecera del restaurante */}
           <div className="text-center space-y-1 pb-3 border-b-2 border-dashed border-stone-400">
-            <div className="flex items-center justify-center gap-1.5 text-amber-700 font-serif font-bold text-sm">
+            <div className="flex items-center justify-center gap-1.5 text-amber-700 font-serif font-bold text-base sm:text-lg">
               <Receipt className="w-4 h-4 text-amber-600 inline" />
               <span>SANTA MARÍA DEL MAR</span>
             </div>
-            <p className="text-[11px] font-sans font-medium text-stone-600">
+            <p className="text-xs font-sans font-semibold text-stone-700">
               by Lety Moreno • Cartagena de Indias
             </p>
-            <p className="text-[10px] font-sans text-stone-500">
+            <p className="text-xs font-sans text-stone-500">
               {t.contactoUbicacion}
             </p>
           </div>
 
           {/* Información del pedido */}
-          <div className="space-y-1 text-[11px] pb-3 border-b border-dashed border-stone-300">
+          <div className="space-y-1 text-xs pb-3 border-b border-dashed border-stone-300">
             <div className="flex justify-between items-center font-bold">
               <span>{t.ticketSimplificado.toUpperCase()}</span>
               <span>#{Math.floor(1000 + (subtotalFinal % 9000))}</span>
             </div>
-            <div className="flex justify-between text-stone-600 text-[10px]">
+            <div className="flex justify-between text-stone-600 text-xs">
               <span>{t.fechaHora}:</span>
               <span>{fechaActual}</span>
             </div>
@@ -247,7 +247,7 @@ export function TicketSimplificado({
 
           {/* Tabla simplificada: estrictamente SOLO nombre y precio de cada item */}
           <div className="space-y-2 py-1">
-            <div className="flex justify-between font-bold text-[11px] border-b border-stone-800 pb-1 uppercase tracking-wider">
+            <div className="flex justify-between font-bold text-xs border-b border-stone-800 pb-1 uppercase tracking-wider">
               <span>{t.itemPlato}</span>
               <span className="text-right">{t.precio}</span>
             </div>
@@ -264,7 +264,7 @@ export function TicketSimplificado({
                   <div
                     key={item.plato.id}
                     id={`ticket-item-${item.plato.id}`}
-                    className="flex justify-between items-start gap-4 text-xs leading-relaxed"
+                    className="flex justify-between items-start gap-4 text-xs sm:text-sm leading-relaxed"
                   >
                     <span className="font-medium text-stone-900 break-words flex-1">
                       {nombreItem}
@@ -280,13 +280,13 @@ export function TicketSimplificado({
 
           {/* Línea divisoria y Total Final */}
           <div className="pt-3 border-t-2 border-dashed border-stone-400 space-y-1.5">
-            <div className="flex justify-between items-center text-sm font-bold text-stone-950">
+            <div className="flex justify-between items-center text-sm sm:text-base font-bold text-stone-950">
               <span className="uppercase">{t.totalPagar}:</span>
-              <span id="ticket-total-valor" className="text-base text-stone-950 font-extrabold">
+              <span id="ticket-total-valor" className="text-base sm:text-lg text-stone-950 font-black">
                 {formatearTotal(subtotalFinal, idioma)}
               </span>
             </div>
-            <div className="flex justify-between text-[10px] text-stone-500">
+            <div className="flex justify-between text-xs text-stone-500">
               <span>{t.totalPlatos}</span>
               <span>
                 {totalCantidad} {totalCantidad === 1 ? t.platoSingular : t.platoPlural}
@@ -295,9 +295,9 @@ export function TicketSimplificado({
           </div>
 
           {/* Pie de ticket */}
-          <div className="text-center pt-4 border-t border-dashed border-stone-300 space-y-1 text-[10px] text-stone-600 font-sans">
+          <div className="text-center pt-4 border-t border-dashed border-stone-300 space-y-1 text-xs text-stone-600 font-sans">
             <p className="font-medium">{t.graciasPorSuVisita}</p>
-            <p className="text-stone-400 text-[9px]">{t.sitioWeb}</p>
+            <p className="text-stone-400 text-xs">{t.sitioWeb}</p>
           </div>
         </div>
       </div>

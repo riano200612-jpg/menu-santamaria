@@ -125,13 +125,13 @@ export function ToastNotificacion({
 
               {/* Contenido textual del toast */}
               <div className="flex-1 min-w-0 pr-1">
-                <div className="flex items-center gap-1.5 text-xs font-semibold text-emerald-400 dark:text-emerald-400">
+                <div className="flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-emerald-400 dark:text-emerald-400">
                   <Sparkles className="w-3.5 h-3.5 text-amber-400 shrink-0" />
                   <span>{t.toastPlatoAgregado}</span>
                   {toast.cantidad > 1 && (
                     <span
                       id={`toast-badge-cantidad-${toast.plato.id}`}
-                      className="px-1.5 py-0.2 rounded-full text-[10px] font-bold bg-amber-500/20 text-amber-300 border border-amber-500/40 shrink-0"
+                      className="px-1.5 py-0.5 rounded-full text-xs font-bold bg-amber-500/20 text-amber-300 border border-amber-500/40 shrink-0"
                     >
                       x{toast.cantidad}
                     </span>
@@ -140,7 +140,7 @@ export function ToastNotificacion({
 
                 <h4
                   id={`toast-nombre-plato-${toast.plato.id}`}
-                  className="text-xs sm:text-sm font-bold font-serif truncate mt-0.5 tracking-tight"
+                  className="text-sm sm:text-base font-bold font-serif truncate mt-0.5 tracking-tight"
                 >
                   {toast.plato.nombre[idioma]}
                 </h4>
@@ -148,15 +148,15 @@ export function ToastNotificacion({
                 <div className="flex items-center gap-2 mt-0.5">
                   <p
                     id={`toast-precio-plato-${toast.plato.id}`}
-                    className="text-[11px] font-mono font-bold text-amber-400"
+                    className="text-xs sm:text-sm font-mono font-bold text-amber-400"
                   >
                     {formatearPrecio(toast.plato.precioNumerico, idioma)}
                   </p>
                   <span
-                    className={`text-[9px] uppercase font-semibold px-1.5 py-0.5 rounded-sm border ${
+                    className={`text-[10px] sm:text-xs uppercase font-semibold px-2 py-0.5 rounded-sm border ${
                       darkMode
-                        ? 'bg-stone-800 text-stone-400 border-stone-700'
-                        : 'bg-stone-100 text-stone-600 border-stone-200'
+                        ? 'bg-stone-800 text-stone-300 border-stone-700'
+                        : 'bg-stone-100 text-stone-700 border-stone-200'
                     }`}
                   >
                     {toast.plato.etiqueta[idioma]}
@@ -169,7 +169,7 @@ export function ToastNotificacion({
                 type="button"
                 id="btn-toast-cerrar"
                 onClick={onCerrar}
-                className={`p-1 rounded-lg transition-colors cursor-pointer shrink-0 ${
+                className={`p-1.5 rounded-lg transition-colors cursor-pointer shrink-0 ${
                   darkMode
                     ? 'text-stone-400 hover:text-stone-200 hover:bg-stone-800'
                     : 'text-stone-500 hover:text-stone-900 hover:bg-stone-100'
@@ -183,11 +183,11 @@ export function ToastNotificacion({
 
             {/* Fila de acción rápida: Ver pedido */}
             <div
-              className={`flex items-center justify-between pt-1 border-t text-[10px] ${
+              className={`flex items-center justify-between pt-1.5 border-t text-xs ${
                 darkMode ? 'border-stone-800/80' : 'border-stone-200'
               }`}
             >
-              <span className={`truncate ${darkMode ? 'text-stone-400' : 'text-stone-500'}`}>
+              <span className={`truncate ${darkMode ? 'text-stone-400' : 'text-stone-600'}`}>
                 {t.toastPlatoAgregadoDetalle(toast.plato.nombre[idioma], toast.cantidad)}
               </span>
               <button
@@ -197,11 +197,11 @@ export function ToastNotificacion({
                   onCerrar();
                   onVerPedido();
                 }}
-                className="inline-flex items-center gap-1 text-[11px] font-bold text-amber-400 hover:text-amber-300 px-2 py-0.5 rounded-md hover:bg-amber-400/10 transition-colors cursor-pointer shrink-0 ml-2"
+                className="inline-flex items-center gap-1.5 text-xs font-bold text-amber-400 hover:text-amber-300 px-2.5 py-1 rounded-md hover:bg-amber-400/10 transition-colors cursor-pointer shrink-0 ml-2"
               >
-                <ShoppingBag className="w-3 h-3" />
+                <ShoppingBag className="w-3.5 h-3.5" />
                 <span>{t.toastVerPedido}</span>
-                <ArrowRight className="w-3 h-3" />
+                <ArrowRight className="w-3.5 h-3.5" />
               </button>
             </div>
           </motion.div>

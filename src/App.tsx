@@ -150,7 +150,7 @@ export function Entrada({
             type="button"
             id={`nombre-${plato.id}`}
             onClick={() => onVerDetalles?.(plato)}
-            className={`text-lg font-serif font-bold transition text-left cursor-pointer group flex items-center gap-1.5 focus:outline-none ${
+            className={`text-xl sm:text-2xl font-serif font-bold transition text-left cursor-pointer group flex items-center gap-2 focus:outline-none ${
               darkMode
                 ? 'text-amber-200 hover:text-amber-400'
                 : 'text-amber-950 hover:text-amber-700'
@@ -165,7 +165,7 @@ export function Entrada({
               {nombrePlato}
             </span>
             <Info
-              className={`w-3.5 h-3.5 transition shrink-0 ${
+              className={`w-4 h-4 transition shrink-0 ${
                 darkMode
                   ? 'text-stone-500 group-hover:text-amber-400'
                   : 'text-amber-700/60 group-hover:text-amber-800'
@@ -173,7 +173,7 @@ export function Entrada({
             />
           </button>
           <span
-            className={`text-[10px] uppercase font-semibold tracking-wider px-2 py-0.5 rounded-md border ${
+            className={`text-xs uppercase font-semibold tracking-wider px-2.5 py-0.5 rounded-md border ${
               darkMode
                 ? 'bg-stone-800 text-amber-400/90 border-stone-700/60'
                 : 'bg-amber-100/90 text-amber-900 border-amber-300/80'
@@ -183,7 +183,7 @@ export function Entrada({
           </span>
           {plato.presentacion && (
             <span
-              className={`text-[10px] font-semibold px-1.5 py-0.5 rounded-md border ${
+              className={`text-xs font-semibold px-2 py-0.5 rounded-md border ${
                 darkMode
                   ? 'bg-amber-950/60 text-amber-300 border-amber-800/60'
                   : 'bg-amber-200/80 text-amber-950 border-amber-400/70'
@@ -195,8 +195,8 @@ export function Entrada({
         </div>
         <span
           id={`precio-${plato.id}`}
-          className={`text-xs sm:text-sm font-semibold font-mono shrink-0 ${
-            darkMode ? 'text-amber-400' : 'text-amber-900 font-bold'
+          className={`text-base sm:text-lg font-bold font-mono shrink-0 ${
+            darkMode ? 'text-amber-400' : 'text-amber-900'
           }`}
         >
           {precioFormateado}
@@ -204,8 +204,8 @@ export function Entrada({
       </div>
       <p
         id={`descripcion-${plato.id}`}
-        className={`text-xs leading-relaxed ${
-          darkMode ? 'text-stone-300' : 'text-stone-700 font-normal'
+        className={`text-sm sm:text-[15px] leading-relaxed ${
+          darkMode ? 'text-stone-200' : 'text-stone-800 font-normal'
         }`}
       >
         {descripcionPlato}
@@ -215,7 +215,7 @@ export function Entrada({
       {plato.opcionesPresentacion && plato.opcionesPresentacion.length > 0 && (
         <div className="flex items-center gap-2 pt-1 flex-wrap">
           <span
-            className={`text-[11px] font-medium shrink-0 ${
+            className={`text-xs sm:text-sm font-medium shrink-0 ${
               darkMode ? 'text-stone-400' : 'text-stone-600'
             }`}
           >
@@ -230,7 +230,7 @@ export function Entrada({
                   type="button"
                   id={`btn-opcion-${plato.id}-${opcion.id}`}
                   onClick={() => setOpcionSeleccionadaId(opcion.id)}
-                  className={`text-xs px-2.5 py-1 rounded-lg font-medium transition cursor-pointer border ${
+                  className={`text-xs sm:text-sm px-3 py-1.5 rounded-lg font-medium transition cursor-pointer border ${
                     esActiva
                       ? darkMode
                         ? 'bg-amber-500 text-stone-950 font-bold border-amber-400 shadow-xs'
@@ -261,13 +261,13 @@ export function Entrada({
           type="button"
           id={`btn-detalles-${plato.id}`}
           onClick={() => onVerDetalles?.(plato)}
-          className={`inline-flex items-center gap-1 text-[11px] font-medium transition cursor-pointer ${
+          className={`inline-flex items-center gap-1.5 text-xs sm:text-sm font-medium transition cursor-pointer ${
             darkMode
               ? 'text-amber-400/80 hover:text-amber-300'
               : 'text-amber-800 hover:text-amber-950 font-semibold'
           }`}
         >
-          <Sparkles className="w-3 h-3" />
+          <Sparkles className="w-3.5 h-3.5" />
           <span>{t.verNutricionMaridaje}</span>
         </button>
 
@@ -275,7 +275,7 @@ export function Entrada({
           type="button"
           id={`btn-ordenar-${plato.id}`}
           onClick={handleOrdenar}
-          className={`inline-flex items-center gap-1.5 px-3 py-1.5 font-medium text-xs rounded-lg transition-all shadow-sm cursor-pointer active:scale-95 ${
+          className={`inline-flex items-center gap-1.5 px-4 py-2 font-semibold text-xs sm:text-sm rounded-lg transition-all shadow-sm cursor-pointer active:scale-95 ${
             animando
               ? 'bg-amber-400 text-stone-950 scale-105'
               : 'bg-amber-500 hover:bg-amber-400 text-stone-950'
@@ -283,12 +283,12 @@ export function Entrada({
         >
           {animando ? (
             <>
-              <Check className="w-3.5 h-3.5" />
+              <Check className="w-4 h-4" />
               <span>{t.ordenado}</span>
             </>
           ) : (
             <>
-              <Plus className="w-3.5 h-3.5" />
+              <Plus className="w-4 h-4" />
               <span>{t.ordenar}</span>
             </>
           )}
@@ -372,7 +372,7 @@ export function ModalDetallePlato({
           <div>
             <div className="flex items-center gap-2 mb-1">
               <span
-                className={`text-[10px] uppercase font-semibold tracking-wider px-2 py-0.5 rounded-md border ${
+                className={`text-xs uppercase font-semibold tracking-wider px-2.5 py-0.5 rounded-md border ${
                   darkMode
                     ? 'bg-stone-800 text-amber-400 border-stone-700/80'
                     : 'bg-amber-100 text-amber-900 border-amber-300'
@@ -381,8 +381,8 @@ export function ModalDetallePlato({
                 {etiquetaPlato}
               </span>
               <span
-                className={`text-xs font-mono font-medium ${
-                  darkMode ? 'text-stone-400' : 'text-amber-800 font-bold'
+                className={`text-sm sm:text-base font-mono font-bold ${
+                  darkMode ? 'text-amber-400' : 'text-amber-900'
                 }`}
               >
                 {precioFormateado}
@@ -390,7 +390,7 @@ export function ModalDetallePlato({
             </div>
             <h2
               id="modal-titulo-plato"
-              className={`text-xl sm:text-2xl font-serif font-bold ${
+              className={`text-2xl sm:text-3xl font-serif font-bold ${
                 darkMode ? 'text-amber-100' : 'text-amber-950'
               }`}
             >
@@ -415,7 +415,7 @@ export function ModalDetallePlato({
 
         {/* Descripción del plato */}
         <p
-          className={`text-xs sm:text-sm leading-relaxed italic p-3 rounded-xl border ${
+          className={`text-sm sm:text-base leading-relaxed italic p-3.5 rounded-xl border ${
             darkMode
               ? 'text-stone-300 bg-stone-950/40 border-stone-800/60'
               : 'text-stone-700 bg-amber-50/80 border-amber-200/80'
@@ -427,7 +427,7 @@ export function ModalDetallePlato({
         {/* Selector de opciones de presentación en el Modal si existen */}
         {plato.opcionesPresentacion && plato.opcionesPresentacion.length > 0 && (
           <div
-            className={`p-3 rounded-xl border space-y-2 ${
+            className={`p-3.5 rounded-xl border space-y-2.5 ${
               darkMode
                 ? 'bg-stone-950/40 border-stone-800/60'
                 : 'bg-amber-50/60 border-amber-200/70'
@@ -435,7 +435,7 @@ export function ModalDetallePlato({
           >
             <div className="flex items-center justify-between">
               <span
-                className={`text-xs font-semibold ${
+                className={`text-xs sm:text-sm font-semibold ${
                   darkMode ? 'text-amber-300' : 'text-amber-900'
                 }`}
               >
@@ -452,7 +452,7 @@ export function ModalDetallePlato({
                     type="button"
                     id={`btn-modal-opcion-${plato.id}-${opcion.id}`}
                     onClick={() => setOpcionSeleccionadaId(opcion.id)}
-                    className={`text-xs px-3 py-1.5 rounded-lg font-medium transition cursor-pointer border ${
+                    className={`text-xs sm:text-sm px-3.5 py-1.5 rounded-lg font-medium transition cursor-pointer border ${
                       esActiva
                         ? darkMode
                           ? 'bg-amber-500 text-stone-950 font-bold border-amber-400 shadow-xs'
@@ -489,7 +489,7 @@ export function ModalDetallePlato({
         {/* Sección de Información Nutricional */}
         <div id="seccion-info-nutricional" className="space-y-2.5">
           <div
-            className={`flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider ${
+            className={`flex items-center gap-1.5 text-xs sm:text-sm font-semibold uppercase tracking-wider ${
               darkMode ? 'text-amber-400' : 'text-amber-900'
             }`}
           >
@@ -506,20 +506,20 @@ export function ModalDetallePlato({
               }`}
             >
               <span
-                className={`text-[11px] block ${
+                className={`text-xs block ${
                   darkMode ? 'text-stone-400' : 'text-stone-500'
                 }`}
               >
                 {t.calorias}
               </span>
               <span
-                className={`font-mono text-base font-bold ${
+                className={`font-mono text-base sm:text-lg font-bold ${
                   darkMode ? 'text-amber-300' : 'text-amber-800'
                 }`}
               >
                 {plato.nutricion.calorias}{' '}
                 <span
-                  className={`text-[10px] font-normal ${
+                  className={`text-xs font-normal ${
                     darkMode ? 'text-stone-400' : 'text-stone-500'
                   }`}
                 >
@@ -536,14 +536,14 @@ export function ModalDetallePlato({
               }`}
             >
               <span
-                className={`text-[11px] block ${
+                className={`text-xs block ${
                   darkMode ? 'text-stone-400' : 'text-stone-500'
                 }`}
               >
                 {t.proteinas}
               </span>
               <span
-                className={`font-mono text-base font-bold ${
+                className={`font-mono text-base sm:text-lg font-bold ${
                   darkMode ? 'text-amber-300' : 'text-amber-800'
                 }`}
               >
@@ -559,14 +559,14 @@ export function ModalDetallePlato({
               }`}
             >
               <span
-                className={`text-[11px] block ${
+                className={`text-xs block ${
                   darkMode ? 'text-stone-400' : 'text-stone-500'
                 }`}
               >
                 {t.grasas}
               </span>
               <span
-                className={`font-mono text-base font-bold ${
+                className={`font-mono text-base sm:text-lg font-bold ${
                   darkMode ? 'text-amber-300' : 'text-amber-800'
                 }`}
               >
@@ -582,14 +582,14 @@ export function ModalDetallePlato({
               }`}
             >
               <span
-                className={`text-[11px] block ${
+                className={`text-xs block ${
                   darkMode ? 'text-stone-400' : 'text-stone-500'
                 }`}
               >
                 {t.carbohidratos}
               </span>
               <span
-                className={`font-mono text-base font-bold ${
+                className={`font-mono text-base sm:text-lg font-bold ${
                   darkMode ? 'text-amber-300' : 'text-amber-800'
                 }`}
               >
@@ -600,7 +600,7 @@ export function ModalDetallePlato({
 
           {/* Alérgenos */}
           <div
-            className={`p-3 rounded-xl border text-xs flex items-start gap-2 ${
+            className={`p-3 rounded-xl border text-xs sm:text-sm flex items-start gap-2 ${
               darkMode
                 ? 'bg-stone-950/50 border-stone-800/80 text-stone-300'
                 : 'bg-amber-50/50 border-amber-200/70 text-stone-700'
@@ -636,12 +636,12 @@ export function ModalDetallePlato({
           }`}
         >
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-1.5 text-xs font-semibold text-amber-500 uppercase tracking-wider">
+            <div className="flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-amber-500 uppercase tracking-wider">
               <Wine className="w-4 h-4" />
               <h3>{t.maridajeTitulo}</h3>
             </div>
             <span
-              className={`text-[10px] font-semibold uppercase px-2 py-0.5 rounded-full border ${
+              className={`text-xs font-semibold uppercase px-2.5 py-0.5 rounded-full border ${
                 darkMode
                   ? 'bg-stone-900 text-amber-400 border-amber-900/60'
                   : 'bg-white text-amber-900 border-amber-300/80'
@@ -652,14 +652,14 @@ export function ModalDetallePlato({
           </div>
 
           <p
-            className={`text-sm font-serif font-bold ${
+            className={`text-base sm:text-lg font-serif font-bold ${
               darkMode ? 'text-amber-200' : 'text-amber-950'
             }`}
           >
             {maridaje.bebida[idioma]}
           </p>
           <p
-            className={`text-xs leading-relaxed ${
+            className={`text-xs sm:text-sm leading-relaxed ${
               darkMode ? 'text-stone-300' : 'text-stone-700'
             }`}
           >
@@ -677,7 +677,7 @@ export function ModalDetallePlato({
             type="button"
             id="btn-modal-cerrar"
             onClick={onCerrar}
-            className={`px-4 py-2 rounded-xl text-xs font-medium transition cursor-pointer ${
+            className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition cursor-pointer ${
               darkMode
                 ? 'text-stone-300 hover:text-white bg-stone-800 hover:bg-stone-700'
                 : 'text-stone-700 hover:text-stone-950 bg-stone-100 hover:bg-stone-200 border border-stone-200'
@@ -704,9 +704,9 @@ export function ModalDetallePlato({
               onOrdenar(platoParaOrdenar, e.currentTarget);
               onCerrar();
             }}
-            className="inline-flex items-center gap-1.5 px-4 py-2 bg-amber-500 hover:bg-amber-400 text-stone-950 font-semibold text-xs rounded-xl transition shadow-md cursor-pointer active:scale-95"
+            className="inline-flex items-center gap-1.5 px-4 py-2 bg-amber-500 hover:bg-amber-400 text-stone-950 font-bold text-xs sm:text-sm rounded-xl transition shadow-md cursor-pointer active:scale-95"
           >
-            <Plus className="w-3.5 h-3.5" />
+            <Plus className="w-4 h-4" />
             <span>{t.ordenarEstePlato}</span>
           </button>
         </div>
@@ -1218,7 +1218,7 @@ export default function App() {
       }`}
     >
       <div
-        className={`max-w-xl w-full rounded-2xl p-6 sm:p-8 space-y-6 transition-all duration-300 ${
+        className={`max-w-2xl w-full rounded-2xl p-6 sm:p-8 space-y-6 transition-all duration-300 ${
           darkMode
             ? 'bg-stone-900/90 border border-amber-900/40 shadow-2xl text-stone-100'
             : 'bg-white/95 border border-amber-200/90 shadow-xl shadow-amber-950/5 text-stone-900'
@@ -1250,7 +1250,7 @@ export default function App() {
               type="button"
               id="btn-toggle-tema"
               onClick={() => setDarkMode((prev) => !prev)}
-              className={`flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold transition-all duration-200 border cursor-pointer active:scale-95 ${
+              className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-semibold transition-all duration-200 border cursor-pointer active:scale-95 ${
                 darkMode
                   ? 'bg-stone-800/90 hover:bg-stone-700 text-amber-300 border-stone-700 shadow-xs'
                   : 'bg-amber-100 hover:bg-amber-200 text-amber-900 border-amber-300/90 shadow-xs'
@@ -1260,12 +1260,12 @@ export default function App() {
             >
               {darkMode ? (
                 <>
-                  <Sun className="w-3.5 h-3.5 text-amber-400 shrink-0" />
+                  <Sun className="w-4 h-4 text-amber-400 shrink-0" />
                   <span>{t.modoClaro}</span>
                 </>
               ) : (
                 <>
-                  <Moon className="w-3.5 h-3.5 text-amber-800 shrink-0" />
+                  <Moon className="w-4 h-4 text-amber-800 shrink-0" />
                   <span>{t.modoOscuro}</span>
                 </>
               )}
@@ -1276,7 +1276,7 @@ export default function App() {
               type="button"
               id="btn-abrir-qr"
               onClick={() => setMostrarQR(true)}
-              className={`flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold transition-all duration-200 border cursor-pointer active:scale-95 ${
+              className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-semibold transition-all duration-200 border cursor-pointer active:scale-95 ${
                 darkMode
                   ? 'bg-amber-500/10 hover:bg-amber-500/20 text-amber-300 border-amber-500/30'
                   : 'bg-amber-100 hover:bg-amber-200 text-amber-900 border-amber-300/90 shadow-xs'
@@ -1284,7 +1284,7 @@ export default function App() {
               title={t.verQR}
               aria-label={t.verQR}
             >
-              <QrCode className="w-3.5 h-3.5 text-amber-400 shrink-0" />
+              <QrCode className="w-4 h-4 text-amber-400 shrink-0" />
               <span>{t.verQR}</span>
             </button>
 
@@ -1308,7 +1308,7 @@ export default function App() {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               transition={{ duration: 0.45, ease: 'easeOut' }}
-              className={`flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold transition-colors duration-200 border cursor-pointer ${
+              className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-semibold transition-colors duration-200 border cursor-pointer ${
                 totalSeleccionados > 0
                   ? 'bg-amber-500 text-stone-950 border-amber-400 shadow-md hover:bg-amber-400'
                   : darkMode
@@ -1318,7 +1318,7 @@ export default function App() {
               title={t.verResumenPedido}
               aria-label={t.verResumenPedido}
             >
-              <ShoppingBag className="w-3.5 h-3.5" />
+              <ShoppingBag className="w-4 h-4" />
               <span>
                 {totalSeleccionados}{' '}
                 {totalSeleccionados === 1 ? t.platoSingular : t.platoPlural}
@@ -1330,7 +1330,7 @@ export default function App() {
               type="button"
               id="badge-precio-total"
               onClick={() => setMostrarResumen(true)}
-              className={`flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold transition-all duration-200 border cursor-pointer hover:scale-105 active:scale-95 ${
+              className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-semibold transition-all duration-200 border cursor-pointer hover:scale-105 active:scale-95 ${
                 precioTotal > 0
                   ? darkMode
                     ? 'bg-amber-950/70 text-amber-300 border-amber-700/60 shadow-xs hover:bg-amber-900/80'
@@ -1343,7 +1343,7 @@ export default function App() {
               aria-label={t.verResumenPedido}
             >
               <span
-                className={`text-[11px] font-normal ${
+                className={`text-xs font-normal ${
                   darkMode ? 'text-stone-400' : 'text-stone-600'
                 }`}
               >
@@ -1369,7 +1369,7 @@ export default function App() {
         />
 
         {/* Buscador y Selector de Categorías */}
-        <div id="controles-filtrado" className="space-y-3">
+        <div id="controles-filtrado" className="space-y-3.5">
           {/* Barra de búsqueda interactiva */}
           <div className="relative">
             <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-stone-400">
@@ -1381,7 +1381,7 @@ export default function App() {
               value={busqueda}
               onChange={(e) => setBusqueda(e.target.value)}
               placeholder={t.placeholderBuscar}
-              className={`w-full pl-10 pr-9 py-2 rounded-xl text-xs transition duration-200 focus:outline-none focus:ring-2 focus:ring-amber-500/50 ${
+              className={`w-full pl-10 pr-9 py-2.5 rounded-xl text-sm sm:text-base transition duration-200 focus:outline-none focus:ring-2 focus:ring-amber-500/50 ${
                 darkMode
                   ? 'bg-stone-950/60 border border-stone-800 text-stone-100 placeholder:text-stone-500 focus:border-amber-500/80'
                   : 'bg-amber-50/80 border border-amber-200 text-stone-900 placeholder:text-stone-400 focus:border-amber-400'
@@ -1401,7 +1401,7 @@ export default function App() {
           </div>
 
           {/* Selector interactivo de categorías */}
-          <div className="flex flex-wrap gap-1.5" role="tablist" aria-label="Categorías de la carta">
+          <div className="flex flex-wrap gap-2" role="tablist" aria-label="Categorías de la carta">
             {categorias.map((cat) => {
               const estaSeleccionado = categoriaSeleccionada === cat.id;
               return (
@@ -1412,7 +1412,7 @@ export default function App() {
                   role="tab"
                   aria-selected={estaSeleccionado}
                   onClick={() => setCategoriaSeleccionada(cat.id)}
-                  className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all duration-200 cursor-pointer active:scale-95 border ${
+                  className={`px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all duration-200 cursor-pointer active:scale-95 border ${
                     estaSeleccionado
                       ? 'bg-amber-500 text-stone-950 font-bold border-amber-400 shadow-xs'
                       : darkMode
@@ -1429,23 +1429,23 @@ export default function App() {
           {/* Barra de Ordenamiento por Precio */}
           <div
             id="barra-ordenamiento-precio"
-            className={`flex flex-wrap items-center justify-between gap-2 pt-2 border-t text-xs ${
+            className={`flex flex-wrap items-center justify-between gap-2 pt-2.5 border-t text-xs sm:text-sm ${
               darkMode ? 'border-stone-800/80 text-stone-400' : 'border-amber-200/80 text-stone-600'
             }`}
           >
             <div className="flex items-center gap-1.5">
-              <ArrowUpDown className="w-3.5 h-3.5 text-amber-500" />
-              <span className="font-medium">{t.ordenarPor}</span>
+              <ArrowUpDown className="w-4 h-4 text-amber-500" />
+              <span className="font-semibold">{t.ordenarPor}</span>
             </div>
 
-            <div className="flex items-center gap-1">
+            <div className="flex items-center gap-1.5">
               <button
                 type="button"
                 id="btn-orden-original"
                 onClick={() => setCriterioOrden('original')}
-                className={`px-2.5 py-1 rounded-md transition text-xs cursor-pointer ${
+                className={`px-3 py-1.5 rounded-lg transition text-xs sm:text-sm cursor-pointer ${
                   criterioOrden === 'original'
-                    ? 'bg-amber-500/20 text-amber-400 font-semibold border border-amber-500/40'
+                    ? 'bg-amber-500/20 text-amber-400 font-bold border border-amber-500/40'
                     : darkMode
                       ? 'hover:bg-stone-800 text-stone-400 hover:text-stone-200'
                       : 'hover:bg-amber-200/60 text-stone-600 hover:text-stone-900'
@@ -1459,16 +1459,16 @@ export default function App() {
                 type="button"
                 id="btn-orden-menor"
                 onClick={() => setCriterioOrden('menor-mayor')}
-                className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-md transition text-xs cursor-pointer ${
+                className={`inline-flex items-center gap-1 px-3 py-1.5 rounded-lg transition text-xs sm:text-sm cursor-pointer ${
                   criterioOrden === 'menor-mayor'
-                    ? 'bg-amber-500/20 text-amber-400 font-semibold border border-amber-500/40'
+                    ? 'bg-amber-500/20 text-amber-400 font-bold border border-amber-500/40'
                     : darkMode
                       ? 'hover:bg-stone-800 text-stone-400 hover:text-stone-200'
                       : 'hover:bg-amber-200/60 text-stone-600 hover:text-stone-900'
                 }`}
                 title={t.ordenMenorPrecio}
               >
-                <ArrowDown className="w-3 h-3" />
+                <ArrowDown className="w-3.5 h-3.5" />
                 <span>{t.ordenMenorPrecio}</span>
               </button>
 
@@ -1476,16 +1476,16 @@ export default function App() {
                 type="button"
                 id="btn-orden-mayor"
                 onClick={() => setCriterioOrden('mayor-menor')}
-                className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-md transition text-xs cursor-pointer ${
+                className={`inline-flex items-center gap-1 px-3 py-1.5 rounded-lg transition text-xs sm:text-sm cursor-pointer ${
                   criterioOrden === 'mayor-menor'
-                    ? 'bg-amber-500/20 text-amber-400 font-semibold border border-amber-500/40'
+                    ? 'bg-amber-500/20 text-amber-400 font-bold border border-amber-500/40'
                     : darkMode
                       ? 'hover:bg-stone-800 text-stone-400 hover:text-stone-200'
                       : 'hover:bg-amber-200/60 text-stone-600 hover:text-stone-900'
                 }`}
                 title={t.ordenMayorPrecio}
               >
-                <ArrowUp className="w-3 h-3" />
+                <ArrowUp className="w-3.5 h-3.5" />
                 <span>{t.ordenMayorPrecio}</span>
               </button>
             </div>
@@ -1496,7 +1496,7 @@ export default function App() {
         {busqueda && (
           <div
             id="indicador-busqueda"
-            className={`flex items-center justify-between text-xs px-3 py-1.5 rounded-lg border ${
+            className={`flex items-center justify-between text-xs sm:text-sm px-3.5 py-2 rounded-lg border ${
               darkMode
                 ? 'bg-amber-950/20 border-amber-900/40 text-amber-300'
                 : 'bg-amber-50 border-amber-200 text-amber-900'
@@ -1509,7 +1509,7 @@ export default function App() {
             <button
               type="button"
               onClick={() => setBusqueda('')}
-              className="text-[11px] underline hover:text-amber-400 cursor-pointer ml-2"
+              className="text-xs underline hover:text-amber-400 cursor-pointer ml-2 font-medium"
             >
               {t.limpiar}
             </button>
@@ -1577,10 +1577,10 @@ export default function App() {
             </motion.div>
           ) : (
             <div
-              className={`text-center py-8 rounded-xl border text-xs ${
+              className={`text-center py-8 px-4 rounded-xl border text-sm sm:text-base ${
                 darkMode
-                  ? 'bg-stone-900/50 border-stone-800 text-stone-400'
-                  : 'bg-amber-50/80 border-amber-200 text-stone-600'
+                  ? 'bg-stone-900/50 border-stone-800 text-stone-300'
+                  : 'bg-amber-50/80 border-amber-200 text-stone-700'
               }`}
             >
               {busqueda

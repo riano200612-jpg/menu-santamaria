@@ -28,16 +28,16 @@ export function RestauranteHistoria({ idioma, darkMode }: RestauranteHistoriaPro
         <div className="relative z-10 space-y-4">
           <div className="flex items-start gap-3">
             <Quote className={`w-5 h-5 shrink-0 mt-0.5 ${darkMode ? 'text-amber-500' : 'text-amber-700'}`} />
-            <div className="space-y-1">
+            <div className="space-y-1.5">
               <p
-                className={`text-xs sm:text-sm italic leading-relaxed font-serif ${
+                className={`text-sm sm:text-base italic leading-relaxed font-serif ${
                   darkMode ? 'text-amber-100' : 'text-black'
                 }`}
               >
                 {t.poemaLeti}
               </p>
               <p
-                className={`text-[11px] font-semibold tracking-wide ${
+                className={`text-xs font-semibold tracking-wide ${
                   darkMode ? 'text-amber-400' : 'text-stone-950 font-bold'
                 }`}
               >
@@ -47,7 +47,7 @@ export function RestauranteHistoria({ idioma, darkMode }: RestauranteHistoriaPro
           </div>
 
           <div
-            className={`pt-3 border-t text-[11px] sm:text-xs flex items-center justify-between gap-2 italic ${
+            className={`pt-3 border-t text-xs sm:text-sm flex flex-wrap items-center justify-between gap-2 italic ${
               darkMode ? 'border-stone-800 text-stone-300' : 'border-amber-300 text-black'
             }`}
           >
@@ -73,9 +73,9 @@ export function RestauranteHistoria({ idioma, darkMode }: RestauranteHistoriaPro
         }`}
       >
         <div className="flex items-center gap-2 mb-2.5">
-          <Compass className="w-4 h-4 text-amber-500 shrink-0" />
+          <Compass className="w-5 h-5 text-amber-500 shrink-0" />
           <h2
-            className={`text-sm font-serif font-bold tracking-wide ${
+            className={`text-base sm:text-lg font-serif font-bold tracking-wide ${
               darkMode ? 'text-amber-300' : 'text-amber-950'
             }`}
           >
@@ -83,7 +83,7 @@ export function RestauranteHistoria({ idioma, darkMode }: RestauranteHistoriaPro
           </h2>
         </div>
         <p
-          className={`text-xs leading-relaxed text-justify mb-4 ${
+          className={`text-xs sm:text-sm leading-relaxed text-justify mb-4 ${
             darkMode ? 'text-stone-300' : 'text-stone-900'
           }`}
         >
@@ -92,36 +92,36 @@ export function RestauranteHistoria({ idioma, darkMode }: RestauranteHistoriaPro
 
         {/* Premios y Reconocimientos Oficiales */}
         <div className="space-y-2 pt-3 border-t border-stone-700/40 dark:border-stone-800">
-          <div className="flex items-center gap-1.5 text-xs font-semibold text-amber-500">
+          <div className="flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-amber-500">
             <Award className="w-4 h-4" />
             <span>{t.premiosTitulo}</span>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 pt-1">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 pt-1">
             <div
-              className={`p-2.5 rounded-xl border text-[11px] flex items-center gap-2 ${
+              className={`p-3 rounded-xl border text-xs sm:text-sm flex items-center gap-2 ${
                 darkMode
                   ? 'bg-stone-950/60 border-amber-500/20 text-amber-200'
-                  : 'bg-amber-50 border-amber-200 text-amber-950'
+                  : 'bg-amber-50 border-amber-200 text-amber-950 font-medium'
               }`}
             >
               <Award className="w-4 h-4 text-amber-500 shrink-0" />
               <span>{t.premioTripadvisor}</span>
             </div>
             <div
-              className={`p-2.5 rounded-xl border text-[11px] flex items-center gap-2 ${
+              className={`p-3 rounded-xl border text-xs sm:text-sm flex items-center gap-2 ${
                 darkMode
                   ? 'bg-stone-950/60 border-amber-500/20 text-amber-200'
-                  : 'bg-amber-50 border-amber-200 text-amber-950'
+                  : 'bg-amber-50 border-amber-200 text-amber-950 font-medium'
               }`}
             >
               <Award className="w-4 h-4 text-amber-500 shrink-0" />
               <span>{t.premioGuru1}</span>
             </div>
             <div
-              className={`p-2.5 rounded-xl border text-[11px] flex items-center gap-2 ${
+              className={`p-3 rounded-xl border text-xs sm:text-sm flex items-center gap-2 ${
                 darkMode
                   ? 'bg-stone-950/60 border-amber-500/20 text-amber-200'
-                  : 'bg-amber-50 border-amber-200 text-amber-950'
+                  : 'bg-amber-50 border-amber-200 text-amber-950 font-medium'
               }`}
             >
               <Award className="w-4 h-4 text-amber-500 shrink-0" />
@@ -132,25 +132,25 @@ export function RestauranteHistoria({ idioma, darkMode }: RestauranteHistoriaPro
 
         {/* Datos de contacto y ubicación física */}
         <div
-          className={`mt-4 pt-3 border-t text-[11px] flex flex-wrap items-center justify-between gap-3 ${
+          className={`mt-4 pt-3 border-t text-xs sm:text-sm flex flex-wrap items-center justify-between gap-3 ${
             darkMode ? 'border-stone-800 text-stone-400' : 'border-amber-200 text-stone-600'
           }`}
         >
           <div className="flex items-center gap-1.5">
-            <MapPin className="w-3.5 h-3.5 text-amber-500 shrink-0" />
+            <MapPin className="w-4 h-4 text-amber-500 shrink-0" />
             <span>{t.contactoUbicacion}</span>
           </div>
           <div className="flex items-center gap-3">
             <span className="flex items-center gap-1">
-              <Phone className="w-3.5 h-3.5 text-amber-500 shrink-0" />
+              <Phone className="w-4 h-4 text-amber-500 shrink-0" />
               <span>{t.telefonos}</span>
             </span>
             <span className="flex items-center gap-1">
-              <Instagram className="w-3.5 h-3.5 text-amber-500 shrink-0" />
+              <Instagram className="w-4 h-4 text-amber-500 shrink-0" />
               <span>{t.redes}</span>
             </span>
             <span className="flex items-center gap-1">
-              <Globe className="w-3.5 h-3.5 text-amber-500 shrink-0" />
+              <Globe className="w-4 h-4 text-amber-500 shrink-0" />
               <span>{t.sitioWeb}</span>
             </span>
           </div>

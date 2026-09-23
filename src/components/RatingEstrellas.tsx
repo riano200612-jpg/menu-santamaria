@@ -69,12 +69,12 @@ export function RatingEstrellas({
     setMostrarAgradecimiento(false);
   };
 
-  const sizeClass = tamanoEstrellas === 'sm' ? 'w-3.5 h-3.5' : 'w-4 h-4';
+  const sizeClass = tamanoEstrellas === 'sm' ? 'w-4 h-4' : 'w-4.5 h-4.5';
 
   return (
     <div
       id={`rating-plato-${platoId}`}
-      className="flex flex-col gap-1.5 py-1 text-xs"
+      className="flex flex-col gap-1.5 py-1 text-xs sm:text-sm"
       onClick={(e) => e.stopPropagation()}
     >
       <div className="flex items-center gap-2 flex-wrap">
@@ -82,7 +82,7 @@ export function RatingEstrellas({
         <div className="flex items-center gap-1.5 shrink-0">
           <span
             id={`rating-score-${platoId}`}
-            className={`font-semibold font-mono text-xs flex items-center gap-1 ${
+            className={`font-semibold font-mono text-xs sm:text-sm flex items-center gap-1 ${
               darkMode ? 'text-amber-300' : 'text-amber-900 font-bold'
             }`}
             title={`${stats.average.toFixed(1)} / 5.0 (${stats.count} ${
@@ -94,7 +94,7 @@ export function RatingEstrellas({
           </span>
           <span
             id={`rating-conteo-${platoId}`}
-            className={`text-[11px] ${
+            className={`text-xs ${
               darkMode ? 'text-stone-400' : 'text-stone-600'
             }`}
           >
@@ -118,7 +118,7 @@ export function RatingEstrellas({
           aria-label={t.calificarPlato}
         >
           <span
-            className={`text-[11px] mr-1 hidden sm:inline ${
+            className={`text-xs mr-1 hidden sm:inline ${
               darkMode ? 'text-stone-400' : 'text-stone-600'
             }`}
           >
@@ -163,13 +163,13 @@ export function RatingEstrellas({
             id={`btn-eliminar-voto-${platoId}`}
             onClick={handleEliminarVoto}
             title={t.eliminarVoto}
-            className={`text-[10px] inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded transition-colors cursor-pointer ${
+            className={`text-xs inline-flex items-center gap-0.5 px-2 py-0.5 rounded transition-colors cursor-pointer ${
               darkMode
                 ? 'bg-stone-800/80 hover:bg-rose-950/60 text-stone-400 hover:text-rose-300 border border-stone-700/60'
                 : 'bg-amber-100 hover:bg-rose-100 text-stone-600 hover:text-rose-700 border border-amber-300'
             }`}
           >
-            <X className="w-2.5 h-2.5" />
+            <X className="w-3 h-3" />
             <span className="hidden sm:inline">{t.eliminarVoto}</span>
           </button>
         )}
@@ -179,12 +179,12 @@ export function RatingEstrellas({
       {mostrarAgradecimiento && (
         <div
           id={`notificacion-voto-${platoId}`}
-          className={`flex items-center gap-1.5 text-[11px] font-medium animate-in fade-in slide-in-from-top-1 duration-200 ${
+          className={`flex items-center gap-1.5 text-xs sm:text-sm font-semibold animate-in fade-in slide-in-from-top-1 duration-200 ${
             darkMode ? 'text-amber-300' : 'text-amber-900'
           }`}
         >
-          <Sparkles className="w-3 h-3 text-amber-400 animate-spin" />
-          <Check className="w-3 h-3 text-emerald-400" />
+          <Sparkles className="w-3.5 h-3.5 text-amber-400 animate-spin" />
+          <Check className="w-3.5 h-3.5 text-emerald-400" />
           <span>
             {t.graciasPorVotar} ({userRating} {userRating === 1 ? t.voto : t.votos})
           </span>

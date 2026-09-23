@@ -145,147 +145,309 @@ export function TimonNauticoLogo({ className = 'w-16 h-16' }: { className?: stri
 }
 
 /**
- * Componente principal del Logo de la Carta Pirata de Santa María del Mar
- * Reproduce fielmente la portada de la carta original (Página 1 del PDF)
+ * Componente principal del Logo Oficial de Santa María del Mar
+ * Reproducción fiel del logo oficial (Restaurante • Bar, Santa María del Mar by Lety Moreno)
  */
 export function LogoCartaSantaMaria({
-  idioma = 'es',
-  darkMode = true,
+  className = '',
 }: {
   idioma?: 'es' | 'en';
   darkMode?: boolean;
+  className?: string;
 }) {
   return (
     <div
       id="logo-carta-restaurante"
-      className="relative overflow-hidden rounded-2xl border transition-all duration-300 shadow-xl"
-      style={{
-        background: 'linear-gradient(145deg, #7c1217 0%, #941f25 45%, #660d11 100%)',
-        borderColor: '#b45309',
-      }}
+      className={`relative mx-auto w-full max-w-[200px] sm:max-w-[220px] overflow-hidden rounded-2xl shadow-xl transition-all duration-300 hover:scale-[1.01] ${className}`}
     >
-      {/* Fondo con textura sutil y destellos dorados */}
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_35%,rgba(255,255,255,0.12)_0%,transparent_75%)] pointer-events-none" />
+      <svg
+        viewBox="0 0 360 480"
+        className="w-full h-auto block select-none"
+        xmlns="http://www.w3.org/2000/svg"
+        role="img"
+        aria-label="Restaurante Bar Santa María del Mar by Lety Moreno"
+      >
+        <defs>
+          {/* Degradado carmesí profundo del fondo original */}
+          <linearGradient id="smm-crimson-bg" x1="50%" y1="0%" x2="50%" y2="100%">
+            <stop offset="0%" stopColor="#8d0a11" />
+            <stop offset="35%" stopColor="#7a0308" />
+            <stop offset="70%" stopColor="#630005" />
+            <stop offset="100%" stopColor="#4a0003" />
+          </linearGradient>
 
-      {/* Marco perimetral decorativo dorado típico de la carta pirata */}
-      <div className="absolute inset-2 sm:inset-3 border border-amber-400/40 rounded-xl pointer-events-none" />
-      <div className="absolute inset-2.5 sm:inset-3.5 border border-dashed border-amber-300/20 rounded-lg pointer-events-none" />
+          {/* Destello de luz suave superior */}
+          <radialGradient id="smm-top-glow" cx="50%" cy="25%" r="60%">
+            <stop offset="0%" stopColor="#ffffff" stopOpacity="0.14" />
+            <stop offset="60%" stopColor="#ffffff" stopOpacity="0" />
+          </radialGradient>
 
-      {/* Esquinas ornamentales estilo carta náutica */}
-      <div className="absolute top-4 left-4 w-3 h-3 border-t-2 border-l-2 border-amber-400/80 pointer-events-none" />
-      <div className="absolute top-4 right-4 w-3 h-3 border-t-2 border-r-2 border-amber-400/80 pointer-events-none" />
-      <div className="absolute bottom-4 left-4 w-3 h-3 border-b-2 border-l-2 border-amber-400/80 pointer-events-none" />
-      <div className="absolute bottom-4 right-4 w-3 h-3 border-b-2 border-r-2 border-amber-400/80 pointer-events-none" />
-
-      <div className="relative px-6 py-7 sm:py-8 flex flex-col items-center text-center">
-        {/* Encabezado: RESTAURANTE • BAR */}
-        <div className="flex items-center gap-2 mb-3">
-          <span className="h-[1px] w-6 sm:w-10 bg-gradient-to-r from-transparent to-amber-300/80" />
-          <h2
-            className="text-xs sm:text-sm font-sans font-bold tracking-[0.28em] uppercase text-amber-100/95"
-            style={{ textShadow: '0 1px 3px rgba(0,0,0,0.6)' }}
-          >
-            RESTAURANTE • BAR
-          </h2>
-          <span className="h-[1px] w-6 sm:w-10 bg-gradient-to-l from-transparent to-amber-300/80" />
-        </div>
-
-        {/* Tipografía artística principal: SANTA MARÍA DEL MAR */}
-        <div className="my-1.5 flex flex-col items-center">
-          {/* Título vectorial con caligrafía fluida y lazos exactos de la portada */}
-          <div className="relative">
-            <span
-              className="block font-serif text-3xl sm:text-4xl md:text-5xl font-black tracking-tight text-white leading-none"
-              style={{
-                fontFamily: '"Cinzel Decorative", "Playfair Display", Georgia, serif',
-                textShadow: '0 2px 10px rgba(0,0,0,0.7), 0 0 20px rgba(254,240,138,0.25)',
-              }}
-            >
-              SANTA
-            </span>
-            <div className="flex items-center justify-center -mt-1 sm:-mt-1.5">
-              <span
-                className="font-serif text-3xl sm:text-4xl md:text-5xl font-black tracking-tight text-white leading-none"
-                style={{
-                  fontFamily: '"Cinzel Decorative", "Playfair Display", Georgia, serif',
-                  textShadow: '0 2px 10px rgba(0,0,0,0.7), 0 0 20px rgba(254,240,138,0.25)',
-                }}
-              >
-                MARÍA
-              </span>
-            </div>
-            <div className="flex items-center justify-center gap-2 -mt-1 sm:-mt-1.5">
-              <span className="text-[11px] sm:text-xs font-serif italic text-amber-200 uppercase tracking-widest font-semibold">
-                DEL
-              </span>
-              <span
-                className="font-serif text-3xl sm:text-4xl md:text-5xl font-black tracking-tight text-white leading-none"
-                style={{
-                  fontFamily: '"Cinzel Decorative", "Playfair Display", Georgia, serif',
-                  textShadow: '0 2px 10px rgba(0,0,0,0.7), 0 0 20px rgba(254,240,138,0.25)',
-                }}
-              >
-                MAR
-              </span>
-            </div>
-
-            {/* Trazo decorativo fluido simulando el lazo caligráfico de la carta */}
-            <svg
-              className="w-48 sm:w-64 h-6 mx-auto -mt-1 text-amber-300/80"
-              viewBox="0 0 260 24"
+          {/* Textura damasco / tentáculos sutil de fondo en bajo contraste */}
+          <pattern id="damask-watermark" x="0" y="0" width="70" height="70" patternUnits="userSpaceOnUse">
+            <path
+              d="M 35 10 C 45 22, 58 22, 35 45 C 12 22, 25 22, 35 10 Z"
               fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M 10 12 C 45 4, 75 19, 130 11 C 185 3, 215 18, 250 12"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-              />
-              <circle cx="130" cy="11" r="3" fill="#fef08a" />
-              <circle cx="70" cy="12" r="1.5" fill="#fde047" />
-              <circle cx="190" cy="11" r="1.5" fill="#fde047" />
-            </svg>
-          </div>
+              stroke="#2e0002"
+              strokeWidth="2.2"
+              opacity="0.35"
+            />
+            <path
+              d="M 10 35 C 22 45, 22 58, 45 35 C 22 12, 22 25, 10 35 Z"
+              fill="none"
+              stroke="#2e0002"
+              strokeWidth="2.2"
+              opacity="0.35"
+            />
+            <path
+              d="M 60 35 C 48 45, 48 58, 25 35 C 48 12, 48 25, 60 35 Z"
+              fill="none"
+              stroke="#2e0002"
+              strokeWidth="2.2"
+              opacity="0.35"
+            />
+            <circle cx="35" cy="35" r="3" fill="#2e0002" opacity="0.3" />
+          </pattern>
 
-          {/* Firma cursiva: by Lety Moreno */}
-          <div className="mt-1 sm:mt-1.5 flex items-center justify-center gap-1.5">
-            <span className="text-xs font-serif italic text-amber-200/90 font-light">by</span>
-            <span
-              className="text-xl sm:text-2xl font-serif text-white tracking-wide italic font-medium"
-              style={{
-                fontFamily: '"Brush Script MT", "Brush Script Std", "Dancing Script", cursive, Georgia',
-                textShadow: '0 1px 4px rgba(0,0,0,0.8)',
-              }}
-            >
-              Lety Moreno
-            </span>
-          </div>
-        </div>
+          {/* Sombra suave para las letras blancas */}
+          <filter id="white-text-shadow" x="-10%" y="-10%" width="120%" height="120%">
+            <feDropShadow dx="0" dy="1.5" stdDeviation="1.5" floodColor="#000000" floodOpacity="0.65" />
+          </filter>
+        </defs>
 
-        {/* Timón náutico dorado y monograma central de la portada */}
-        <div className="mt-3 mb-2 flex items-center justify-center">
-          <TimonNauticoLogo className="w-14 h-14 sm:w-16 sm:h-16 drop-shadow-md hover:rotate-45 transition-transform duration-700 ease-out" />
-        </div>
+        {/* Fondo rojo carmesí con textura */}
+        <rect width="360" height="480" rx="16" fill="url(#smm-crimson-bg)" />
+        <rect width="360" height="480" rx="16" fill="url(#damask-watermark)" />
+        <rect width="360" height="480" rx="16" fill="url(#smm-top-glow)" />
 
-        {/* Leyendas originales de la portada de la carta */}
-        <div className="mt-2 space-y-1">
-          <p
-            className="text-xs sm:text-sm font-serif italic font-bold tracking-wider text-amber-200"
-            style={{ textShadow: '0 1px 3px rgba(0,0,0,0.7)' }}
+        {/* 1. Encabezado: RESTAURANTE • BAR */}
+        <text
+          x="180"
+          y="48"
+          textAnchor="middle"
+          fill="#ffffff"
+          fontFamily="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
+          fontSize="17"
+          fontWeight="600"
+          letterSpacing="4.5"
+          filter="url(#white-text-shadow)"
+        >
+          RESTAURANTE • BAR
+        </text>
+
+        {/* 2. SANTA (Tipografía fluida con floreos característicos) */}
+        <g
+          fill="#ffffff"
+          stroke="#ffffff"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          filter="url(#white-text-shadow)"
+        >
+          {/* Letra S con bucle interior inicial */}
+          <path
+            d="M 85 96 C 89 91, 95 90, 96 95 C 97 101, 88 103, 80 106 C 65 112, 50 123, 53 140 C 56 156, 75 160, 91 154 C 104 150, 110 138, 108 128 C 105 116, 92 113, 80 118"
+            fill="none"
+            strokeWidth="7"
+          />
+          {/* Espiral decorativo superior de la S */}
+          <path
+            d="M 94 94 C 91 88, 82 88, 77 93 C 71 99, 75 106, 82 106"
+            fill="none"
+            strokeWidth="4"
+          />
+
+          {/* Letra A */}
+          <path
+            d="M 115 158 L 132 94 L 149 158 M 120 142 L 144 142"
+            fill="none"
+            strokeWidth="6.5"
+          />
+          {/* Remate superior A */}
+          <circle cx="132" cy="94" r="3.5" />
+
+          {/* Letra N */}
+          <path
+            d="M 160 158 L 160 96 L 190 156 L 190 96"
+            fill="none"
+            strokeWidth="6.5"
+          />
+
+          {/* Letra T */}
+          <path
+            d="M 197 100 Q 216 92 235 100 M 216 96 L 216 158"
+            fill="none"
+            strokeWidth="6.5"
+          />
+
+          {/* Segunda A con gancho elegante */}
+          <path
+            d="M 244 158 L 261 94 L 278 158 M 249 142 L 273 142"
+            fill="none"
+            strokeWidth="6.5"
+          />
+          <circle cx="261" cy="94" r="3.5" />
+        </g>
+
+        {/* Lazos ornamentales fluidos que envuelven SANTA y MARIA (como en la foto original) */}
+        <g fill="none" stroke="#ffffff" strokeLinecap="round" strokeLinejoin="round" filter="url(#white-text-shadow)">
+          {/* Bucle superior derecho que sale de la T/A */}
+          <path
+            d="M 230 115 C 265 110, 305 125, 308 145 C 310 162, 285 174, 255 174 C 215 174, 185 155, 155 152 C 120 148, 85 162, 60 178"
+            strokeWidth="4.5"
+          />
+          {/* Lazo en forma de 8/infinito entre SANTA y MARIA */}
+          <path
+            d="M 100 165 C 135 155, 175 155, 210 165 C 240 174, 275 168, 290 152 C 298 142, 295 130, 280 128 C 260 125, 230 140, 205 155"
+            strokeWidth="4.2"
+          />
+        </g>
+
+        {/* 3. MARÍA */}
+        <g
+          fill="#ffffff"
+          stroke="#ffffff"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          filter="url(#white-text-shadow)"
+        >
+          {/* Letra M con arcos redondeados */}
+          <path
+            d="M 38 218 C 38 190, 52 176, 68 184 C 78 189, 84 204, 86 218 C 88 190, 102 176, 118 184 C 128 189, 134 204, 136 218"
+            fill="none"
+            strokeWidth="7"
+          />
+
+          {/* Letra A de MARIA */}
+          <path
+            d="M 148 218 L 165 166 L 182 218 M 153 205 L 177 205"
+            fill="none"
+            strokeWidth="6.5"
+          />
+          {/* Bucle interior de la A */}
+          <circle cx="165" cy="188" r="4.5" fill="none" strokeWidth="2.5" />
+
+          {/* Letra R */}
+          <path
+            d="M 194 218 L 194 166 C 208 164, 224 164, 226 180 C 228 194, 214 198, 196 198 M 210 197 L 226 218"
+            fill="none"
+            strokeWidth="6.5"
+          />
+
+          {/* Letra I */}
+          <path
+            d="M 238 168 L 238 218 M 233 168 L 243 168 M 232 218 L 244 218"
+            fill="none"
+            strokeWidth="6.2"
+          />
+
+          {/* Letra A final con gran lazo terminal redondeado */}
+          <path
+            d="M 256 218 L 273 166 L 290 218 M 261 205 L 285 205"
+            fill="none"
+            strokeWidth="6.5"
+          />
+          {/* Lazo final que se abre a la derecha formando un ojo fluido */}
+          <path
+            d="M 290 218 C 302 218, 318 214, 326 202 C 335 188, 326 172, 308 174 C 292 176, 286 192, 294 206 C 298 214, 308 218, 320 218"
+            fill="none"
+            strokeWidth="4.8"
+          />
+        </g>
+
+        {/* 4. DEL */}
+        <text
+          x="68"
+          y="266"
+          textAnchor="middle"
+          fill="#ffffff"
+          fontFamily="system-ui, -apple-system, BlinkMacSystemFont, sans-serif"
+          fontSize="18"
+          fontWeight="900"
+          letterSpacing="0.8"
+          filter="url(#white-text-shadow)"
+        >
+          DEL
+        </text>
+
+        {/* 5. MAR (Con el lazo inferior en la M y el ondeado en la R) */}
+        <g
+          fill="#ffffff"
+          stroke="#ffffff"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          filter="url(#white-text-shadow)"
+        >
+          {/* Letra M: El asta izquierda desciende y hace un rizo en espiral hacia abajo */}
+          <path
+            d="M 102 230 L 102 284 C 102 316, 84 340, 64 324 C 48 308, 56 284, 76 284 C 92 284, 98 296, 100 306"
+            fill="none"
+            strokeWidth="7"
+          />
+          {/* Resto de la M */}
+          <path
+            d="M 102 230 L 126 280 L 150 230 L 150 286"
+            fill="none"
+            strokeWidth="7"
+          />
+
+          {/* Letra A de MAR */}
+          <path
+            d="M 166 286 L 188 226 L 210 286 M 172 270 L 204 270"
+            fill="none"
+            strokeWidth="7"
+          />
+
+          {/* Letra R de MAR: El asta derecha se prolonga en un amplio trazo ondulado hacia la derecha */}
+          <path
+            d="M 224 286 L 224 228 C 240 226, 260 226, 262 246 C 264 262, 246 266, 226 266 M 242 265 C 255 282, 275 288, 305 288 C 322 288, 336 284, 345 280"
+            fill="none"
+            strokeWidth="7"
+          />
+        </g>
+
+        {/* 6. Firma: by Lety Moreno (Caligrafía cursiva fluida auténtica) */}
+        <g
+          transform="translate(180, 395) rotate(-3)"
+          filter="url(#white-text-shadow)"
+          textAnchor="middle"
+        >
+          {/* Trazo "by" en cursiva */}
+          <text
+            x="-85"
+            y="-6"
+            fill="#ffffff"
+            fontFamily="'Brush Script MT', 'Dancing Script', 'Caveat', cursive, Georgia, serif"
+            fontSize="26"
+            fontStyle="italic"
+            fontWeight="400"
           >
-            Carta Pirata <span className="text-amber-400/80">/</span> Pirate Menu
-          </p>
-          <p className="text-[11px] sm:text-xs font-serif italic text-amber-100/90 max-w-sm mx-auto leading-relaxed">
-            {idioma === 'es'
-              ? '¡Embárcate en un viaje de sabores!'
-              : '“Set sail on a journey of flavors!”'}
-          </p>
-          <p className="text-[10px] sm:text-[11px] font-sans text-amber-300/80 tracking-widest uppercase">
-            Cartagena de Indias • Colombia
-          </p>
-        </div>
-      </div>
+            by
+          </text>
+
+          {/* Firma caligráfica "Lety Moreno" con trazos continuos */}
+          <text
+            x="20"
+            y="2"
+            fill="#ffffff"
+            fontFamily="'Brush Script MT', 'Dancing Script', 'Caveat', cursive, Georgia, serif"
+            fontSize="46"
+            fontStyle="italic"
+            fontWeight="bold"
+            letterSpacing="1"
+          >
+            Lety Moreno
+          </text>
+
+          {/* Floreo sutil bajo la firma como en el original */}
+          <path
+            d="M -70 18 C -30 24, 40 22, 110 14"
+            fill="none"
+            stroke="#ffffff"
+            strokeWidth="2.2"
+            strokeLinecap="round"
+            opacity="0.8"
+          />
+        </g>
+      </svg>
     </div>
   );
 }
