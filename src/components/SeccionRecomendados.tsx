@@ -23,7 +23,7 @@ export interface SeccionRecomendadosProps {
   idioma: Idioma;
   darkMode?: boolean;
   categoriaFiltro?: CategoriaFiltro;
-  onOrdenar: (plato: PlatoEntrada, sourceElement?: HTMLElement) => void;
+  onOrdenar?: (plato: PlatoEntrada, sourceElement?: HTMLElement) => void;
   onVerDetalles?: (plato: PlatoEntrada) => void;
 }
 
@@ -188,7 +188,7 @@ export function SeccionRecomendados({
                 </span>
               )}
             </div>
-            <p className={`text-xs sm:text-sm ${darkMode ? 'text-stone-300' : 'text-stone-700'}`}>
+            <p className={`text-sm sm:text-base leading-relaxed ${darkMode ? 'text-stone-300' : 'text-stone-700'}`}>
               {t.recomendadosSubtitulo}
             </p>
           </div>
@@ -277,7 +277,7 @@ export function SeccionRecomendados({
                 </button>
 
                 <p
-                  className={`text-xs sm:text-sm line-clamp-2 leading-relaxed ${
+                  className={`text-[14px] sm:text-[15px] line-clamp-2 leading-[1.6] ${
                     darkMode ? 'text-stone-300' : 'text-stone-700'
                   }`}
                 >
@@ -305,16 +305,32 @@ export function SeccionRecomendados({
                   )}
                 </div>
 
-                <button
-                  type="button"
-                  id={`btn-ordenar-recomendado-${plato.id}`}
-                  onClick={(e) => onOrdenar(plato, e.currentTarget)}
-                  className="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-amber-500 hover:bg-amber-400 text-stone-950 font-bold text-xs sm:text-sm rounded-lg transition shadow-xs active:scale-95 cursor-pointer"
-                  title={`${t.agregarRapido} ${plato.nombre[idioma]}`}
-                >
-                  <Plus className="w-4 h-4 stroke-[2.5]" />
-                  <span>{t.agregarRapido}</span>
-                </button>
+                {onOrdenar ? (
+                  <button
+                    type="button"
+                    id={`btn-ordenar-recomendado-${plato.id}`}
+                    onClick={(e) => onOrdenar(plato, e.currentTarget)}
+                    className="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-amber-500 hover:bg-amber-400 text-stone-950 font-bold text-xs sm:text-sm rounded-lg transition shadow-xs active:scale-95 cursor-pointer"
+                    title={`${t.agregarRapido} ${plato.nombre[idioma]}`}
+                  >
+                    <Plus className="w-4 h-4 stroke-[2.5]" />
+                    <span>{t.agregarRapido}</span>
+                  </button>
+                ) : onVerDetalles ? (
+                  <button
+                    type="button"
+                    id={`btn-detalle-recomendado-link-${plato.id}`}
+                    onClick={() => onVerDetalles(plato)}
+                    className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs sm:text-sm font-semibold transition cursor-pointer border ${
+                      darkMode
+                        ? 'bg-stone-800/80 hover:bg-stone-700 text-amber-300 border-stone-700'
+                        : 'bg-white hover:bg-amber-100 text-amber-950 border-amber-200'
+                    }`}
+                  >
+                    <Sparkles className="w-3.5 h-3.5 text-amber-500" />
+                    <span>{t.verNutricionMaridaje}</span>
+                  </button>
+                ) : null}
               </div>
             </div>
           );

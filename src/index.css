@@ -1,5 +1,25 @@
 @import "tailwindcss";
 
+:root {
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-text-size-adjust: 100%;
+}
+
+@media (min-width: 640px) {
+  :root {
+    font-size: 16.5px;
+  }
+}
+
+body {
+  font-size: 1rem;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
 @keyframes fadeInUp {
   from {
     opacity: 0;

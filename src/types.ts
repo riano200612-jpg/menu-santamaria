@@ -47,6 +47,27 @@ export interface OpcionPresentacion {
   precioNumerico: number;
 }
 
+export interface ModificacionIngrediente {
+  id: string;
+  label: {
+    es: string;
+    en: string;
+  };
+  descripcionEfecto?: {
+    es: string;
+    en: string;
+  };
+  tiempoExtraMinutos?: number;
+  impactoPreparacion?: {
+    es: string;
+    en: string;
+  };
+  detalleImpacto?: {
+    es: string;
+    en: string;
+  };
+}
+
 export interface PlatoEntrada {
   id: string;
   nombre: {
@@ -73,6 +94,16 @@ export interface PlatoEntrada {
     en: string;
   };
   descripcion: {
+    es: string;
+    en: string;
+  };
+  ingredientes?: {
+    es: string[];
+    en: string[];
+  };
+  modificacionesDisponibles?: ModificacionIngrediente[];
+  modificacionesSeleccionadas?: string[];
+  notasPersonalizacion?: {
     es: string;
     en: string;
   };

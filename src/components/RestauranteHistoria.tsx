@@ -30,14 +30,14 @@ export function RestauranteHistoria({ idioma, darkMode }: RestauranteHistoriaPro
             <Quote className={`w-5 h-5 shrink-0 mt-0.5 ${darkMode ? 'text-amber-500' : 'text-amber-700'}`} />
             <div className="space-y-1.5">
               <p
-                className={`text-sm sm:text-base italic leading-relaxed font-serif ${
+                className={`text-[15.5px] sm:text-[17px] italic leading-[1.75] font-serif ${
                   darkMode ? 'text-amber-100' : 'text-black'
                 }`}
               >
                 {t.poemaLeti}
               </p>
               <p
-                className={`text-xs font-semibold tracking-wide ${
+                className={`text-xs sm:text-sm font-semibold tracking-wide ${
                   darkMode ? 'text-amber-400' : 'text-stone-950 font-bold'
                 }`}
               >
@@ -47,7 +47,7 @@ export function RestauranteHistoria({ idioma, darkMode }: RestauranteHistoriaPro
           </div>
 
           <div
-            className={`pt-3 border-t text-xs sm:text-sm flex flex-wrap items-center justify-between gap-2 italic ${
+            className={`pt-3 border-t text-sm sm:text-base leading-relaxed flex flex-wrap items-center justify-between gap-2 italic ${
               darkMode ? 'border-stone-800 text-stone-300' : 'border-amber-300 text-black'
             }`}
           >
@@ -83,7 +83,7 @@ export function RestauranteHistoria({ idioma, darkMode }: RestauranteHistoriaPro
           </h2>
         </div>
         <p
-          className={`text-xs sm:text-sm leading-relaxed text-justify mb-4 ${
+          className={`text-[14.5px] sm:text-[15.5px] leading-[1.75] text-justify mb-4 ${
             darkMode ? 'text-stone-300' : 'text-stone-900'
           }`}
         >

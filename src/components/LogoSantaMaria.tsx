@@ -145,10 +145,10 @@ export function TimonNauticoLogo({ className = 'w-16 h-16' }: { className?: stri
 }
 
 /**
- * Componente principal del Logo Oficial de Santa María del Mar
- * Reproducción fiel del logo oficial (Restaurante • Bar, Santa María del Mar by Lety Moreno)
+ * Imagen de portada oficial optimizada de Santa María del Mar (Restaurante · Bar by Lety Moreno)
+ * Renderiza la portada original en formato vectorial nativo, sutil, ultra legible y en tamaño compacto.
  */
-export function LogoCartaSantaMaria({
+export function PortadaSantaMaria({
   className = '',
 }: {
   idioma?: 'es' | 'en';
@@ -157,297 +157,244 @@ export function LogoCartaSantaMaria({
 }) {
   return (
     <div
-      id="logo-carta-restaurante"
-      className={`relative mx-auto w-full max-w-[200px] sm:max-w-[220px] overflow-hidden rounded-2xl shadow-xl transition-all duration-300 hover:scale-[1.01] ${className}`}
+      id="portada-carta-restaurante"
+      className={`relative mx-auto w-full flex justify-center items-center py-1 ${className}`}
     >
-      <svg
-        viewBox="0 0 360 480"
-        className="w-full h-auto block select-none"
-        xmlns="http://www.w3.org/2000/svg"
-        role="img"
-        aria-label="Restaurante Bar Santa María del Mar by Lety Moreno"
-      >
-        <defs>
-          {/* Degradado carmesí profundo del fondo original */}
-          <linearGradient id="smm-crimson-bg" x1="50%" y1="0%" x2="50%" y2="100%">
-            <stop offset="0%" stopColor="#8d0a11" />
-            <stop offset="35%" stopColor="#7a0308" />
-            <stop offset="70%" stopColor="#630005" />
-            <stop offset="100%" stopColor="#4a0003" />
-          </linearGradient>
+      <div className="relative w-full max-w-[145px] sm:max-w-[165px] group transition-transform duration-300 hover:scale-[1.02]">
+        <svg
+          viewBox="0 0 600 840"
+          className="w-full h-auto aspect-[600/840] rounded-xl shadow-lg shadow-black/35 border border-amber-900/30 dark:border-amber-700/30 object-contain mx-auto block"
+          role="img"
+          aria-label="Restaurante Bar Santa María del Mar by Lety Moreno"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <defs>
+            {/* Fondo carmesí profundo sutil y elegante */}
+            <radialGradient id="portada-smm-bg" cx="50%" cy="38%" r="68%">
+              <stop offset="0%" stopColor="#800b16" />
+              <stop offset="42%" stopColor="#5e050d" />
+              <stop offset="78%" stopColor="#3d0106" />
+              <stop offset="100%" stopColor="#240003" />
+            </radialGradient>
 
-          {/* Destello de luz suave superior */}
-          <radialGradient id="smm-top-glow" cx="50%" cy="25%" r="60%">
-            <stop offset="0%" stopColor="#ffffff" stopOpacity="0.14" />
-            <stop offset="60%" stopColor="#ffffff" stopOpacity="0" />
-          </radialGradient>
+            {/* Resplandor sutil superior */}
+            <linearGradient id="portada-smm-sheen" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stopColor="#ffffff" stopOpacity="0.08" />
+              <stop offset="25%" stopColor="#ffffff" stopOpacity="0.01" />
+              <stop offset="100%" stopColor="#000000" stopOpacity="0.3" />
+            </linearGradient>
 
-          {/* Textura damasco / tentáculos sutil de fondo en bajo contraste */}
-          <pattern id="damask-watermark" x="0" y="0" width="70" height="70" patternUnits="userSpaceOnUse">
+            {/* Filtro sombra suave para textos nítidos */}
+            <filter id="portada-smm-shadow" x="-10%" y="-10%" width="125%" height="125%">
+              <feGaussianBlur in="SourceAlpha" stdDeviation="2.5" />
+              <feOffset dx="0" dy="2.5" result="offsetblur" />
+              <feFlood floodColor="#120002" floodOpacity="0.85" />
+              <feComposite in2="offsetblur" operator="in" />
+              <feMerge>
+                <feMergeNode />
+                <feMergeNode in="SourceGraphic" />
+              </feMerge>
+            </filter>
+          </defs>
+
+          {/* 1. Fondo carmesí auténtico */}
+          <rect width="600" height="840" fill="url(#portada-smm-bg)" rx="16" />
+
+          {/* 2. Marca de agua marina sutil (tentáculos y elementos marítimos) */}
+          <g fill="none" stroke="#1c0002" opacity="0.25" strokeLinecap="round" strokeLinejoin="round">
             <path
-              d="M 35 10 C 45 22, 58 22, 35 45 C 12 22, 25 22, 35 10 Z"
-              fill="none"
-              stroke="#2e0002"
-              strokeWidth="2.2"
-              opacity="0.35"
+              d="M 105 130 C 65 170, 45 240, 75 300 C 105 350, 145 360, 185 320 C 215 290, 205 220, 175 160 Z"
+              fill="#180002"
+              fillOpacity="0.2"
+              strokeWidth="4"
+            />
+            {/* Tentáculo 1 */}
+            <path d="M 80 280 C 40 330, 25 410, 40 490 C 55 570, 90 625, 75 700 C 60 770, 30 800, 18 830" strokeWidth="24" />
+            <circle cx="50" cy="370" r="6.5" fill="#180002" />
+            <circle cx="40" cy="430" r="7.5" fill="#180002" />
+            <circle cx="46" cy="495" r="7.5" fill="#180002" />
+            <circle cx="66" cy="560" r="7.5" fill="#180002" />
+            <circle cx="80" cy="625" r="6.5" fill="#180002" />
+
+            {/* Tentáculo 2 */}
+            <path d="M 160 170 C 220 120, 310 115, 390 135 C 470 155, 540 200, 565 270 C 585 330, 560 400, 510 440" strokeWidth="20" />
+            <circle cx="260" cy="130" r="6.5" fill="#180002" />
+            <circle cx="330" cy="136" r="7.5" fill="#180002" />
+            <circle cx="405" cy="154" r="7.5" fill="#180002" />
+            <circle cx="480" cy="184" r="7.5" fill="#180002" />
+            <circle cx="538" cy="235" r="6.5" fill="#180002" />
+
+            {/* Tentáculo 3 */}
+            <path d="M 510 400 C 560 450, 580 520, 565 590 C 545 660, 490 710, 420 710 C 360 710, 320 660, 315 600 C 310 540, 350 500, 395 510 C 430 520, 445 555, 430 585" strokeWidth="16" />
+            <circle cx="550" cy="480" r="6.5" fill="#180002" />
+            <circle cx="552" cy="550" r="6.5" fill="#180002" />
+            <circle cx="520" cy="620" r="6.5" fill="#180002" />
+            <circle cx="460" cy="670" r="6" fill="#180002" />
+          </g>
+
+          {/* Brillo suave de superficie */}
+          <rect width="600" height="840" fill="url(#portada-smm-sheen)" rx="16" pointerEvents="none" />
+
+          {/* 3. ENCABEZADO: RESTAURANTE · BAR (BLANCO BRILLANTE Y ULTRA LEGIBLE) */}
+          <g filter="url(#portada-smm-shadow)">
+            <text
+              x="300"
+              y="74"
+              textAnchor="middle"
+              fill="#ffffff"
+              style={{
+                fontFamily: "'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+                fontWeight: 900,
+                letterSpacing: '5.5px',
+                fontSize: '27px',
+              }}
+            >
+              RESTAURANTE · BAR
+            </text>
+          </g>
+
+          {/* 4. LOGOTIPO CENTRAL: SANTA MARÍA DEL MAR (VECTORES NÍTIDOS) */}
+          <g filter="url(#portada-smm-shadow)" fill="none" stroke="#ffffff" strokeLinecap="round" strokeLinejoin="round">
+            {/* === SANTA === */}
+            <path
+              d="M 148 160 C 144 144, 134 138, 120 142 C 108 146, 104 158, 114 168 C 124 178, 140 182, 148 192 C 160 204, 164 218, 158 232 C 150 248, 132 254, 114 250 C 92 246, 82 232, 84 216"
+              strokeWidth="14"
+            />
+            <circle cx="130" cy="148" r="5" fill="#ffffff" stroke="none" />
+            <circle cx="84" cy="216" r="6.5" fill="#ffffff" stroke="none" />
+
+            {/* A */}
+            <path d="M 182 250 L 210 145 L 238 250 M 190 224 L 230 224" strokeWidth="13.5" />
+            <circle cx="210" cy="145" r="6.5" fill="#ffffff" stroke="none" />
+
+            {/* N */}
+            <path d="M 256 250 L 256 148 L 306 248 L 306 148" strokeWidth="13.5" />
+
+            {/* T */}
+            <path d="M 352 148 L 352 250" strokeWidth="13.5" />
+            <path d="M 320 152 Q 352 138 384 150" strokeWidth="13.5" />
+
+            {/* A */}
+            <path d="M 398 250 L 426 145 L 454 250 M 406 224 L 446 224" strokeWidth="13.5" />
+            <circle cx="426" cy="145" r="6.5" fill="#ffffff" stroke="none" />
+
+            {/* Lazos envolventes fluidos */}
+            <path
+              d="M 372 148 C 420 128, 490 140, 520 185 C 545 225, 520 260, 465 270 C 400 282, 330 250, 270 248 C 210 246, 150 270, 110 295"
+              strokeWidth="8"
             />
             <path
-              d="M 10 35 C 22 45, 22 58, 45 35 C 22 12, 22 25, 10 35 Z"
-              fill="none"
-              stroke="#2e0002"
-              strokeWidth="2.2"
-              opacity="0.35"
+              d="M 160 270 C 220 252, 300 252, 360 270 C 420 288, 485 278, 510 248 C 525 230, 515 210, 485 210 C 445 210, 395 240, 350 265"
+              strokeWidth="7.5"
+            />
+
+            {/* === MARÍA === */}
+            <path
+              d="M 60 360 C 60 310, 84 286, 110 300 C 128 308, 138 335, 142 360 C 146 310, 170 286, 196 300 C 214 308, 224 335, 226 360"
+              strokeWidth="14.5"
+            />
+
+            {/* A */}
+            <path d="M 246 360 L 274 274 L 302 360 M 254 338 L 294 338" strokeWidth="13.5" />
+            <circle cx="274" cy="308" r="7" strokeWidth="4.5" />
+
+            {/* R */}
+            <path
+              d="M 324 360 L 324 274 C 350 270, 378 270, 380 298 C 382 322, 358 328, 328 328 M 352 326 L 380 360"
+              strokeWidth="13.5"
+            />
+
+            {/* Í */}
+            <path d="M 404 276 L 404 360 M 394 276 L 414 276 M 394 360 L 414 360" strokeWidth="12.5" />
+            <path d="M 396 256 L 414 266" strokeWidth="10" />
+
+            {/* A con lazo terminal */}
+            <path d="M 436 360 L 464 274 L 492 360 M 444 338 L 484 338" strokeWidth="13.5" />
+            <path
+              d="M 492 360 C 516 360, 546 352, 558 330 C 572 305, 555 278, 526 282 C 498 286, 488 314, 502 338 C 510 352, 528 358, 550 358"
+              strokeWidth="9"
+            />
+
+            {/* === DEL === */}
+            <text
+              x="108"
+              y="448"
+              textAnchor="middle"
+              fill="#ffffff"
+              stroke="none"
+              style={{
+                fontFamily: "'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+                fontWeight: 900,
+                letterSpacing: '2px',
+                fontSize: '34px',
+              }}
+            >
+              DEL
+            </text>
+
+            {/* === MAR === */}
+            <path
+              d="M 166 385 L 166 480 C 166 535, 134 578, 98 550 C 70 522, 84 480, 120 480 C 148 480, 160 500, 162 520"
+              strokeWidth="14.5"
+            />
+            <path d="M 166 385 L 208 475 L 250 385 L 250 480" strokeWidth="14" />
+            <path d="M 276 480 L 314 380 L 352 480 M 286 454 L 342 454" strokeWidth="14" />
+            <path
+              d="M 378 480 L 378 382 C 408 378, 442 378, 446 414 C 450 442, 420 448, 382 448"
+              strokeWidth="14"
             />
             <path
-              d="M 60 35 C 48 45, 48 58, 25 35 C 48 12, 48 25, 60 35 Z"
-              fill="none"
-              stroke="#2e0002"
-              strokeWidth="2.2"
-              opacity="0.35"
+              d="M 412 446 C 435 476, 470 486, 520 486 C 550 486, 574 480, 590 472"
+              strokeWidth="14"
             />
-            <circle cx="35" cy="35" r="3" fill="#2e0002" opacity="0.3" />
-          </pattern>
+          </g>
 
-          {/* Sombra suave para las letras blancas */}
-          <filter id="white-text-shadow" x="-10%" y="-10%" width="120%" height="120%">
-            <feDropShadow dx="0" dy="1.5" stdDeviation="1.5" floodColor="#000000" floodOpacity="0.65" />
-          </filter>
-        </defs>
+          {/* 5. FIRMA INFERIOR: by Lety Moreno (CALIGRAFÍA CURSIVA NÍTIDA) */}
+          <g filter="url(#portada-smm-shadow)">
+            <text
+              x="115"
+              y="676"
+              fill="#ffffff"
+              style={{
+                fontFamily: "'Caveat', 'Brush Script MT', 'Dancing Script', cursive",
+                fontSize: '44px',
+                fontStyle: 'italic',
+                fontWeight: 700,
+              }}
+            >
+              by
+            </text>
 
-        {/* Fondo rojo carmesí con textura */}
-        <rect width="360" height="480" rx="16" fill="url(#smm-crimson-bg)" />
-        <rect width="360" height="480" rx="16" fill="url(#damask-watermark)" />
-        <rect width="360" height="480" rx="16" fill="url(#smm-top-glow)" />
+            <text
+              x="172"
+              y="684"
+              fill="#ffffff"
+              style={{
+                fontFamily: "'Caveat', 'Brush Script MT', 'Dancing Script', cursive",
+                fontSize: '66px',
+                fontStyle: 'italic',
+                fontWeight: 700,
+                letterSpacing: '1.5px',
+              }}
+            >
+              Lety Moreno
+            </text>
 
-        {/* 1. Encabezado: RESTAURANTE • BAR */}
-        <text
-          x="180"
-          y="48"
-          textAnchor="middle"
-          fill="#ffffff"
-          fontFamily="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
-          fontSize="17"
-          fontWeight="600"
-          letterSpacing="4.5"
-          filter="url(#white-text-shadow)"
-        >
-          RESTAURANTE • BAR
-        </text>
-
-        {/* 2. SANTA (Tipografía fluida con floreos característicos) */}
-        <g
-          fill="#ffffff"
-          stroke="#ffffff"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          filter="url(#white-text-shadow)"
-        >
-          {/* Letra S con bucle interior inicial */}
-          <path
-            d="M 85 96 C 89 91, 95 90, 96 95 C 97 101, 88 103, 80 106 C 65 112, 50 123, 53 140 C 56 156, 75 160, 91 154 C 104 150, 110 138, 108 128 C 105 116, 92 113, 80 118"
-            fill="none"
-            strokeWidth="7"
-          />
-          {/* Espiral decorativo superior de la S */}
-          <path
-            d="M 94 94 C 91 88, 82 88, 77 93 C 71 99, 75 106, 82 106"
-            fill="none"
-            strokeWidth="4"
-          />
-
-          {/* Letra A */}
-          <path
-            d="M 115 158 L 132 94 L 149 158 M 120 142 L 144 142"
-            fill="none"
-            strokeWidth="6.5"
-          />
-          {/* Remate superior A */}
-          <circle cx="132" cy="94" r="3.5" />
-
-          {/* Letra N */}
-          <path
-            d="M 160 158 L 160 96 L 190 156 L 190 96"
-            fill="none"
-            strokeWidth="6.5"
-          />
-
-          {/* Letra T */}
-          <path
-            d="M 197 100 Q 216 92 235 100 M 216 96 L 216 158"
-            fill="none"
-            strokeWidth="6.5"
-          />
-
-          {/* Segunda A con gancho elegante */}
-          <path
-            d="M 244 158 L 261 94 L 278 158 M 249 142 L 273 142"
-            fill="none"
-            strokeWidth="6.5"
-          />
-          <circle cx="261" cy="94" r="3.5" />
-        </g>
-
-        {/* Lazos ornamentales fluidos que envuelven SANTA y MARIA (como en la foto original) */}
-        <g fill="none" stroke="#ffffff" strokeLinecap="round" strokeLinejoin="round" filter="url(#white-text-shadow)">
-          {/* Bucle superior derecho que sale de la T/A */}
-          <path
-            d="M 230 115 C 265 110, 305 125, 308 145 C 310 162, 285 174, 255 174 C 215 174, 185 155, 155 152 C 120 148, 85 162, 60 178"
-            strokeWidth="4.5"
-          />
-          {/* Lazo en forma de 8/infinito entre SANTA y MARIA */}
-          <path
-            d="M 100 165 C 135 155, 175 155, 210 165 C 240 174, 275 168, 290 152 C 298 142, 295 130, 280 128 C 260 125, 230 140, 205 155"
-            strokeWidth="4.2"
-          />
-        </g>
-
-        {/* 3. MARÍA */}
-        <g
-          fill="#ffffff"
-          stroke="#ffffff"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          filter="url(#white-text-shadow)"
-        >
-          {/* Letra M con arcos redondeados */}
-          <path
-            d="M 38 218 C 38 190, 52 176, 68 184 C 78 189, 84 204, 86 218 C 88 190, 102 176, 118 184 C 128 189, 134 204, 136 218"
-            fill="none"
-            strokeWidth="7"
-          />
-
-          {/* Letra A de MARIA */}
-          <path
-            d="M 148 218 L 165 166 L 182 218 M 153 205 L 177 205"
-            fill="none"
-            strokeWidth="6.5"
-          />
-          {/* Bucle interior de la A */}
-          <circle cx="165" cy="188" r="4.5" fill="none" strokeWidth="2.5" />
-
-          {/* Letra R */}
-          <path
-            d="M 194 218 L 194 166 C 208 164, 224 164, 226 180 C 228 194, 214 198, 196 198 M 210 197 L 226 218"
-            fill="none"
-            strokeWidth="6.5"
-          />
-
-          {/* Letra I */}
-          <path
-            d="M 238 168 L 238 218 M 233 168 L 243 168 M 232 218 L 244 218"
-            fill="none"
-            strokeWidth="6.2"
-          />
-
-          {/* Letra A final con gran lazo terminal redondeado */}
-          <path
-            d="M 256 218 L 273 166 L 290 218 M 261 205 L 285 205"
-            fill="none"
-            strokeWidth="6.5"
-          />
-          {/* Lazo final que se abre a la derecha formando un ojo fluido */}
-          <path
-            d="M 290 218 C 302 218, 318 214, 326 202 C 335 188, 326 172, 308 174 C 292 176, 286 192, 294 206 C 298 214, 308 218, 320 218"
-            fill="none"
-            strokeWidth="4.8"
-          />
-        </g>
-
-        {/* 4. DEL */}
-        <text
-          x="68"
-          y="266"
-          textAnchor="middle"
-          fill="#ffffff"
-          fontFamily="system-ui, -apple-system, BlinkMacSystemFont, sans-serif"
-          fontSize="18"
-          fontWeight="900"
-          letterSpacing="0.8"
-          filter="url(#white-text-shadow)"
-        >
-          DEL
-        </text>
-
-        {/* 5. MAR (Con el lazo inferior en la M y el ondeado en la R) */}
-        <g
-          fill="#ffffff"
-          stroke="#ffffff"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          filter="url(#white-text-shadow)"
-        >
-          {/* Letra M: El asta izquierda desciende y hace un rizo en espiral hacia abajo */}
-          <path
-            d="M 102 230 L 102 284 C 102 316, 84 340, 64 324 C 48 308, 56 284, 76 284 C 92 284, 98 296, 100 306"
-            fill="none"
-            strokeWidth="7"
-          />
-          {/* Resto de la M */}
-          <path
-            d="M 102 230 L 126 280 L 150 230 L 150 286"
-            fill="none"
-            strokeWidth="7"
-          />
-
-          {/* Letra A de MAR */}
-          <path
-            d="M 166 286 L 188 226 L 210 286 M 172 270 L 204 270"
-            fill="none"
-            strokeWidth="7"
-          />
-
-          {/* Letra R de MAR: El asta derecha se prolonga en un amplio trazo ondulado hacia la derecha */}
-          <path
-            d="M 224 286 L 224 228 C 240 226, 260 226, 262 246 C 264 262, 246 266, 226 266 M 242 265 C 255 282, 275 288, 305 288 C 322 288, 336 284, 345 280"
-            fill="none"
-            strokeWidth="7"
-          />
-        </g>
-
-        {/* 6. Firma: by Lety Moreno (Caligrafía cursiva fluida auténtica) */}
-        <g
-          transform="translate(180, 395) rotate(-3)"
-          filter="url(#white-text-shadow)"
-          textAnchor="middle"
-        >
-          {/* Trazo "by" en cursiva */}
-          <text
-            x="-85"
-            y="-6"
-            fill="#ffffff"
-            fontFamily="'Brush Script MT', 'Dancing Script', 'Caveat', cursive, Georgia, serif"
-            fontSize="26"
-            fontStyle="italic"
-            fontWeight="400"
-          >
-            by
-          </text>
-
-          {/* Firma caligráfica "Lety Moreno" con trazos continuos */}
-          <text
-            x="20"
-            y="2"
-            fill="#ffffff"
-            fontFamily="'Brush Script MT', 'Dancing Script', 'Caveat', cursive, Georgia, serif"
-            fontSize="46"
-            fontStyle="italic"
-            fontWeight="bold"
-            letterSpacing="1"
-          >
-            Lety Moreno
-          </text>
-
-          {/* Floreo sutil bajo la firma como en el original */}
-          <path
-            d="M -70 18 C -30 24, 40 22, 110 14"
-            fill="none"
-            stroke="#ffffff"
-            strokeWidth="2.2"
-            strokeLinecap="round"
-            opacity="0.8"
-          />
-        </g>
-      </svg>
+            {/* Subrayado caligráfico */}
+            <path
+              d="M 110 718 C 190 735, 340 730, 490 705"
+              fill="none"
+              stroke="#ffffff"
+              strokeWidth="4.5"
+              strokeLinecap="round"
+              opacity="0.95"
+            />
+          </g>
+        </svg>
+      </div>
     </div>
   );
 }
+
+// Alias de retrocompatibilidad
+export const LogoCartaSantaMaria = PortadaSantaMaria;

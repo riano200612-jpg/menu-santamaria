@@ -400,6 +400,20 @@ export function ResumenPedido({
                         >
                           {nombrePlato}
                         </h4>
+
+                        {plato.modificacionesSeleccionadas && plato.modificacionesSeleccionadas.length > 0 && (
+                          <div
+                            className={`mt-1 text-xs font-medium flex items-center gap-1.5 flex-wrap ${
+                              darkMode ? 'text-amber-300' : 'text-amber-900'
+                            }`}
+                          >
+                            <Sparkles className="w-3.5 h-3.5 text-amber-500 shrink-0" />
+                            <span>
+                              <strong>{idioma === 'es' ? 'Personalizado:' : 'Customized:'}</strong>{' '}
+                              {plato.modificacionesSeleccionadas.join(' • ')}
+                            </span>
+                          </div>
+                        )}
                       </div>
 
                       {/* Botón eliminar plato */}

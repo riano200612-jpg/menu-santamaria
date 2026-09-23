@@ -239,7 +239,7 @@ export function BannerPromociones({
 
               <p
                 id="promo-descripcion"
-                className={`text-xs sm:text-sm leading-relaxed ${
+                className={`text-[14.5px] sm:text-[15.5px] leading-[1.65] ${
                   darkMode ? 'text-stone-200' : 'text-stone-700'
                 }`}
               >

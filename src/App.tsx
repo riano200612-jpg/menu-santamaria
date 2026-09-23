@@ -26,6 +26,9 @@ import {
   QrCode,
   Share2,
   Copy,
+  ChefHat,
+  RotateCcw,
+  Clock,
 } from 'lucide-react';
 import {
   Idioma,
@@ -35,6 +38,7 @@ import {
   ItemPedido,
 } from './types';
 import { PLATOS_MENU } from './data/menu';
+import { obtenerModificacionesParaPlato } from './data/modificacionesIngredientes';
 import {
   TEXTOS_UI,
   CATEGORIAS_SELECTOR_I18N,
@@ -48,7 +52,7 @@ import { RestauranteHistoria } from './components/RestauranteHistoria';
 import { RatingEstrellas } from './components/RatingEstrellas';
 import { ToastNotificacion, ToastNotificacionData } from './components/ToastNotificacion';
 import { SeccionRecomendados } from './components/SeccionRecomendados';
-import { LogoCartaSantaMaria } from './components/LogoSantaMaria';
+import { PortadaSantaMaria } from './components/LogoSantaMaria';
 
 // Exportación de tipos y platos para compatibilidad con pruebas o extensiones
 export * from './types';
@@ -74,16 +78,18 @@ export function Entrada({
 }: {
   plato: PlatoEntrada;
   idioma: Idioma;
-  onOrdenar: (plato: PlatoEntrada, sourceElement?: HTMLElement) => void;
+  onOrdenar?: (plato: PlatoEntrada, sourceElement?: HTMLElement) => void;
   onVerDetalles?: (plato: PlatoEntrada) => void;
   darkMode?: boolean;
 }) {
-  const [animando, setAnimando] = useState<boolean>(false);
   const [opcionSeleccionadaId, setOpcionSeleccionadaId] = useState<string>(() => {
     return plato.opcionesPresentacion && plato.opcionesPresentacion.length > 0
       ? plato.opcionesPresentacion[0].id
       : '';
   });
+  const [modificacionesActivas, setModificacionesActivas] = useState<string[]>([]);
+  const [hoveredModId, setHoveredModId] = useState<string | null>(null);
+  const [popoverModId, setPopoverModId] = useState<string | null>(null);
   const t = TEXTOS_UI[idioma];
 
   const opcionSeleccionada =
@@ -96,26 +102,63 @@ export function Entrada({
     ? opcionSeleccionada.precioNumerico
     : plato.precioNumerico;
 
-  const handleOrdenar = (e: React.MouseEvent<HTMLButtonElement>) => {
-    setAnimando(true);
-    const platoParaOrdenar: PlatoEntrada = opcionSeleccionada
-      ? {
-          ...plato,
-          id: `${plato.id}-${opcionSeleccionada.id}`,
-          nombre: {
-            es: `${plato.nombre.es} (${opcionSeleccionada.nombre.es})`,
-            en: `${plato.nombre.en} (${opcionSeleccionada.nombre.en})`,
-          },
-          precioNumerico: opcionSeleccionada.precioNumerico,
-          presentacion: opcionSeleccionada.nombre,
-        }
-      : plato;
+  const modificacionesDisponibles = useMemo(
+    () => obtenerModificacionesParaPlato(plato),
+    [plato]
+  );
 
-    onOrdenar(platoParaOrdenar, e.currentTarget);
-    setTimeout(() => {
-      setAnimando(false);
-    }, 500);
+  const modificacionesSeleccionadasObjs = useMemo(
+    () => modificacionesDisponibles.filter((m) => modificacionesActivas.includes(m.id)),
+    [modificacionesDisponibles, modificacionesActivas]
+  );
+
+  const tiempoExtraTotalMinutos = useMemo(() => {
+    return modificacionesSeleccionadasObjs.reduce(
+      (acc, m) => acc + (m.tiempoExtraMinutos || 0),
+      0
+    );
+  }, [modificacionesSeleccionadasObjs]);
+
+  const modificacionesLabels = useMemo(
+    () => modificacionesSeleccionadasObjs.map((m) => m.label[idioma]),
+    [modificacionesSeleccionadasObjs, idioma]
+  );
+
+  const toggleModificacion = (modId: string) => {
+    setModificacionesActivas((prev) =>
+      prev.includes(modId) ? prev.filter((id) => id !== modId) : [...prev, modId]
+    );
   };
+
+  const resetModificaciones = () => {
+    setModificacionesActivas([]);
+  };
+
+  // Plato actualizado con las personalizaciones seleccionadas
+  const platoPersonalizado: PlatoEntrada = useMemo(() => {
+    const listaEs = modificacionesSeleccionadasObjs.map((m) => m.label.es);
+    const listaEn = modificacionesSeleccionadasObjs.map((m) => m.label.en);
+
+    return {
+      ...plato,
+      precioNumerico: precioActual,
+      descripcion: {
+        es:
+          listaEs.length > 0
+            ? `${plato.descripcion.es} [Personalización: ${listaEs.join(', ')}]`
+            : plato.descripcion.es,
+        en:
+          listaEn.length > 0
+            ? `${plato.descripcion.en} [Customization: ${listaEn.join(', ')}]`
+            : plato.descripcion.en,
+      },
+      modificacionesSeleccionadas: modificacionesLabels,
+      notasPersonalizacion: {
+        es: listaEs.join(', '),
+        en: listaEn.join(', '),
+      },
+    };
+  }, [plato, precioActual, modificacionesSeleccionadasObjs, modificacionesLabels]);
 
   const nombrePlato = plato.nombre[idioma];
   const descripcionPlato = plato.descripcion[idioma];
@@ -125,18 +168,10 @@ export function Entrada({
   return (
     <article
       id={`entrada-${plato.id}`}
-      className={`rounded-xl p-5 shadow-xs space-y-3 transition-all duration-300 ease-out transform hover:scale-[1.02] ${
+      className={`rounded-xl p-5 shadow-xs space-y-3.5 transition-all duration-300 ease-out transform hover:scale-[1.01] ${
         darkMode
-          ? 'bg-stone-900/90 text-stone-100 hover:shadow-lg hover:shadow-black/50'
-          : 'bg-amber-50/70 text-stone-800 hover:shadow-md hover:shadow-amber-950/10'
-      } ${
-        animando
-          ? darkMode
-            ? 'scale-[1.02] border border-amber-400/80 ring-2 ring-amber-400/30 shadow-lg shadow-amber-500/10 animate-pulse'
-            : 'scale-[1.02] border border-amber-500 ring-2 ring-amber-400/50 shadow-md shadow-amber-500/20 animate-pulse'
-          : darkMode
-            ? 'border border-amber-900/40 hover:border-amber-600/70'
-            : 'border border-amber-200/90 hover:border-amber-400/80'
+          ? 'bg-stone-900/90 text-stone-100 hover:shadow-lg hover:shadow-black/50 border border-amber-900/40 hover:border-amber-600/70'
+          : 'bg-amber-50/70 text-stone-800 hover:shadow-md hover:shadow-amber-950/10 border border-amber-200/90 hover:border-amber-400/80'
       }`}
     >
       <div
@@ -149,7 +184,7 @@ export function Entrada({
           <button
             type="button"
             id={`nombre-${plato.id}`}
-            onClick={() => onVerDetalles?.(plato)}
+            onClick={() => onVerDetalles?.(platoPersonalizado)}
             className={`text-xl sm:text-2xl font-serif font-bold transition text-left cursor-pointer group flex items-center gap-2 focus:outline-none ${
               darkMode
                 ? 'text-amber-200 hover:text-amber-400'
@@ -172,6 +207,7 @@ export function Entrada({
               }`}
             />
           </button>
+
           <span
             className={`text-xs uppercase font-semibold tracking-wider px-2.5 py-0.5 rounded-md border ${
               darkMode
@@ -181,6 +217,23 @@ export function Entrada({
           >
             {etiquetaPlato}
           </span>
+
+          {/* Badge de plato personalizado activo */}
+          {modificacionesActivas.length > 0 && (
+            <span
+              id={`badge-personalizado-${plato.id}`}
+              className={`text-xs font-semibold px-2 py-0.5 rounded-md border flex items-center gap-1 animate-in fade-in zoom-in duration-200 ${
+                darkMode
+                  ? 'bg-amber-500/20 text-amber-300 border-amber-500/50'
+                  : 'bg-amber-200/90 text-amber-950 border-amber-400'
+              }`}
+            >
+              <Sparkles className="w-3 h-3 text-amber-400" />
+              <span>{t.platoModificadoBadge}</span>
+              <span className="font-bold">({modificacionesActivas.length})</span>
+            </span>
+          )}
+
           {plato.presentacion && (
             <span
               className={`text-xs font-semibold px-2 py-0.5 rounded-md border ${
@@ -193,6 +246,7 @@ export function Entrada({
             </span>
           )}
         </div>
+
         <span
           id={`precio-${plato.id}`}
           className={`text-base sm:text-lg font-bold font-mono shrink-0 ${
@@ -202,14 +256,82 @@ export function Entrada({
           {precioFormateado}
         </span>
       </div>
-      <p
-        id={`descripcion-${plato.id}`}
-        className={`text-sm sm:text-[15px] leading-relaxed ${
-          darkMode ? 'text-stone-200' : 'text-stone-800 font-normal'
-        }`}
-      >
-        {descripcionPlato}
-      </p>
+
+      {/* Información descriptiva del plato con actualización reactiva */}
+      <div className="space-y-2">
+        <p
+          id={`descripcion-${plato.id}`}
+          className={`text-[15.5px] sm:text-[16.5px] leading-[1.7] sm:leading-[1.75] font-normal tracking-[0.01em] ${
+            darkMode ? 'text-stone-200' : 'text-stone-850'
+          }`}
+        >
+          {descripcionPlato}
+        </p>
+
+        {/* Notificación informativa con la preparación actualizada */}
+        {modificacionesActivas.length > 0 && (
+          <div
+            id={`aviso-modificaciones-${plato.id}`}
+            className={`p-3 rounded-xl border text-xs sm:text-sm flex items-start gap-2.5 transition-all animate-in fade-in slide-in-from-top-1 duration-200 ${
+              darkMode
+                ? 'bg-amber-950/40 border-amber-500/50 text-amber-200'
+                : 'bg-amber-100/90 border-amber-300 text-amber-950 shadow-xs'
+            }`}
+            role="status"
+            aria-live="polite"
+          >
+            <Sparkles className="w-4 h-4 text-amber-500 shrink-0 mt-0.5" />
+            <div className="flex-1 space-y-1.5">
+              <div className="flex items-center justify-between gap-2 flex-wrap">
+                <span className="font-bold text-amber-500">
+                  {t.preparacionPersonalizada}
+                </span>
+                <span className="text-[11px] font-mono opacity-80">
+                  {modificacionesActivas.length}{' '}
+                  {modificacionesActivas.length === 1
+                    ? (idioma === 'es' ? 'cambio activo' : 'active change')
+                    : (idioma === 'es' ? 'cambios activos' : 'active changes')}
+                </span>
+              </div>
+              <div className="flex flex-wrap items-center gap-1.5">
+                {modificacionesSeleccionadasObjs.map((mod, idx) => (
+                  <span
+                    key={idx}
+                    className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md text-xs font-semibold border ${
+                      darkMode
+                        ? 'bg-stone-900/90 text-amber-300 border-amber-500/40'
+                        : 'bg-white text-stone-900 border-amber-300 shadow-2xs'
+                    }`}
+                  >
+                    <Check className="w-3 h-3 text-amber-500 stroke-[3]" />
+                    <span>{mod.label[idioma]}</span>
+                    {mod.impactoPreparacion && (
+                      <span className="text-[10px] opacity-80 font-mono">
+                        ({mod.impactoPreparacion[idioma]})
+                      </span>
+                    )}
+                  </span>
+                ))}
+              </div>
+
+              {/* Tiempo extra total estimado en cocina */}
+              {tiempoExtraTotalMinutos > 0 && (
+                <div
+                  className={`mt-1 inline-flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-lg border ${
+                    darkMode
+                      ? 'bg-amber-500/15 text-amber-300 border-amber-500/30'
+                      : 'bg-amber-200/80 text-amber-950 border-amber-300'
+                  }`}
+                >
+                  <Clock className="w-3.5 h-3.5 text-amber-500" />
+                  <span>{t.tiempoTotalModificaciones}</span>
+                  <span className="font-bold font-mono">+{tiempoExtraTotalMinutos} min</span>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+      </div>
 
       {/* Selector de opciones de presentación si existen */}
       {plato.opcionesPresentacion && plato.opcionesPresentacion.length > 0 && (
@@ -248,6 +370,290 @@ export function Entrada({
         </div>
       )}
 
+      {/* SECCIÓN DE INGREDIENTES Y PERSONALIZACIÓN */}
+      <div
+        id={`seccion-ingredientes-${plato.id}`}
+        className={`my-3.5 sm:my-4 p-4 sm:p-4.5 rounded-2xl border space-y-3 sm:space-y-3.5 transition-all ${
+          darkMode
+            ? 'bg-stone-950/40 border-stone-800/80'
+            : 'bg-white/70 border-amber-200/80 shadow-2xs'
+        }`}
+      >
+        <div className="flex items-center justify-between gap-2 flex-wrap">
+          <div className="flex items-center gap-2">
+            <div
+              className={`p-1.5 rounded-lg ${
+                darkMode
+                  ? 'bg-amber-500/20 text-amber-400 border border-amber-500/30'
+                  : 'bg-amber-100 text-amber-900 border border-amber-300'
+              }`}
+            >
+              <ChefHat className="w-4 h-4" />
+            </div>
+            <div>
+              <span
+                className={`text-xs sm:text-sm font-bold tracking-wide uppercase ${
+                  darkMode ? 'text-amber-300' : 'text-amber-950'
+                }`}
+              >
+                {t.seccionIngredientes}
+              </span>
+            </div>
+          </div>
+
+          {modificacionesActivas.length > 0 && (
+            <motion.button
+              type="button"
+              id={`btn-reset-mod-${plato.id}`}
+              onClick={resetModificaciones}
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.94 }}
+              transition={{ type: 'spring', stiffness: 400, damping: 22 }}
+              className={`text-xs flex items-center gap-1.5 transition-colors cursor-pointer px-2.5 py-1 rounded-lg border font-medium ${
+                darkMode
+                  ? 'text-stone-300 hover:text-amber-300 bg-stone-900 border-stone-700 hover:border-amber-500/50'
+                  : 'text-stone-700 hover:text-amber-950 bg-stone-100 border-stone-300 hover:border-amber-400'
+              }`}
+              title={t.restablecerReceta}
+            >
+              <RotateCcw className="w-3.5 h-3.5 text-amber-500" />
+              <span>{t.recetaEstandar}</span>
+            </motion.button>
+          )}
+        </div>
+
+        <p
+          className={`text-xs leading-relaxed ${
+            darkMode ? 'text-stone-400' : 'text-stone-600'
+          }`}
+        >
+          {t.subtituloIngredientes}
+        </p>
+
+        {/* Botones de alternancia de modificaciones comunes (ej. Sin cebolla, Salsa extra) */}
+        <div
+          className="flex items-center gap-2 sm:gap-2.5 flex-wrap"
+          role="group"
+          aria-label={t.seccionIngredientes}
+        >
+          {modificacionesDisponibles.map((mod) => {
+            const activa = modificacionesActivas.includes(mod.id);
+            const isPopoverOpen = popoverModId === mod.id || hoveredModId === mod.id;
+
+            return (
+              <div
+                key={mod.id}
+                className="relative inline-flex"
+                onMouseEnter={() => setHoveredModId(mod.id)}
+                onMouseLeave={() =>
+                  setHoveredModId((prev) => (prev === mod.id ? null : prev))
+                }
+              >
+                <motion.button
+                  type="button"
+                  id={`btn-mod-${plato.id}-${mod.id}`}
+                  aria-pressed={activa}
+                  aria-haspopup="dialog"
+                  aria-expanded={isPopoverOpen}
+                  onClick={() => toggleModificacion(mod.id)}
+                  whileHover={{ scale: 1.03 }}
+                  whileTap={{ scale: 0.93 }}
+                  animate={activa ? { scale: [1, 1.06, 1] } : { scale: 1 }}
+                  transition={{
+                    type: 'spring',
+                    stiffness: 420,
+                    damping: 22,
+                    mass: 0.8,
+                  }}
+                  className={`text-xs sm:text-[13px] px-3 py-1.5 rounded-lg font-medium transition-colors duration-200 cursor-pointer flex items-center gap-1.5 border select-none ${
+                    activa
+                      ? darkMode
+                        ? 'bg-amber-500 text-stone-950 font-bold border-amber-400 shadow-xs'
+                        : 'bg-amber-500 text-stone-950 font-bold border-amber-500 shadow-xs'
+                      : darkMode
+                        ? 'bg-stone-900/90 text-stone-300 border-stone-800 hover:border-amber-500/60 hover:text-stone-100'
+                        : 'bg-white text-stone-700 border-stone-200 hover:border-amber-400 hover:text-stone-950'
+                  }`}
+                >
+                  {activa ? (
+                    <motion.span
+                      initial={{ scale: 0, rotate: -25 }}
+                      animate={{ scale: 1, rotate: 0 }}
+                      transition={{ type: 'spring', stiffness: 500, damping: 25 }}
+                      className="inline-flex items-center justify-center shrink-0"
+                    >
+                      <Check className="w-3.5 h-3.5 text-stone-950 stroke-[3]" />
+                    </motion.span>
+                  ) : (
+                    <span className="w-1.5 h-1.5 rounded-full bg-amber-500/60 shrink-0" />
+                  )}
+                  <span>{mod.label[idioma]}</span>
+
+                  {/* Botón de ayuda/información rápida para abrir popover en móvil o desktop */}
+                  <span
+                    role="button"
+                    tabIndex={0}
+                    id={`btn-info-mod-${plato.id}-${mod.id}`}
+                    aria-label={`${t.impactoPreparacion}: ${mod.label[idioma]}`}
+                    title={`${t.impactoPreparacion}: ${mod.label[idioma]}`}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setPopoverModId((prev) => (prev === mod.id ? null : mod.id));
+                    }}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        e.stopPropagation();
+                        e.preventDefault();
+                        setPopoverModId((prev) => (prev === mod.id ? null : mod.id));
+                      }
+                    }}
+                    className={`p-0.5 rounded-full transition-transform hover:scale-120 ml-0.5 cursor-pointer ${
+                      activa
+                        ? 'text-stone-900/70 hover:text-stone-950'
+                        : darkMode
+                          ? 'text-stone-400 hover:text-amber-300'
+                          : 'text-stone-500 hover:text-amber-800'
+                    }`}
+                  >
+                    <Info className="w-3 h-3" />
+                  </span>
+                </motion.button>
+
+                {/* Tooltip / Popover informativo flotante con animación framer-motion */}
+                <AnimatePresence>
+                  {isPopoverOpen && (
+                    <motion.div
+                      id={`tooltip-mod-${plato.id}-${mod.id}`}
+                      role="tooltip"
+                      initial={{ opacity: 0, y: 8, scale: 0.94 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      exit={{ opacity: 0, y: 5, scale: 0.94 }}
+                      transition={{ duration: 0.16, ease: 'easeOut' }}
+                      className={`absolute bottom-full left-1/2 -translate-x-1/2 mb-2.5 w-64 sm:w-72 p-3.5 rounded-xl shadow-xl z-50 text-left pointer-events-auto border backdrop-blur-md ${
+                        darkMode
+                          ? 'bg-stone-900/95 text-stone-100 border-amber-500/50 shadow-black/80'
+                          : 'bg-white/95 text-stone-900 border-amber-300 shadow-amber-950/20'
+                      }`}
+                    >
+                      <div className="flex items-start justify-between gap-1.5 mb-1.5">
+                        <span className="font-bold text-xs sm:text-sm flex items-center gap-1.5 text-amber-500">
+                          <Sparkles className="w-3.5 h-3.5 shrink-0" />
+                          {mod.label[idioma]}
+                        </span>
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setPopoverModId(null);
+                            setHoveredModId(null);
+                          }}
+                          className={`p-0.5 rounded transition cursor-pointer ${
+                            darkMode
+                              ? 'text-stone-400 hover:text-stone-200'
+                              : 'text-stone-500 hover:text-stone-800'
+                          }`}
+                          aria-label={t.cerrar}
+                        >
+                          <X className="w-3.5 h-3.5" />
+                        </button>
+                      </div>
+
+                      {/* Tiempo extra de preparación */}
+                      <div
+                        className={`flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-semibold mb-2 border ${
+                          (mod.tiempoExtraMinutos ?? 0) > 0
+                            ? darkMode
+                              ? 'bg-amber-950/70 text-amber-300 border-amber-600/50'
+                              : 'bg-amber-100 text-amber-950 border-amber-300'
+                            : darkMode
+                              ? 'bg-stone-800/80 text-emerald-400 border-emerald-500/30'
+                              : 'bg-emerald-50 text-emerald-900 border-emerald-300'
+                        }`}
+                      >
+                        <Clock className="w-3.5 h-3.5 shrink-0" />
+                        <span>
+                          <strong>{t.tiempoExtraEstimado}</strong>{' '}
+                          {mod.impactoPreparacion?.[idioma] ||
+                            ((mod.tiempoExtraMinutos ?? 0) > 0
+                              ? `+${mod.tiempoExtraMinutos} min`
+                              : t.sinDemoraExtra)}
+                        </span>
+                      </div>
+
+                      {/* Explicación del impacto en la cocina */}
+                      {mod.detalleImpacto && (
+                        <p
+                          className={`text-xs leading-relaxed ${
+                            darkMode ? 'text-stone-300' : 'text-stone-600'
+                          }`}
+                        >
+                          {mod.detalleImpacto[idioma]}
+                        </p>
+                      )}
+
+                      {/* Flechita indicadora del popover hacia el botón */}
+                      <div
+                        className={`absolute top-full left-1/2 -translate-x-1/2 -mt-1 w-2.5 h-2.5 rotate-45 border-r border-b ${
+                          darkMode
+                            ? 'bg-stone-900 border-amber-500/50'
+                            : 'bg-white border-amber-300'
+                        }`}
+                      />
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Separador de puntos y línea divisoria sutil */}
+        <div
+          id={`separador-ingredientes-${plato.id}`}
+          className="pt-1.5 pb-0.5 flex items-center gap-2.5"
+          aria-hidden="true"
+        >
+          <div
+            className={`h-px flex-1 ${
+              darkMode ? 'bg-stone-800/80' : 'bg-amber-200/80'
+            }`}
+          />
+          <div className="flex items-center gap-1.5 opacity-60">
+            <span
+              className={`w-1 h-1 rounded-full ${
+                darkMode ? 'bg-amber-500/70' : 'bg-amber-600/70'
+              }`}
+            />
+            <span
+              className={`w-1.5 h-1.5 rounded-full ${
+                darkMode ? 'bg-amber-400' : 'bg-amber-600'
+              }`}
+            />
+            <span
+              className={`w-1 h-1 rounded-full ${
+                darkMode ? 'bg-amber-500/70' : 'bg-amber-600/70'
+              }`}
+            />
+          </div>
+          <div
+            className={`h-px flex-1 ${
+              darkMode ? 'bg-stone-800/80' : 'bg-amber-200/80'
+            }`}
+          />
+        </div>
+
+        {/* Texto explicativo inferior con guía e información adicional */}
+        <p
+          id={`texto-explicativo-ingredientes-${plato.id}`}
+          className={`text-[11.5px] sm:text-xs leading-relaxed flex items-start sm:items-center gap-2 ${
+            darkMode ? 'text-stone-400' : 'text-stone-600'
+          }`}
+        >
+          <Info className="w-3.5 h-3.5 text-amber-500 shrink-0 mt-0.5 sm:mt-0" />
+          <span>{t.notaExplicativaIngredientes}</span>
+        </p>
+      </div>
+
       {/* Sistema de calificación por estrellas con persistencia local */}
       <RatingEstrellas
         platoId={plato.id}
@@ -256,42 +662,20 @@ export function Entrada({
         darkMode={darkMode}
       />
 
-      <div className="flex items-center justify-between pt-1">
+      {/* Acciones del plato: Nutrición & Maridaje */}
+      <div className="flex items-center justify-start pt-2 gap-3 flex-wrap">
         <button
           type="button"
           id={`btn-detalles-${plato.id}`}
-          onClick={() => onVerDetalles?.(plato)}
-          className={`inline-flex items-center gap-1.5 text-xs sm:text-sm font-medium transition cursor-pointer ${
+          onClick={() => onVerDetalles?.(platoPersonalizado)}
+          className={`inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold transition cursor-pointer py-1.5 px-3 rounded-lg border ${
             darkMode
-              ? 'text-amber-400/80 hover:text-amber-300'
-              : 'text-amber-800 hover:text-amber-950 font-semibold'
+              ? 'text-amber-300 hover:text-amber-200 bg-amber-500/10 hover:bg-amber-500/20 border-amber-500/30'
+              : 'text-amber-900 hover:text-amber-950 bg-amber-100/80 hover:bg-amber-200/90 border-amber-300/80'
           }`}
         >
-          <Sparkles className="w-3.5 h-3.5" />
+          <Sparkles className="w-4 h-4 text-amber-500" />
           <span>{t.verNutricionMaridaje}</span>
-        </button>
-
-        <button
-          type="button"
-          id={`btn-ordenar-${plato.id}`}
-          onClick={handleOrdenar}
-          className={`inline-flex items-center gap-1.5 px-4 py-2 font-semibold text-xs sm:text-sm rounded-lg transition-all shadow-sm cursor-pointer active:scale-95 ${
-            animando
-              ? 'bg-amber-400 text-stone-950 scale-105'
-              : 'bg-amber-500 hover:bg-amber-400 text-stone-950'
-          }`}
-        >
-          {animando ? (
-            <>
-              <Check className="w-4 h-4" />
-              <span>{t.ordenado}</span>
-            </>
-          ) : (
-            <>
-              <Plus className="w-4 h-4" />
-              <span>{t.ordenar}</span>
-            </>
-          )}
         </button>
       </div>
     </article>
@@ -308,7 +692,7 @@ export function ModalDetallePlato({
   plato: PlatoEntrada;
   idioma: Idioma;
   onCerrar: () => void;
-  onOrdenar: (plato: PlatoEntrada, sourceElement?: HTMLElement) => void;
+  onOrdenar?: (plato: PlatoEntrada, sourceElement?: HTMLElement) => void;
   darkMode?: boolean;
 }) {
   const [opcionSeleccionadaId, setOpcionSeleccionadaId] = useState<string>(() => {
@@ -415,14 +799,46 @@ export function ModalDetallePlato({
 
         {/* Descripción del plato */}
         <p
-          className={`text-sm sm:text-base leading-relaxed italic p-3.5 rounded-xl border ${
+          className={`text-[16px] sm:text-[17.5px] leading-[1.75] italic p-4 rounded-xl border ${
             darkMode
-              ? 'text-stone-300 bg-stone-950/40 border-stone-800/60'
-              : 'text-stone-700 bg-amber-50/80 border-amber-200/80'
+              ? 'text-stone-200 bg-stone-950/40 border-stone-800/60'
+              : 'text-stone-800 bg-amber-50/80 border-amber-200/80'
           }`}
         >
           "{descripcionPlato}"
         </p>
+
+        {/* Aviso de personalización si el plato cuenta con modificaciones */}
+        {plato.modificacionesSeleccionadas && plato.modificacionesSeleccionadas.length > 0 && (
+          <div
+            id="modal-aviso-modificaciones"
+            className={`p-3.5 rounded-xl border text-xs sm:text-sm flex items-start gap-2.5 ${
+              darkMode
+                ? 'bg-amber-950/40 border-amber-500/50 text-amber-200'
+                : 'bg-amber-100/90 text-amber-950 border-amber-300'
+            }`}
+          >
+            <Sparkles className="w-4 h-4 text-amber-500 shrink-0 mt-0.5" />
+            <div className="space-y-1">
+              <p className="font-bold text-amber-500">{t.preparacionPersonalizada}</p>
+              <div className="flex flex-wrap gap-1.5 mt-1">
+                {plato.modificacionesSeleccionadas.map((mod, idx) => (
+                  <span
+                    key={idx}
+                    className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md text-xs font-semibold border ${
+                      darkMode
+                        ? 'bg-stone-900 text-amber-300 border-amber-500/40'
+                        : 'bg-white text-stone-900 border-amber-300'
+                    }`}
+                  >
+                    <Check className="w-3 h-3 text-amber-500 stroke-[3]" />
+                    <span>{mod}</span>
+                  </span>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Selector de opciones de presentación en el Modal si existen */}
         {plato.opcionesPresentacion && plato.opcionesPresentacion.length > 0 && (
@@ -659,7 +1075,7 @@ export function ModalDetallePlato({
             {maridaje.bebida[idioma]}
           </p>
           <p
-            className={`text-xs sm:text-sm leading-relaxed ${
+            className={`text-sm sm:text-base leading-[1.65] ${
               darkMode ? 'text-stone-300' : 'text-stone-700'
             }`}
           >
@@ -677,37 +1093,13 @@ export function ModalDetallePlato({
             type="button"
             id="btn-modal-cerrar"
             onClick={onCerrar}
-            className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition cursor-pointer ${
+            className={`px-6 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition cursor-pointer ${
               darkMode
-                ? 'text-stone-300 hover:text-white bg-stone-800 hover:bg-stone-700'
-                : 'text-stone-700 hover:text-stone-950 bg-stone-100 hover:bg-stone-200 border border-stone-200'
+                ? 'text-stone-200 hover:text-white bg-stone-800 hover:bg-stone-700 border border-stone-700'
+                : 'text-stone-800 hover:text-stone-950 bg-stone-100 hover:bg-stone-200 border border-stone-300'
             }`}
           >
             {t.cerrar}
-          </button>
-          <button
-            type="button"
-            id="btn-modal-ordenar"
-            onClick={(e) => {
-              const platoParaOrdenar: PlatoEntrada = opcionSeleccionada
-                ? {
-                    ...plato,
-                    id: `${plato.id}-${opcionSeleccionada.id}`,
-                    nombre: {
-                      es: `${plato.nombre.es} (${opcionSeleccionada.nombre.es})`,
-                      en: `${plato.nombre.en} (${opcionSeleccionada.nombre.en})`,
-                    },
-                    precioNumerico: opcionSeleccionada.precioNumerico,
-                    presentacion: opcionSeleccionada.nombre,
-                  }
-                : plato;
-              onOrdenar(platoParaOrdenar, e.currentTarget);
-              onCerrar();
-            }}
-            className="inline-flex items-center gap-1.5 px-4 py-2 bg-amber-500 hover:bg-amber-400 text-stone-950 font-bold text-xs sm:text-sm rounded-xl transition shadow-md cursor-pointer active:scale-95"
-          >
-            <Plus className="w-4 h-4" />
-            <span>{t.ordenarEstePlato}</span>
           </button>
         </div>
       </div>
@@ -1036,30 +1428,40 @@ export default function App() {
   }, [frecuenciaPedidos]);
 
   const handleOrdenar = (plato: PlatoEntrada, sourceElement?: HTMLElement) => {
-    const cantActual = pedidos[plato.id]?.cantidad ?? 0;
+    const key =
+      plato.modificacionesSeleccionadas && plato.modificacionesSeleccionadas.length > 0
+        ? `${plato.id}__custom__${plato.modificacionesSeleccionadas.join('_')}`
+        : plato.id;
+    const platoConKey: PlatoEntrada = {
+      ...plato,
+      id: key,
+    };
+
+    const cantActual = pedidos[key]?.cantidad ?? 0;
     const nuevaCantidad = cantActual + 1;
 
     setPedidos((prev) => {
-      const actual = prev[plato.id];
+      const actual = prev[key];
       return {
         ...prev,
-        [plato.id]: {
-          plato,
+        [key]: {
+          plato: platoConKey,
           cantidad: (actual ? actual.cantidad : 0) + 1,
         },
       };
     });
 
-    // Registrar e incrementar frecuencia de adición para recomendaciones inteligentes
+    // Registrar e incrementar frecuencia de adición para recomendaciones inteligentes usando baseId
+    const baseId = plato.id.split('__custom__')[0];
     setFrecuenciaPedidos((prev) => ({
       ...prev,
-      [plato.id]: (prev[plato.id] || 0) + 1,
+      [baseId]: (prev[baseId] || 0) + 1,
     }));
 
     // Confirmación visual mediante notificación tipo toast
     setToastNotificacion({
-      id: `toast-${plato.id}-${Date.now()}`,
-      plato,
+      id: `toast-${key}-${Date.now()}`,
+      plato: platoConKey,
       cantidad: nuevaCantidad,
       timestamp: Date.now(),
     });
@@ -1095,14 +1497,15 @@ export default function App() {
   };
 
   const handleIncrementarItem = (plato: PlatoEntrada) => {
-    const cantActual = pedidos[plato.id]?.cantidad ?? 0;
+    const key = plato.id;
+    const cantActual = pedidos[key]?.cantidad ?? 0;
     const nuevaCantidad = cantActual + 1;
 
     setPedidos((prev) => {
-      const actual = prev[plato.id];
+      const actual = prev[key];
       return {
         ...prev,
-        [plato.id]: {
+        [key]: {
           plato,
           cantidad: (actual ? actual.cantidad : 0) + 1,
         },
@@ -1110,13 +1513,14 @@ export default function App() {
     });
 
     // Incrementar frecuencia de adición para recomendaciones inteligentes
+    const baseId = plato.id.split('__custom__')[0];
     setFrecuenciaPedidos((prev) => ({
       ...prev,
-      [plato.id]: (prev[plato.id] || 0) + 1,
+      [baseId]: (prev[baseId] || 0) + 1,
     }));
 
     setToastNotificacion({
-      id: `toast-${plato.id}-${Date.now()}`,
+      id: `toast-${key}-${Date.now()}`,
       plato,
       cantidad: nuevaCantidad,
       timestamp: Date.now(),
@@ -1224,8 +1628,8 @@ export default function App() {
             : 'bg-white/95 border border-amber-200/90 shadow-xl shadow-amber-950/5 text-stone-900'
         }`}
       >
-        {/* Logo principal oficial de la portada de la carta pirata */}
-        <LogoCartaSantaMaria idioma={idioma} darkMode={darkMode} />
+        {/* Imagen de portada oficial optimizada del Restaurante · Bar Santa María del Mar by Lety Moreno */}
+        <PortadaSantaMaria idioma={idioma} darkMode={darkMode} />
 
         {/* Barra superior de controles: Selector de Idioma, Tema, QR y Totales */}
         <header
@@ -1288,75 +1692,69 @@ export default function App() {
               <span>{t.verQR}</span>
             </button>
 
-            {/* Badge de cantidad total de platos seleccionados con reacción visual al vuelo y apertura de ResumenPedido */}
-            <motion.button
-              type="button"
-              id="badge-total-seleccionados"
-              onClick={() => setMostrarResumen(true)}
-              animate={
-                badgeBump
-                  ? {
-                      scale: [1, 1.25, 0.94, 1.06, 1],
-                      boxShadow: [
-                        '0 0 0 rgba(245, 158, 11, 0)',
-                        '0 0 20px rgba(245, 158, 11, 0.85)',
-                        '0 0 0 rgba(245, 158, 11, 0)',
-                      ],
-                    }
-                  : { scale: 1 }
-              }
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              transition={{ duration: 0.45, ease: 'easeOut' }}
-              className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-semibold transition-colors duration-200 border cursor-pointer ${
-                totalSeleccionados > 0
-                  ? 'bg-amber-500 text-stone-950 border-amber-400 shadow-md hover:bg-amber-400'
-                  : darkMode
-                    ? 'bg-stone-800/70 text-stone-400 border-stone-700 hover:border-stone-600'
-                    : 'bg-stone-200/80 text-stone-600 border-stone-300 hover:border-stone-400'
-              }`}
-              title={t.verResumenPedido}
-              aria-label={t.verResumenPedido}
-            >
-              <ShoppingBag className="w-4 h-4" />
-              <span>
-                {totalSeleccionados}{' '}
-                {totalSeleccionados === 1 ? t.platoSingular : t.platoPlural}
-              </span>
-            </motion.button>
+            {/* Badge de cantidad total de platos seleccionados (solo si hay items seleccionados) */}
+            {totalSeleccionados > 0 && (
+              <motion.button
+                type="button"
+                id="badge-total-seleccionados"
+                onClick={() => setMostrarResumen(true)}
+                animate={
+                  badgeBump
+                    ? {
+                        scale: [1, 1.25, 0.94, 1.06, 1],
+                        boxShadow: [
+                          '0 0 0 rgba(245, 158, 11, 0)',
+                          '0 0 20px rgba(245, 158, 11, 0.85)',
+                          '0 0 0 rgba(245, 158, 11, 0)',
+                        ],
+                      }
+                    : { scale: 1 }
+                }
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                transition={{ duration: 0.45, ease: 'easeOut' }}
+                className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-semibold transition-colors duration-200 border cursor-pointer bg-amber-500 text-stone-950 border-amber-400 shadow-md hover:bg-amber-400"
+                title={t.verResumenPedido}
+                aria-label={t.verResumenPedido}
+              >
+                <ShoppingBag className="w-4 h-4" />
+                <span>
+                  {totalSeleccionados}{' '}
+                  {totalSeleccionados === 1 ? t.platoSingular : t.platoPlural}
+                </span>
+              </motion.button>
+            )}
 
-            {/* Etiqueta con el precio total acumulado que también permite abrir el resumen */}
-            <button
-              type="button"
-              id="badge-precio-total"
-              onClick={() => setMostrarResumen(true)}
-              className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-semibold transition-all duration-200 border cursor-pointer hover:scale-105 active:scale-95 ${
-                precioTotal > 0
-                  ? darkMode
+            {/* Etiqueta con el precio total acumulado (solo si es mayor a 0) */}
+            {precioTotal > 0 && (
+              <button
+                type="button"
+                id="badge-precio-total"
+                onClick={() => setMostrarResumen(true)}
+                className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-semibold transition-all duration-200 border cursor-pointer hover:scale-105 active:scale-95 ${
+                  darkMode
                     ? 'bg-amber-950/70 text-amber-300 border-amber-700/60 shadow-xs hover:bg-amber-900/80'
                     : 'bg-amber-100 text-amber-900 border-amber-300/80 shadow-xs hover:bg-amber-200'
-                  : darkMode
-                    ? 'bg-stone-850/60 text-stone-500 border-stone-800'
-                    : 'bg-stone-200/60 text-stone-500 border-stone-300'
-              }`}
-              title={t.verResumenPedido}
-              aria-label={t.verResumenPedido}
-            >
-              <span
-                className={`text-xs font-normal ${
-                  darkMode ? 'text-stone-400' : 'text-stone-600'
                 }`}
+                title={t.verResumenPedido}
+                aria-label={t.verResumenPedido}
               >
-                {t.totalAcumulado}
-              </span>
-              <span
-                className={`font-mono font-bold ${
-                  darkMode ? 'text-amber-300' : 'text-amber-900'
-                }`}
-              >
-                {formatearTotal(precioTotal, idioma)}
-              </span>
-            </button>
+                <span
+                  className={`text-xs font-normal ${
+                    darkMode ? 'text-stone-400' : 'text-stone-600'
+                  }`}
+                >
+                  {t.totalAcumulado}
+                </span>
+                <span
+                  className={`font-mono font-bold ${
+                    darkMode ? 'text-amber-300' : 'text-amber-900'
+                  }`}
+                >
+                  {formatearTotal(precioTotal, idioma)}
+                </span>
+              </button>
+            )}
           </div>
         </header>
 
@@ -1364,7 +1762,6 @@ export default function App() {
         <BannerPromociones
           idioma={idioma}
           darkMode={darkMode}
-          onOrdenarPlato={handleOrdenar}
           onVerDetallePlato={setPlatoDetalle}
         />
 
@@ -1381,7 +1778,7 @@ export default function App() {
               value={busqueda}
               onChange={(e) => setBusqueda(e.target.value)}
               placeholder={t.placeholderBuscar}
-              className={`w-full pl-10 pr-9 py-2.5 rounded-xl text-sm sm:text-base transition duration-200 focus:outline-none focus:ring-2 focus:ring-amber-500/50 ${
+              className={`w-full pl-10 pr-9 py-2.5 sm:py-3 rounded-xl text-base transition duration-200 focus:outline-none focus:ring-2 focus:ring-amber-500/50 ${
                 darkMode
                   ? 'bg-stone-950/60 border border-stone-800 text-stone-100 placeholder:text-stone-500 focus:border-amber-500/80'
                   : 'bg-amber-50/80 border border-amber-200 text-stone-900 placeholder:text-stone-400 focus:border-amber-400'
@@ -1412,7 +1809,7 @@ export default function App() {
                   role="tab"
                   aria-selected={estaSeleccionado}
                   onClick={() => setCategoriaSeleccionada(cat.id)}
-                  className={`px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all duration-200 cursor-pointer active:scale-95 border ${
+                  className={`px-3.5 sm:px-4 py-2 rounded-xl text-sm sm:text-base font-semibold transition-all duration-200 cursor-pointer active:scale-95 border ${
                     estaSeleccionado
                       ? 'bg-amber-500 text-stone-950 font-bold border-amber-400 shadow-xs'
                       : darkMode
@@ -1527,7 +1924,6 @@ export default function App() {
               idioma={idioma}
               darkMode={darkMode}
               categoriaFiltro={categoriaSeleccionada}
-              onOrdenar={handleOrdenar}
               onVerDetalles={(p) => setPlatoDetalle(p)}
             />
           )}
