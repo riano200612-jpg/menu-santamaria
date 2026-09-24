@@ -204,7 +204,7 @@ export function TicketSimplificado({
             type="button"
             id="btn-imprimir-ticket-ahora"
             onClick={handleImprimir}
-            className="inline-flex items-center gap-1.5 px-4 py-2 bg-amber-500 hover:bg-amber-400 text-stone-950 font-bold text-xs sm:text-sm rounded-xl transition shadow-md cursor-pointer active:scale-95"
+            className="inline-flex items-center gap-1.5 px-4 py-2 bg-[#8A0C13] hover:bg-[#720a10] text-white font-bold text-xs sm:text-sm rounded-xl transition shadow-md cursor-pointer active:scale-95"
             title={t.imprimirAhora}
           >
             <Printer className="w-4 h-4" />
@@ -221,8 +221,8 @@ export function TicketSimplificado({
         >
           {/* Cabecera del restaurante */}
           <div className="text-center space-y-1 pb-3 border-b-2 border-dashed border-stone-400">
-            <div className="flex items-center justify-center gap-1.5 text-amber-700 font-serif font-bold text-base sm:text-lg">
-              <Receipt className="w-4 h-4 text-amber-600 inline" />
+            <div className="flex items-center justify-center gap-1.5 text-[#8A0C13] font-serif font-bold text-base sm:text-lg">
+              <Receipt className="w-4 h-4 text-[#8A0C13] inline" />
               <span>SANTA MARÍA DEL MAR</span>
             </div>
             <p className="text-xs font-sans font-semibold text-stone-700">

@@ -107,23 +107,23 @@ export function BannerPromociones({
       aria-label={t.ofertasDelDiaTitulo}
       onMouseEnter={() => setHoverActivo(true)}
       onMouseLeave={() => setHoverActivo(false)}
-      className={`relative rounded-2xl overflow-hidden border transition-all duration-300 shadow-lg ${
+      className={`relative rounded-2xl overflow-hidden border transition-all duration-300 shadow-md ${
         darkMode
-          ? 'bg-gradient-to-r from-stone-900 via-amber-950/40 to-stone-900 border-amber-600/40 shadow-amber-950/30'
-          : 'bg-gradient-to-r from-amber-50 via-amber-100/70 to-amber-50 border-amber-300 shadow-amber-900/10'
+          ? 'bg-stone-900 border-[#8A0C13]/40 shadow-black/40'
+          : 'bg-white border-stone-200 shadow-stone-900/5'
       }`}
     >
       {/* Barra superior con encabezado de la oferta y controles */}
       <div
         className={`flex items-center justify-between px-4 py-2 border-b text-xs sm:text-sm font-semibold ${
           darkMode
-            ? 'border-amber-900/40 bg-stone-950/50 text-amber-300'
-            : 'border-amber-200 bg-amber-100/60 text-amber-900'
+            ? 'border-stone-800 bg-stone-950/50 text-rose-300'
+            : 'border-stone-200 bg-[#FBFBFB] text-[#374151]'
         }`}
       >
         <div className="flex items-center gap-2">
-          <div className="flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-amber-500/20 text-amber-400 font-bold border border-amber-500/30">
-            <Flame className="w-3.5 h-3.5 text-amber-400 animate-pulse" />
+          <div className="flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#8A0C13]/10 text-[#8A0C13] font-bold border border-[#8A0C13]/30">
+            <Flame className="w-3.5 h-3.5 text-[#8A0C13] animate-pulse" />
             <span id="badge-ofertas-titulo" className="uppercase tracking-wider text-xs">
               {t.ofertasDelDiaTitulo}
             </span>
@@ -133,11 +133,11 @@ export function BannerPromociones({
             id="badge-promo-categoria"
             className={`hidden sm:inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md text-xs uppercase font-bold border ${
               darkMode
-                ? 'bg-amber-900/30 text-amber-200 border-amber-700/50'
-                : 'bg-white text-amber-800 border-amber-200'
+                ? 'bg-stone-800 text-rose-300 border-[#8A0C13]/40'
+                : 'bg-white text-[#8A0C13] border-[#8A0C13]/30'
             }`}
           >
-            <Sparkles className="w-3 h-3 text-amber-400" />
+            <Sparkles className="w-3 h-3 text-[#8A0C13]" />
             <span>{promoActual.badge[idioma]}</span>
           </span>
         </div>
@@ -150,8 +150,8 @@ export function BannerPromociones({
             onClick={() => setPausaManual((prev) => !prev)}
             className={`p-1 rounded-md transition cursor-pointer ${
               darkMode
-                ? 'text-stone-400 hover:text-amber-300 hover:bg-stone-800'
-                : 'text-stone-600 hover:text-amber-900 hover:bg-amber-200/70'
+                ? 'text-stone-400 hover:text-rose-300 hover:bg-stone-800'
+                : 'text-[#374151] hover:text-[#8A0C13] hover:bg-[#8A0C13]/10'
             }`}
             title={pausaManual ? t.reanudarOfertas : t.pausarOfertas}
             aria-label={pausaManual ? t.reanudarOfertas : t.pausarOfertas}
@@ -165,8 +165,8 @@ export function BannerPromociones({
             onClick={handleAnterior}
             className={`p-1 rounded-md transition cursor-pointer ${
               darkMode
-                ? 'text-stone-400 hover:text-amber-300 hover:bg-stone-800'
-                : 'text-stone-600 hover:text-amber-900 hover:bg-amber-200/70'
+                ? 'text-stone-400 hover:text-rose-300 hover:bg-stone-800'
+                : 'text-[#374151] hover:text-[#8A0C13] hover:bg-[#8A0C13]/10'
             }`}
             title={t.ofertaAnterior}
             aria-label={t.ofertaAnterior}
@@ -176,7 +176,7 @@ export function BannerPromociones({
 
           <span
             id="contador-promociones"
-            className="text-xs font-mono px-1 font-bold text-amber-400"
+            className="text-xs font-mono px-1 font-bold text-[#8A0C13]"
           >
             {indiceActual + 1}/{totalPromociones}
           </span>
@@ -187,8 +187,8 @@ export function BannerPromociones({
             onClick={handleSiguiente}
             className={`p-1 rounded-md transition cursor-pointer ${
               darkMode
-                ? 'text-stone-400 hover:text-amber-300 hover:bg-stone-800'
-                : 'text-stone-600 hover:text-amber-900 hover:bg-amber-200/70'
+                ? 'text-stone-400 hover:text-rose-300 hover:bg-stone-800'
+                : 'text-[#374151] hover:text-[#8A0C13] hover:bg-[#8A0C13]/10'
             }`}
             title={t.ofertaSiguiente}
             aria-label={t.ofertaSiguiente}
@@ -221,7 +221,7 @@ export function BannerPromociones({
               <div className="flex items-center gap-2 flex-wrap">
                 <span
                   id="promo-badge-descuento"
-                  className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs sm:text-sm font-black tracking-wide bg-linear-to-r from-amber-500 to-amber-600 text-stone-950 shadow-xs"
+                  className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs sm:text-sm font-black tracking-wide bg-[#8A0C13] text-white shadow-xs"
                 >
                   <Percent className="w-3.5 h-3.5 stroke-[3]" />
                   <span>{promoActual.descuentoTexto[idioma]}</span>
@@ -240,7 +240,7 @@ export function BannerPromociones({
               <p
                 id="promo-descripcion"
                 className={`text-[14.5px] sm:text-[15.5px] leading-[1.65] ${
-                  darkMode ? 'text-stone-200' : 'text-stone-700'
+                  darkMode ? 'text-stone-300' : 'text-[#374151]'
                 }`}
               >
                 {promoActual.descripcion[idioma]}
@@ -250,10 +250,10 @@ export function BannerPromociones({
               {promoActual.validezHoraria && (
                 <div
                   className={`flex items-center gap-1.5 text-xs pt-0.5 ${
-                    darkMode ? 'text-amber-400/90' : 'text-amber-800'
+                    darkMode ? 'text-rose-300/90' : 'text-[#374151]'
                   }`}
                 >
-                  <Clock className="w-3.5 h-3.5 shrink-0" />
+                  <Clock className="w-3.5 h-3.5 shrink-0 text-[#8A0C13]" />
                   <span>
                     {t.validez} {promoActual.validezHoraria[idioma]}
                   </span>
@@ -262,7 +262,7 @@ export function BannerPromociones({
             </div>
 
             {/* Precios y botón para ordenar / ver */}
-            <div className="flex items-center sm:flex-col sm:items-end justify-between sm:justify-center gap-3 shrink-0 pt-2 sm:pt-0 border-t sm:border-t-0 border-amber-900/20">
+            <div className="flex items-center sm:flex-col sm:items-end justify-between sm:justify-center gap-3 shrink-0 pt-2 sm:pt-0 border-t sm:border-t-0 border-stone-200">
               <div className="text-left sm:text-right">
                 {promoActual.precioOriginal && promoActual.precioPromocional ? (
                   <div>
@@ -270,12 +270,12 @@ export function BannerPromociones({
                       <span>{t.antes}</span>
                       <span>{formatearPrecio(promoActual.precioOriginal, idioma)}</span>
                     </div>
-                    <div className="text-base sm:text-lg font-mono font-extrabold text-amber-400 drop-shadow-xs">
+                    <div className="text-base sm:text-lg font-mono font-extrabold text-[#8A0C13] drop-shadow-xs">
                       {formatearPrecio(promoActual.precioPromocional, idioma)}
                     </div>
                   </div>
                 ) : promoActual.precioPromocional ? (
-                  <div className="text-base sm:text-lg font-mono font-extrabold text-amber-400">
+                  <div className="text-base sm:text-lg font-mono font-extrabold text-[#8A0C13]">
                     {formatearPrecio(promoActual.precioPromocional, idioma)}
                   </div>
                 ) : null}
@@ -290,7 +290,7 @@ export function BannerPromociones({
                     className={`px-3 py-1.5 rounded-xl text-xs sm:text-sm font-semibold transition cursor-pointer border ${
                       darkMode
                         ? 'bg-stone-800/80 hover:bg-stone-700 text-stone-300 border-stone-700'
-                        : 'bg-white hover:bg-amber-100 text-stone-800 border-amber-200'
+                        : 'bg-white hover:bg-stone-50 text-[#374151] hover:text-[#8A0C13] border-stone-200'
                     }`}
                   >
                     {t.verNutricionMaridaje}
@@ -302,7 +302,7 @@ export function BannerPromociones({
                     type="button"
                     id="btn-ordenar-promo"
                     onClick={handleOrdenarPromo}
-                    className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-bold transition shadow-md cursor-pointer active:scale-95 bg-amber-500 hover:bg-amber-400 text-stone-950"
+                    className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-bold transition shadow-md cursor-pointer active:scale-95 bg-[#8A0C13] hover:bg-[#720a10] text-white"
                   >
                     <ShoppingBag className="w-4 h-4" />
                     <span>{t.ordenarOferta}</span>
@@ -318,7 +318,7 @@ export function BannerPromociones({
       <div
         id="indicadores-promociones"
         className={`px-4 py-1.5 border-t flex items-center justify-center gap-2 ${
-          darkMode ? 'border-amber-900/30 bg-stone-950/40' : 'border-amber-200/60 bg-amber-100/40'
+          darkMode ? 'border-stone-800 bg-stone-950/40' : 'border-stone-200 bg-[#FBFBFB]'
         }`}
       >
         {promociones.map((p, idx) => {
@@ -332,10 +332,10 @@ export function BannerPromociones({
               aria-label={`${t.ofertasDelDiaTitulo} ${idx + 1}`}
               className={`transition-all duration-300 rounded-full cursor-pointer ${
                 esActivo
-                  ? 'w-6 h-1.5 bg-amber-400 shadow-xs'
+                  ? 'w-6 h-1.5 bg-[#8A0C13] shadow-xs'
                   : darkMode
-                    ? 'w-1.5 h-1.5 bg-stone-700 hover:bg-amber-500/50'
-                    : 'w-1.5 h-1.5 bg-amber-300 hover:bg-amber-400'
+                    ? 'w-1.5 h-1.5 bg-stone-700 hover:bg-[#8A0C13]/50'
+                    : 'w-1.5 h-1.5 bg-stone-300 hover:bg-[#8A0C13]'
               }`}
             />
           );

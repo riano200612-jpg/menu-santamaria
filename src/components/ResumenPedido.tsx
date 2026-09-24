@@ -166,8 +166,8 @@ export function ResumenPedido({
         transition={{ duration: 0.24, ease: [0.16, 1, 0.3, 1] }}
         className={`w-full max-w-xl rounded-2xl border shadow-2xl flex flex-col max-h-[92vh] overflow-hidden transition-colors duration-200 ${
           darkMode
-            ? 'bg-stone-900 border-amber-800/60 text-stone-100 shadow-amber-950/40'
-            : 'bg-white border-amber-300 text-stone-900 shadow-amber-950/15'
+            ? 'bg-stone-900 border-[#8A0C13]/40 text-stone-100 shadow-black/40'
+            : 'bg-white border-stone-200 text-stone-900 shadow-stone-900/15'
         }`}
       >
         {mostrarVersionImprimible ? (
@@ -184,15 +184,15 @@ export function ResumenPedido({
               className={`flex items-center justify-between px-6 py-4 border-b shrink-0 ${
                 darkMode
                   ? 'border-stone-800 bg-stone-900/90'
-                  : 'border-amber-200/80 bg-amber-50/70'
+                  : 'border-stone-200 bg-[#FBFBFB]'
               }`}
             >
               <div className="flex items-center gap-3">
                 <div
                   className={`p-2 rounded-xl flex items-center justify-center ${
                     darkMode
-                      ? 'bg-amber-500/20 text-amber-400 border border-amber-500/30'
-                      : 'bg-amber-100 text-amber-900 border border-amber-300'
+                      ? 'bg-[#8A0C13]/20 text-rose-300 border border-[#8A0C13]/30'
+                      : 'bg-[#8A0C13]/10 text-[#8A0C13] border border-[#8A0C13]/25'
                   }`}
                 >
                   <Receipt className="w-5 h-5" />
@@ -210,7 +210,7 @@ export function ResumenPedido({
                     {totalCantidad > 0 && (
                       <span
                         id="badge-conteo-modal-resumen"
-                        className="px-2.5 py-0.5 text-xs sm:text-sm font-bold rounded-full bg-amber-500 text-stone-950 shadow-xs"
+                        className="px-2.5 py-0.5 text-xs sm:text-sm font-bold rounded-full bg-[#8A0C13] text-white shadow-xs"
                       >
                         {totalCantidad} {totalCantidad === 1 ? t.platoSingular : t.platoPlural}
                       </span>
@@ -218,7 +218,7 @@ export function ResumenPedido({
                   </div>
                   <p
                     className={`text-xs sm:text-sm ${
-                      darkMode ? 'text-stone-400' : 'text-stone-600'
+                      darkMode ? 'text-stone-400' : 'text-[#374151]'
                     }`}
                   >
                     {t.resumenPedidoSubtitulo}
@@ -236,12 +236,12 @@ export function ResumenPedido({
                       className={`p-2 rounded-xl transition cursor-pointer flex items-center gap-1.5 text-xs sm:text-sm font-semibold ${
                         darkMode
                           ? 'text-sky-300 hover:text-sky-200 bg-sky-950/40 hover:bg-sky-900/60 border border-sky-800/80'
-                          : 'text-sky-900 hover:text-sky-950 bg-sky-100 hover:bg-sky-200 border border-sky-300'
+                          : 'text-sky-900 hover:text-sky-950 bg-sky-50 hover:bg-sky-100 border border-sky-200'
                       }`}
                       title={t.compartirPedido}
                       aria-label={t.compartirPedido}
                     >
-                      <Share2 className="w-4 h-4 text-sky-400" />
+                      <Share2 className="w-4 h-4 text-sky-500" />
                       <span className="hidden sm:inline">{t.compartirPedidoBoton}</span>
                     </button>
 
@@ -251,13 +251,13 @@ export function ResumenPedido({
                       onClick={() => setMostrarVersionImprimible(true)}
                       className={`p-2 rounded-xl transition cursor-pointer flex items-center gap-1.5 text-xs sm:text-sm font-semibold ${
                         darkMode
-                          ? 'text-amber-300 hover:text-amber-200 bg-amber-950/40 hover:bg-amber-900/60 border border-amber-800/80'
-                          : 'text-amber-900 hover:text-amber-950 bg-amber-100 hover:bg-amber-200 border border-amber-300'
+                          ? 'text-rose-300 hover:text-rose-200 bg-[#8A0C13]/20 hover:bg-[#8A0C13]/30 border border-[#8A0C13]/40'
+                          : 'text-[#8A0C13] hover:text-[#720a10] bg-[#8A0C13]/10 hover:bg-[#8A0C13]/15 border border-[#8A0C13]/30'
                       }`}
                       title={t.versionImprimible}
                       aria-label={t.versionImprimible}
                     >
-                      <Printer className="w-4 h-4 text-amber-500" />
+                      <Printer className="w-4 h-4 text-[#8A0C13]" />
                       <span className="hidden sm:inline">{t.versionImprimible}</span>
                     </button>
                   </>
@@ -367,8 +367,8 @@ export function ResumenPedido({
                     id={`item-resumen-${plato.id}`}
                     className={`p-3.5 sm:p-4 rounded-xl border transition-all ${
                       darkMode
-                        ? 'bg-stone-800/60 border-stone-700/80 hover:border-amber-700/60'
-                        : 'bg-amber-50/50 border-amber-200 hover:border-amber-300'
+                        ? 'bg-stone-800/60 border-stone-700/80 hover:border-[#8A0C13]/60'
+                        : 'bg-[#FBFBFB] border-stone-200 hover:border-[#8A0C13]/40'
                     }`}
                   >
                     <div className="flex items-start justify-between gap-3">
@@ -378,15 +378,15 @@ export function ResumenPedido({
                           <span
                             className={`text-xs uppercase font-semibold tracking-wider px-2 py-0.5 rounded border ${
                               darkMode
-                                ? 'bg-stone-700/70 text-amber-400 border-stone-600'
-                                : 'bg-amber-100 text-amber-900 border-amber-300'
+                                ? 'bg-stone-700/70 text-rose-300 border-stone-600'
+                                : 'bg-[#8A0C13]/10 text-[#8A0C13] border-[#8A0C13]/25'
                             }`}
                           >
                             {etiquetaPlato}
                           </span>
                           <span
                             className={`text-xs sm:text-sm ${
-                              darkMode ? 'text-stone-400' : 'text-stone-500'
+                              darkMode ? 'text-stone-400' : 'text-[#374151]'
                             }`}
                           >
                             {t.precioUnitario} {formatearPrecio(plato.precioNumerico, idioma)}
@@ -404,10 +404,10 @@ export function ResumenPedido({
                         {plato.modificacionesSeleccionadas && plato.modificacionesSeleccionadas.length > 0 && (
                           <div
                             className={`mt-1 text-xs font-medium flex items-center gap-1.5 flex-wrap ${
-                              darkMode ? 'text-amber-300' : 'text-amber-900'
+                              darkMode ? 'text-rose-300' : 'text-[#8A0C13]'
                             }`}
                           >
-                            <Sparkles className="w-3.5 h-3.5 text-amber-500 shrink-0" />
+                            <Sparkles className="w-3.5 h-3.5 text-[#8A0C13] shrink-0" />
                             <span>
                               <strong>{idioma === 'es' ? 'Personalizado:' : 'Customized:'}</strong>{' '}
                               {plato.modificacionesSeleccionadas.join(' • ')}
@@ -421,7 +421,7 @@ export function ResumenPedido({
                         type="button"
                         id={`btn-eliminar-${plato.id}`}
                         onClick={() => onEliminar(plato.id)}
-                        className={`p-1.5 rounded-lg transition text-stone-400 hover:text-red-400 cursor-pointer ${
+                        className={`p-1.5 rounded-lg transition text-stone-400 hover:text-red-500 cursor-pointer ${
                           darkMode ? 'hover:bg-stone-700/60' : 'hover:bg-stone-200'
                         }`}
                         title={t.eliminarDelPedido}
@@ -432,12 +432,12 @@ export function ResumenPedido({
                     </div>
 
                     {/* Controles de cantidad y subtotal de la línea */}
-                    <div className="mt-3 pt-2.5 border-t flex items-center justify-between gap-2 border-stone-700/40">
+                    <div className="mt-3 pt-2.5 border-t flex items-center justify-between gap-2 border-stone-200 dark:border-stone-700/40">
                       {/* Stepper de cantidad */}
                       <div className="flex items-center gap-1.5">
                         <span
                           className={`text-xs font-medium mr-1 ${
-                            darkMode ? 'text-stone-400' : 'text-stone-600'
+                            darkMode ? 'text-stone-400' : 'text-[#374151]'
                           }`}
                         >
                           {t.cantidad}
@@ -446,7 +446,7 @@ export function ResumenPedido({
                           className={`inline-flex items-center rounded-lg border overflow-hidden ${
                             darkMode
                               ? 'bg-stone-900/90 border-stone-700'
-                              : 'bg-white border-amber-200'
+                              : 'bg-white border-stone-300'
                           }`}
                         >
                           <button
@@ -455,8 +455,8 @@ export function ResumenPedido({
                             onClick={() => onDecrementar(plato.id)}
                             className={`p-1.5 transition cursor-pointer ${
                               darkMode
-                                ? 'text-stone-300 hover:text-amber-400 hover:bg-stone-800'
-                                : 'text-stone-700 hover:text-amber-900 hover:bg-amber-100'
+                                ? 'text-stone-300 hover:text-rose-300 hover:bg-stone-800'
+                                : 'text-[#374151] hover:text-[#8A0C13] hover:bg-[#8A0C13]/10'
                             }`}
                             title={t.quitarUno}
                             aria-label={`${t.quitarUno} ${nombrePlato}`}
@@ -477,8 +477,8 @@ export function ResumenPedido({
                             onClick={() => onIncrementar(plato)}
                             className={`p-1.5 transition cursor-pointer ${
                               darkMode
-                                ? 'text-stone-300 hover:text-amber-400 hover:bg-stone-800'
-                                : 'text-stone-700 hover:text-amber-900 hover:bg-amber-100'
+                                ? 'text-stone-300 hover:text-rose-300 hover:bg-stone-800'
+                                : 'text-[#374151] hover:text-[#8A0C13] hover:bg-[#8A0C13]/10'
                             }`}
                             title={t.agregarUnoMas}
                             aria-label={`${t.agregarUnoMas} ${nombrePlato}`}
@@ -492,7 +492,7 @@ export function ResumenPedido({
                       <div className="text-right">
                         <span
                           className={`text-xs mr-1.5 ${
-                            darkMode ? 'text-stone-400' : 'text-stone-500'
+                            darkMode ? 'text-stone-400' : 'text-[#374151]'
                           }`}
                         >
                           {t.subtotal}:
@@ -500,7 +500,7 @@ export function ResumenPedido({
                         <span
                           id={`subtotal-linea-${plato.id}`}
                           className={`text-xs sm:text-base font-mono font-bold ${
-                            darkMode ? 'text-amber-300' : 'text-amber-900'
+                            darkMode ? 'text-rose-300' : 'text-[#8A0C13]'
                           }`}
                         >
                           {formatearPrecio(subtotalPlato, idioma)}
@@ -520,7 +520,7 @@ export function ResumenPedido({
             className={`p-4 sm:p-6 border-t space-y-4 shrink-0 ${
               darkMode
                 ? 'border-stone-800 bg-stone-900/95'
-                : 'border-amber-200/90 bg-amber-50/80'
+                : 'border-stone-200 bg-[#FBFBFB]'
             }`}
           >
             {/* Caja destacada del Subtotal Final Calculado */}
@@ -528,16 +528,16 @@ export function ResumenPedido({
               id="subtotal-resumen-pedido"
               className={`p-4 rounded-xl border flex flex-col sm:flex-row sm:items-center justify-between gap-3 ${
                 darkMode
-                  ? 'bg-amber-950/40 border-amber-700/60 shadow-inner'
-                  : 'bg-amber-100/80 border-amber-300 shadow-xs'
+                  ? 'bg-[#8A0C13]/20 border-[#8A0C13]/40 shadow-inner'
+                  : 'bg-[#8A0C13]/10 border-[#8A0C13]/30 shadow-xs'
               }`}
             >
               <div>
                 <div className="flex items-center gap-1.5">
-                  <Sparkles className="w-4 h-4 text-amber-400" />
+                  <Sparkles className="w-4 h-4 text-[#8A0C13]" />
                   <span
                     className={`text-xs sm:text-sm font-semibold uppercase tracking-wider ${
-                      darkMode ? 'text-amber-300' : 'text-amber-900'
+                      darkMode ? 'text-rose-300' : 'text-[#8A0C13]'
                     }`}
                   >
                     {t.subtotalCalculado}
@@ -545,7 +545,7 @@ export function ResumenPedido({
                 </div>
                 <p
                   className={`text-xs mt-0.5 ${
-                    darkMode ? 'text-stone-400' : 'text-stone-600'
+                    darkMode ? 'text-stone-400' : 'text-[#374151]'
                   }`}
                 >
                   {t.totalPlatos} <span className="font-bold">{totalCantidad}</span>
@@ -555,7 +555,7 @@ export function ResumenPedido({
               <div className="text-right">
                 <span
                   id="valor-subtotal-final"
-                  className="text-xl sm:text-2xl font-mono font-extrabold text-amber-400 drop-shadow-xs"
+                  className="text-xl sm:text-2xl font-mono font-extrabold text-[#8A0C13] dark:text-rose-300 drop-shadow-xs"
                 >
                   {formatearTotal(subtotalFinal, idioma)}
                 </span>
@@ -572,7 +572,7 @@ export function ResumenPedido({
                   className={`inline-flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs sm:text-sm font-semibold transition cursor-pointer ${
                     darkMode
                       ? 'text-stone-400 hover:text-red-400 hover:bg-stone-800 border border-stone-700'
-                      : 'text-stone-600 hover:text-red-600 hover:bg-stone-100 border border-stone-200'
+                      : 'text-[#374151] hover:text-red-600 hover:bg-stone-100 border border-stone-200'
                   }`}
                   title={t.vaciarPedido}
                 >
@@ -586,12 +586,12 @@ export function ResumenPedido({
                   onClick={() => setMostrarVersionImprimible(true)}
                   className={`inline-flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs sm:text-sm font-semibold transition cursor-pointer ${
                     darkMode
-                      ? 'text-amber-300 hover:text-amber-200 bg-amber-950/40 hover:bg-amber-900/60 border border-amber-800/80'
-                      : 'text-amber-900 hover:text-amber-950 bg-amber-100 hover:bg-amber-200 border border-amber-300'
+                      ? 'text-rose-300 hover:text-rose-200 bg-[#8A0C13]/20 hover:bg-[#8A0C13]/30 border border-[#8A0C13]/40'
+                      : 'text-[#8A0C13] hover:text-[#720a10] bg-[#8A0C13]/10 hover:bg-[#8A0C13]/15 border border-[#8A0C13]/30'
                   }`}
                   title={t.versionImprimible}
                 >
-                  <Printer className="w-3.5 h-3.5 text-amber-500" />
+                  <Printer className="w-3.5 h-3.5 text-[#8A0C13]" />
                   <span>{t.versionImprimible}</span>
                 </button>
 
@@ -602,11 +602,11 @@ export function ResumenPedido({
                   className={`inline-flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs sm:text-sm font-semibold transition cursor-pointer ${
                     darkMode
                       ? 'text-sky-300 hover:text-sky-200 bg-sky-950/40 hover:bg-sky-900/60 border border-sky-800/80'
-                      : 'text-sky-900 hover:text-sky-950 bg-sky-100 hover:bg-sky-200 border border-sky-300'
+                      : 'text-sky-900 hover:text-sky-950 bg-sky-50 hover:bg-sky-100 border border-sky-200'
                   }`}
                   title={t.compartirPedido}
                 >
-                  <Share2 className="w-3.5 h-3.5 text-sky-400" />
+                  <Share2 className="w-3.5 h-3.5 text-sky-500" />
                   <span>{t.compartirPedido}</span>
                 </button>
               </div>
@@ -619,7 +619,7 @@ export function ResumenPedido({
                   className={`px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition cursor-pointer ${
                     darkMode
                       ? 'text-stone-300 hover:text-white bg-stone-800 hover:bg-stone-700 border border-stone-700'
-                      : 'text-stone-700 hover:text-stone-950 bg-white hover:bg-stone-100 border border-stone-300'
+                      : 'text-[#374151] hover:text-stone-950 bg-white hover:bg-stone-100 border border-stone-300'
                   }`}
                 >
                   {t.cerrar}
@@ -628,7 +628,7 @@ export function ResumenPedido({
                   type="button"
                   id="btn-confirmar-pedido"
                   onClick={handleConfirmarPedido}
-                  className="inline-flex items-center gap-1.5 px-4 py-2.5 bg-amber-500 hover:bg-amber-400 text-stone-950 font-bold text-xs sm:text-sm rounded-xl transition shadow-md cursor-pointer active:scale-95"
+                  className="inline-flex items-center gap-1.5 px-4 py-2.5 bg-[#8A0C13] hover:bg-[#720a10] text-white font-bold text-xs sm:text-sm rounded-xl transition shadow-md cursor-pointer active:scale-95"
                 >
                   <ShoppingBag className="w-4 h-4" />
                   <span>{t.confirmarPedido}</span>

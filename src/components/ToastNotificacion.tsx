@@ -99,7 +99,7 @@ export function ToastNotificacion({
               animate={{ scaleX: 0 }}
               transition={{ duration: 3.6, ease: 'linear' }}
               style={{ originX: 0 }}
-              className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-amber-500 via-amber-400 to-amber-300"
+              className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#8A0C13] via-[#a3121b] to-[#c71d27]"
             />
 
             <div className="flex items-start gap-3 pt-0.5">
@@ -109,15 +109,15 @@ export function ToastNotificacion({
                   id={`toast-icono-categoria-${toast.plato.id}`}
                   className={`w-11 h-11 rounded-xl flex items-center justify-center border shadow-xs transition ${
                     darkMode
-                      ? 'bg-amber-500/15 border-amber-500/30 text-amber-400'
-                      : 'bg-amber-100 border-amber-300 text-amber-800'
+                      ? 'bg-[#8A0C13]/20 border-[#8A0C13]/40 text-rose-300'
+                      : 'bg-[#8A0C13]/10 border-[#8A0C13]/25 text-[#8A0C13]'
                   }`}
                 >
                   <IconoCategoria className="w-5 h-5" />
                 </div>
                 <div
                   id="toast-icono-check"
-                  className="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-emerald-500 text-stone-950 flex items-center justify-center ring-2 ring-stone-900 shadow-xs"
+                  className="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-emerald-600 text-white flex items-center justify-center ring-2 ring-white shadow-xs"
                 >
                   <Check className="w-2.5 h-2.5 stroke-[3]" />
                 </div>
@@ -125,13 +125,13 @@ export function ToastNotificacion({
 
               {/* Contenido textual del toast */}
               <div className="flex-1 min-w-0 pr-1">
-                <div className="flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-emerald-400 dark:text-emerald-400">
-                  <Sparkles className="w-3.5 h-3.5 text-amber-400 shrink-0" />
+                <div className="flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-emerald-600 dark:text-emerald-400">
+                  <Sparkles className="w-3.5 h-3.5 text-[#8A0C13] shrink-0" />
                   <span>{t.toastPlatoAgregado}</span>
                   {toast.cantidad > 1 && (
                     <span
                       id={`toast-badge-cantidad-${toast.plato.id}`}
-                      className="px-1.5 py-0.5 rounded-full text-xs font-bold bg-amber-500/20 text-amber-300 border border-amber-500/40 shrink-0"
+                      className="px-1.5 py-0.5 rounded-full text-xs font-bold bg-[#8A0C13]/15 text-[#8A0C13] border border-[#8A0C13]/30 shrink-0"
                     >
                       x{toast.cantidad}
                     </span>
@@ -140,7 +140,7 @@ export function ToastNotificacion({
 
                 <h4
                   id={`toast-nombre-plato-${toast.plato.id}`}
-                  className="text-sm sm:text-base font-bold font-serif truncate mt-0.5 tracking-tight"
+                  className="text-sm sm:text-base font-bold font-serif truncate mt-0.5 tracking-tight text-stone-900 dark:text-stone-100"
                 >
                   {toast.plato.nombre[idioma]}
                 </h4>
@@ -148,7 +148,7 @@ export function ToastNotificacion({
                 <div className="flex items-center gap-2 mt-0.5">
                   <p
                     id={`toast-precio-plato-${toast.plato.id}`}
-                    className="text-xs sm:text-sm font-mono font-bold text-amber-400"
+                    className="text-xs sm:text-sm font-mono font-bold text-[#8A0C13] dark:text-rose-300"
                   >
                     {formatearPrecio(toast.plato.precioNumerico, idioma)}
                   </p>
@@ -156,7 +156,7 @@ export function ToastNotificacion({
                     className={`text-[10px] sm:text-xs uppercase font-semibold px-2 py-0.5 rounded-sm border ${
                       darkMode
                         ? 'bg-stone-800 text-stone-300 border-stone-700'
-                        : 'bg-stone-100 text-stone-700 border-stone-200'
+                        : 'bg-[#FBFBFB] text-[#374151] border-stone-200'
                     }`}
                   >
                     {toast.plato.etiqueta[idioma]}
@@ -187,7 +187,7 @@ export function ToastNotificacion({
                 darkMode ? 'border-stone-800/80' : 'border-stone-200'
               }`}
             >
-              <span className={`truncate ${darkMode ? 'text-stone-400' : 'text-stone-600'}`}>
+              <span className={`truncate ${darkMode ? 'text-stone-400' : 'text-[#374151]'}`}>
                 {t.toastPlatoAgregadoDetalle(toast.plato.nombre[idioma], toast.cantidad)}
               </span>
               <button
@@ -197,7 +197,7 @@ export function ToastNotificacion({
                   onCerrar();
                   onVerPedido();
                 }}
-                className="inline-flex items-center gap-1.5 text-xs font-bold text-amber-400 hover:text-amber-300 px-2.5 py-1 rounded-md hover:bg-amber-400/10 transition-colors cursor-pointer shrink-0 ml-2"
+                className="inline-flex items-center gap-1.5 text-xs font-bold text-[#8A0C13] hover:text-[#720a10] px-2.5 py-1 rounded-md hover:bg-[#8A0C13]/10 transition-colors cursor-pointer shrink-0 ml-2"
               >
                 <ShoppingBag className="w-3.5 h-3.5" />
                 <span>{t.toastVerPedido}</span>

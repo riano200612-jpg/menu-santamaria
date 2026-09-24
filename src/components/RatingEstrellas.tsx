@@ -83,19 +83,19 @@ export function RatingEstrellas({
           <span
             id={`rating-score-${platoId}`}
             className={`font-semibold font-mono text-xs sm:text-sm flex items-center gap-1 ${
-              darkMode ? 'text-amber-300' : 'text-amber-900 font-bold'
+              darkMode ? 'text-rose-300' : 'text-[#8A0C13] font-bold'
             }`}
             title={`${stats.average.toFixed(1)} / 5.0 (${stats.count} ${
               stats.count === 1 ? t.voto : t.votos
             })`}
           >
-            <Star className={`${sizeClass} fill-amber-400 text-amber-400 shrink-0`} />
+            <Star className={`${sizeClass} fill-[#8A0C13] text-[#8A0C13] shrink-0`} />
             <span>{stats.average.toFixed(1)}</span>
           </span>
           <span
             id={`rating-conteo-${platoId}`}
             className={`text-xs ${
-              darkMode ? 'text-stone-400' : 'text-stone-600'
+              darkMode ? 'text-stone-400' : 'text-[#374151]'
             }`}
           >
             ({stats.count} {stats.count === 1 ? t.voto : t.votos})
@@ -105,7 +105,7 @@ export function RatingEstrellas({
         {/* Separador sutil */}
         <span
           className={`hidden sm:inline-block w-1 h-1 rounded-full ${
-            darkMode ? 'bg-stone-700' : 'bg-amber-300'
+            darkMode ? 'bg-stone-700' : 'bg-[#8A0C13]/30'
           }`}
         />
 
@@ -119,7 +119,7 @@ export function RatingEstrellas({
         >
           <span
             className={`text-xs mr-1 hidden sm:inline ${
-              darkMode ? 'text-stone-400' : 'text-stone-600'
+              darkMode ? 'text-stone-400' : 'text-[#374151]'
             }`}
           >
             {userRating ? `${t.tuVoto}:` : `${t.calificarPlato}:`}
@@ -139,16 +139,16 @@ export function RatingEstrellas({
                 aria-label={t.calificarConEstrellas(numEstrella)}
                 title={t.calificarConEstrellas(numEstrella)}
                 className={`p-0.5 rounded transition-all transform cursor-pointer hover:scale-125 active:scale-95 focus:outline-none focus:ring-1 ${
-                  darkMode ? 'focus:ring-amber-400' : 'focus:ring-amber-600'
+                  darkMode ? 'focus:ring-rose-400' : 'focus:ring-[#8A0C13]'
                 }`}
               >
                 <Star
                   className={`${sizeClass} transition-colors ${
                     activa
-                      ? 'fill-amber-400 text-amber-400 drop-shadow-[0_0_3px_rgba(251,191,36,0.4)]'
+                      ? 'fill-[#8A0C13] text-[#8A0C13] drop-shadow-[0_0_3px_rgba(138,12,19,0.4)]'
                       : darkMode
-                      ? 'text-stone-600 hover:text-amber-400/60'
-                      : 'text-amber-200 hover:text-amber-500'
+                      ? 'text-stone-600 hover:text-rose-400/60'
+                      : 'text-stone-300 hover:text-[#8A0C13]/70'
                   }`}
                 />
               </button>
@@ -166,7 +166,7 @@ export function RatingEstrellas({
             className={`text-xs inline-flex items-center gap-0.5 px-2 py-0.5 rounded transition-colors cursor-pointer ${
               darkMode
                 ? 'bg-stone-800/80 hover:bg-rose-950/60 text-stone-400 hover:text-rose-300 border border-stone-700/60'
-                : 'bg-amber-100 hover:bg-rose-100 text-stone-600 hover:text-rose-700 border border-amber-300'
+                : 'bg-stone-100 hover:bg-rose-50 text-[#374151] hover:text-[#8A0C13] border border-stone-200'
             }`}
           >
             <X className="w-3 h-3" />
@@ -180,11 +180,11 @@ export function RatingEstrellas({
         <div
           id={`notificacion-voto-${platoId}`}
           className={`flex items-center gap-1.5 text-xs sm:text-sm font-semibold animate-in fade-in slide-in-from-top-1 duration-200 ${
-            darkMode ? 'text-amber-300' : 'text-amber-900'
+            darkMode ? 'text-rose-300' : 'text-[#8A0C13]'
           }`}
         >
-          <Sparkles className="w-3.5 h-3.5 text-amber-400 animate-spin" />
-          <Check className="w-3.5 h-3.5 text-emerald-400" />
+          <Sparkles className="w-3.5 h-3.5 text-[#8A0C13] animate-spin" />
+          <Check className="w-3.5 h-3.5 text-emerald-600" />
           <span>
             {t.graciasPorVotar} ({userRating} {userRating === 1 ? t.voto : t.votos})
           </span>

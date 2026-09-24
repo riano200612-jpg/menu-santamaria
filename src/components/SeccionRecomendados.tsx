@@ -146,27 +146,27 @@ export function SeccionRecomendados({
       aria-label={t.recomendadosTitulo}
       className={`rounded-2xl p-4 sm:p-5 border transition-all duration-300 relative overflow-hidden mb-6 ${
         darkMode
-          ? 'bg-linear-to-br from-amber-950/30 via-stone-900/90 to-stone-900/90 border-amber-500/30 shadow-lg shadow-amber-950/20'
-          : 'bg-linear-to-br from-amber-100/60 via-amber-50/80 to-white border-amber-300/80 shadow-md shadow-amber-950/5'
+          ? 'bg-stone-900 border-[#8A0C13]/30 shadow-lg shadow-black/40'
+          : 'bg-white border-stone-200 shadow-md shadow-stone-900/5'
       }`}
     >
       {/* Detalle visual sutil de fondo */}
       <div
-        className="absolute top-0 right-0 -mt-6 -mr-6 w-32 h-32 bg-amber-500/10 rounded-full blur-2xl pointer-events-none"
+        className="absolute top-0 right-0 -mt-6 -mr-6 w-32 h-32 bg-[#8A0C13]/5 rounded-full blur-2xl pointer-events-none"
         aria-hidden="true"
       />
 
       {/* Cabecera de la sección */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 pb-3.5 border-b border-amber-500/20 mb-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 pb-3.5 border-b border-stone-200 dark:border-stone-800 mb-4">
         <div className="flex items-center gap-2.5">
           <div
             className={`w-8 h-8 rounded-xl flex items-center justify-center shrink-0 border ${
               darkMode
-                ? 'bg-amber-500/20 text-amber-400 border-amber-500/30'
-                : 'bg-amber-200 text-amber-900 border-amber-300'
+                ? 'bg-[#8A0C13]/20 text-rose-300 border-[#8A0C13]/30'
+                : 'bg-[#8A0C13]/10 text-[#8A0C13] border-[#8A0C13]/25'
             }`}
           >
-            <Sparkles className="w-4 h-4 text-amber-500 animate-pulse" />
+            <Sparkles className="w-4 h-4 text-[#8A0C13] animate-pulse" />
           </div>
           <div>
             <div className="flex items-center gap-2 flex-wrap">
@@ -181,21 +181,21 @@ export function SeccionRecomendados({
               {tieneHistorialUsuario && (
                 <span
                   id="badge-personalizado-recomendados"
-                  className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-500/15 text-emerald-400 border border-emerald-500/30"
+                  className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30"
                 >
                   <TrendingUp className="w-3 h-3" />
                   <span>{t.personalizadoParaTi}</span>
                 </span>
               )}
             </div>
-            <p className={`text-sm sm:text-base leading-relaxed ${darkMode ? 'text-stone-300' : 'text-stone-700'}`}>
+            <p className={`text-sm sm:text-base leading-relaxed ${darkMode ? 'text-stone-300' : 'text-[#374151]'}`}>
               {t.recomendadosSubtitulo}
             </p>
           </div>
         </div>
 
-        <div className="flex items-center gap-1.5 self-start sm:self-auto text-xs sm:text-sm font-semibold text-amber-600 dark:text-amber-400">
-          <Heart className="w-4 h-4 fill-amber-500/30 text-amber-500" />
+        <div className="flex items-center gap-1.5 self-start sm:self-auto text-xs sm:text-sm font-semibold text-[#8A0C13]">
+          <Heart className="w-4 h-4 fill-[#8A0C13]/20 text-[#8A0C13]" />
           <span>Lety Moreno Selection</span>
         </div>
       </div>
@@ -213,8 +213,8 @@ export function SeccionRecomendados({
               id={`card-recomendado-${plato.id}`}
               className={`rounded-xl p-3.5 flex flex-col justify-between border transition-all duration-300 ease-out transform hover:scale-[1.02] group relative ${
                 darkMode
-                  ? 'bg-stone-900/80 hover:bg-stone-850 border-stone-800 hover:border-amber-500/50 text-stone-200 hover:shadow-lg hover:shadow-black/50'
-                  : 'bg-white hover:bg-amber-50/50 border-amber-200 hover:border-amber-400 text-stone-850 shadow-xs hover:shadow-md hover:shadow-amber-950/10'
+                  ? 'bg-stone-900/80 hover:bg-stone-850 border-stone-800 hover:border-[#8A0C13]/50 text-stone-200 hover:shadow-lg hover:shadow-black/50'
+                  : 'bg-white hover:bg-[#FBFBFB] border-stone-200 hover:border-[#8A0C13]/50 text-stone-850 shadow-xs hover:shadow-md hover:shadow-stone-900/5'
               }`}
             >
               {/* Badge superior de frecuencia o especialidad */}
@@ -224,10 +224,10 @@ export function SeccionRecomendados({
                     id={`badge-frecuencia-${plato.id}`}
                     className={`inline-flex items-center gap-1 text-xs font-bold px-2.5 py-0.5 rounded-md ${
                       esElMasPedido
-                        ? 'bg-amber-500 text-stone-950 font-black shadow-xs'
+                        ? 'bg-[#8A0C13] text-white font-black shadow-xs'
                         : darkMode
-                          ? 'bg-amber-500/20 text-amber-300 border border-amber-500/30'
-                          : 'bg-amber-100 text-amber-900 border border-amber-300'
+                          ? 'bg-[#8A0C13]/20 text-rose-300 border border-[#8A0C13]/30'
+                          : 'bg-[#8A0C13]/10 text-[#8A0C13] border border-[#8A0C13]/25'
                     }`}
                   >
                     <TrendingUp className="w-3 h-3" />
@@ -241,10 +241,10 @@ export function SeccionRecomendados({
                     className={`inline-flex items-center gap-1 text-xs font-semibold px-2.5 py-0.5 rounded-md ${
                       darkMode
                         ? 'bg-stone-800 text-stone-300 border border-stone-700'
-                        : 'bg-amber-100/90 text-amber-900 border border-amber-300'
+                        : 'bg-[#8A0C13]/10 text-[#8A0C13] border border-[#8A0C13]/25'
                     }`}
                   >
-                    <Award className="w-3.5 h-3.5 text-amber-500" />
+                    <Award className="w-3.5 h-3.5 text-[#8A0C13]" />
                     <span>{t.insigniaDeLaCasa}</span>
                   </span>
                 )}
@@ -252,8 +252,8 @@ export function SeccionRecomendados({
                 <div
                   className={`w-7 h-7 rounded-lg flex items-center justify-center shrink-0 ${
                     darkMode
-                      ? 'bg-stone-800/80 text-amber-400'
-                      : 'bg-amber-100/70 text-amber-800'
+                      ? 'bg-stone-800/80 text-rose-300'
+                      : 'bg-[#8A0C13]/10 text-[#8A0C13]'
                   }`}
                   title={plato.etiqueta[idioma]}
                 >
@@ -267,18 +267,18 @@ export function SeccionRecomendados({
                   type="button"
                   id={`btn-detalle-recomendado-${plato.id}`}
                   onClick={() => onVerDetalles?.(plato)}
-                  className={`font-serif font-bold text-base sm:text-lg text-left group-hover:text-amber-400 transition cursor-pointer flex items-center gap-1.5 ${
+                  className={`font-serif font-bold text-base sm:text-lg text-left group-hover:text-[#8A0C13] transition cursor-pointer flex items-center gap-1.5 ${
                     darkMode ? 'text-stone-100' : 'text-stone-900'
                   }`}
                   title={t.verDetalle}
                 >
                   <span className="line-clamp-1">{plato.nombre[idioma]}</span>
-                  <Info className="w-3.5 h-3.5 text-stone-500 group-hover:text-amber-400 shrink-0" />
+                  <Info className="w-3.5 h-3.5 text-stone-400 group-hover:text-[#8A0C13] shrink-0" />
                 </button>
 
                 <p
                   className={`text-[14px] sm:text-[15px] line-clamp-2 leading-[1.6] ${
-                    darkMode ? 'text-stone-300' : 'text-stone-700'
+                    darkMode ? 'text-stone-300' : 'text-[#374151]'
                   }`}
                 >
                   {plato.descripcion[idioma]}
@@ -286,18 +286,18 @@ export function SeccionRecomendados({
               </div>
 
               {/* Pie de la tarjeta: Precio y botón para añadir al pedido */}
-              <div className="pt-2 border-t border-dashed border-stone-800/60 dark:border-stone-800/60 flex items-center justify-between gap-2 mt-auto">
+              <div className="pt-2 border-t border-dashed border-stone-200 dark:border-stone-800 flex items-center justify-between gap-2 mt-auto">
                 <div>
                   <div
                     id={`precio-recomendado-${plato.id}`}
-                    className="font-mono text-sm sm:text-base font-bold text-amber-500 dark:text-amber-400"
+                    className="font-mono text-sm sm:text-base font-bold text-[#8A0C13] dark:text-rose-300"
                   >
                     {formatearPrecio(plato.precioNumerico, idioma)}
                   </div>
                   {cantidadEnPedido > 0 && (
                     <span
                       id={`badge-en-pedido-${plato.id}`}
-                      className="text-xs text-emerald-500 font-semibold flex items-center gap-0.5"
+                      className="text-xs text-emerald-600 font-semibold flex items-center gap-0.5"
                     >
                       <ShoppingBag className="w-3 h-3" />
                       <span>{cantidadEnPedido} en pedido</span>
@@ -310,7 +310,7 @@ export function SeccionRecomendados({
                     type="button"
                     id={`btn-ordenar-recomendado-${plato.id}`}
                     onClick={(e) => onOrdenar(plato, e.currentTarget)}
-                    className="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-amber-500 hover:bg-amber-400 text-stone-950 font-bold text-xs sm:text-sm rounded-lg transition shadow-xs active:scale-95 cursor-pointer"
+                    className="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-[#8A0C13] hover:bg-[#720a10] text-white font-bold text-xs sm:text-sm rounded-lg transition shadow-xs active:scale-95 cursor-pointer"
                     title={`${t.agregarRapido} ${plato.nombre[idioma]}`}
                   >
                     <Plus className="w-4 h-4 stroke-[2.5]" />
@@ -323,11 +323,11 @@ export function SeccionRecomendados({
                     onClick={() => onVerDetalles(plato)}
                     className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs sm:text-sm font-semibold transition cursor-pointer border ${
                       darkMode
-                        ? 'bg-stone-800/80 hover:bg-stone-700 text-amber-300 border-stone-700'
-                        : 'bg-white hover:bg-amber-100 text-amber-950 border-amber-200'
+                        ? 'bg-stone-800/80 hover:bg-stone-700 text-rose-300 border-stone-700'
+                        : 'bg-white hover:bg-[#8A0C13]/10 text-[#8A0C13] border-[#8A0C13]/30'
                     }`}
                   >
-                    <Sparkles className="w-3.5 h-3.5 text-amber-500" />
+                    <Sparkles className="w-3.5 h-3.5 text-[#8A0C13]" />
                     <span>{t.verNutricionMaridaje}</span>
                   </button>
                 ) : null}

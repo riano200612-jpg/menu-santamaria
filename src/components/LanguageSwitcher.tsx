@@ -17,14 +17,14 @@ export function LanguageSwitcher({
       id="selector-idioma-contenedor"
       className={`inline-flex items-center p-0.5 rounded-full border transition-all duration-200 ${
         darkMode
-          ? 'bg-stone-900/90 border-amber-900/50 text-stone-300'
-          : 'bg-amber-100/90 border-amber-300/80 text-amber-950'
+          ? 'bg-stone-900/90 border-stone-700 text-stone-300'
+          : 'bg-white border-stone-200 shadow-xs text-[#374151]'
       }`}
       role="group"
       aria-label="Selector de idioma / Language switcher"
     >
-      <div className="pl-2.5 pr-1 py-1 flex items-center gap-1 text-xs font-semibold opacity-75">
-        <Languages className="w-3.5 h-3.5 text-amber-400" />
+      <div className="pl-2.5 pr-1 py-1 flex items-center gap-1 text-xs font-semibold opacity-85">
+        <Languages className="w-3.5 h-3.5 text-[#8A0C13]" />
       </div>
 
       <button
@@ -33,10 +33,10 @@ export function LanguageSwitcher({
         onClick={() => onCambiarIdioma('es')}
         className={`px-3 py-1 rounded-full text-xs sm:text-sm font-bold transition-all cursor-pointer ${
           idioma === 'es'
-            ? 'bg-amber-500 text-stone-950 shadow-xs font-extrabold'
+            ? 'bg-[#8A0C13] text-white shadow-xs font-extrabold'
             : darkMode
               ? 'text-stone-400 hover:text-stone-200'
-              : 'text-stone-600 hover:text-stone-900'
+              : 'text-[#374151] hover:text-[#8A0C13]'
         }`}
         aria-pressed={idioma === 'es'}
         title="Cambiar menú a Español"
@@ -50,10 +50,10 @@ export function LanguageSwitcher({
         onClick={() => onCambiarIdioma('en')}
         className={`px-3 py-1 rounded-full text-xs sm:text-sm font-bold transition-all cursor-pointer ${
           idioma === 'en'
-            ? 'bg-amber-500 text-stone-950 shadow-xs font-extrabold'
+            ? 'bg-[#8A0C13] text-white shadow-xs font-extrabold'
             : darkMode
               ? 'text-stone-400 hover:text-stone-200'
-              : 'text-stone-600 hover:text-stone-900'
+              : 'text-[#374151] hover:text-[#8A0C13]'
         }`}
         aria-pressed={idioma === 'en'}
         title="Switch menu to English"

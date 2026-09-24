@@ -18,6 +18,8 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
+  background-color: #FBFBFB;
+  color: #1f2937;
 }
 
 @keyframes fadeInUp {
