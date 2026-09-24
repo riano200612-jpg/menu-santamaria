@@ -1560,7 +1560,7 @@ export default function App() {
         </section>
 
         {/* Sección de Historia, Citas Poéticas de Leti y Lacydes Moreno, y Premios */}
-        <RestauranteHistoria idioma={idioma} darkMode={darkMode} />
+        <RestauranteHistoria idioma={idioma} darkMode={darkMode} onCambiarIdioma={setIdioma} />
       </div>
 
       {/* Modal interactivo con Información Nutricional y Maridaje */}

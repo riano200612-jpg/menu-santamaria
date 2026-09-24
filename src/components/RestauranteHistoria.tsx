@@ -1,13 +1,15 @@
 import { Idioma } from '../types';
 import { TEXTOS_UI } from '../data/translations';
 import { Award, Compass, MapPin, Phone, Globe, Instagram, Quote, Anchor } from 'lucide-react';
+import { LanguageSwitcher } from './LanguageSwitcher';
 
 interface RestauranteHistoriaProps {
   idioma: Idioma;
   darkMode: boolean;
+  onCambiarIdioma?: (nuevoIdioma: Idioma) => void;
 }
 
-export function RestauranteHistoria({ idioma, darkMode }: RestauranteHistoriaProps) {
+export function RestauranteHistoria({ idioma, darkMode, onCambiarIdioma }: RestauranteHistoriaProps) {
   const t = TEXTOS_UI[idioma];
 
   return (
@@ -147,6 +149,20 @@ export function RestauranteHistoria({ idioma, darkMode }: RestauranteHistoriaPro
             </span>
           </div>
         </div>
+
+        {/* Selector de idioma en el pie de página */}
+        {onCambiarIdioma && (
+          <div className="mt-4 pt-3.5 border-t border-stone-200 dark:border-stone-800 flex flex-col sm:flex-row items-center justify-between gap-3">
+            <span className="text-xs text-stone-500 dark:text-stone-400 font-medium">
+              {idioma === 'es' ? 'Santa María del Mar — Bogotá, Colombia' : 'Santa María del Mar — Bogota, Colombia'}
+            </span>
+            <LanguageSwitcher
+              idioma={idioma}
+              onCambiarIdioma={onCambiarIdioma}
+              darkMode={darkMode}
+            />
+          </div>
+        )}
       </div>
     </footer>
   );
