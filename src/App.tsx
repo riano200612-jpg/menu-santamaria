@@ -33,7 +33,8 @@ import {
   formatearTotal,
 } from './data/translations';
 import { ResumenPedido } from './components/ResumenPedido';
-import { RestauranteHistoria } from './components/RestauranteHistoria';
+import { FooterFadingTicker } from './components/FooterFadingTicker';
+import { CabeceraCitasFading } from './components/CabeceraCitasFading';
 import { RatingEstrellas } from './components/RatingEstrellas';
 import { ToastNotificacion, ToastNotificacionData } from './components/ToastNotificacion';
 import { DietaryBadgeGroup, DietaryIconBadge } from './components/EtiquetadoDietetico';
@@ -1089,40 +1090,14 @@ export default function App() {
             </div>
           </div>
 
-          {/* Título elegante 'Santa María del Mar' */}
-          <span className="text-xs uppercase tracking-[0.25em] font-semibold text-[#8A0C13] font-serif block">
-            {idioma === 'es' ? 'Restaurante · Bar by Lety Moreno' : 'Restaurant & Bar by Lety Moreno'}
-          </span>
-          <h1 className="text-3xl sm:text-5xl lg:text-5xl font-serif font-black tracking-tight text-stone-900 mt-1 leading-tight">
+          {/* Título principal 'Santa María del Mar' con protagonismo absoluto en Rojo Carmín */}
+          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-serif font-black tracking-tight text-[#8A0C13] leading-tight">
             Santa María del Mar
           </h1>
           <div className="w-16 h-[2px] bg-[#8A0C13] mx-auto mt-3" aria-hidden="true" />
 
-          {/* Reubicación Forzada de la Historia (DOM): Citas de Lety Moreno y Lacydes Moreno Blanco */}
-          <section
-            id="bloque-nuestra-historia"
-            className="max-w-2xl mx-auto mt-6 px-4 space-y-3.5 text-center"
-            aria-label={idioma === 'es' ? 'Nuestra Historia' : 'Our Story'}
-          >
-            <p className="text-xs uppercase tracking-widest font-bold text-[#8A0C13] font-serif">
-              {idioma === 'es' ? 'Nuestra Historia' : 'Our Story'}
-            </p>
-            <p className="text-[14.5px] sm:text-[16px] text-stone-700 italic leading-[1.8] font-serif">
-              {idioma === 'es'
-                ? '“Soy Lety Moreno. En Santa María del Mar comparto la cocina cartagenera que aprendí de mi familia y el legado gastronómico de mi tío Lacydes Moreno Blanco. Cada plato une tradición, Caribe y hospitalidad junto al Museo Naval.”'
-                : '“I am Lety Moreno. At Santa María del Mar, I share the Cartagena cuisine I learned from my family and the culinary legacy of my uncle Lacydes Moreno Blanco. Every dish brings together tradition, Caribbean flavor, and hospitality beside the Naval Museum.”'}
-            </p>
-            <div className="pt-1">
-              <p className="text-xs sm:text-[13.5px] text-stone-500 italic font-serif leading-relaxed">
-                {idioma === 'es'
-                  ? '“Esencialmente, la cocina, como el amor, es una forma de la contemplación y del sabio manejo del fuego.”'
-                  : '“Essentially, cooking, like love, is a form of contemplation and the wise mastery of fire.”'}
-              </p>
-              <span className="text-[11px] uppercase tracking-wider text-[#8A0C13] font-serif font-semibold mt-1 block">
-                — Lacydes Moreno Blanco
-              </span>
-            </div>
-          </section>
+          {/* Carrusel de Citas Dinámico (Fading Quotes) de Lety Moreno y Lacydes Moreno Blanco */}
+          <CabeceraCitasFading idioma={idioma} />
         </header>
 
         {/* Barra superior de controles: QR, Totales y Búsqueda */}
@@ -1414,8 +1389,8 @@ export default function App() {
           )}
         </section>
 
-        {/* Sección Libre, Sin Cajas (Footer): Premios, Aviso de Alergias y Contacto */}
-        <RestauranteHistoria idioma={idioma} darkMode={darkMode} />
+        {/* Pie de página dinámico tipo Ticker de una sola línea con fade out/fade in */}
+        <FooterFadingTicker idioma={idioma} darkMode={darkMode} />
       </div>
 
       {/* Modal interactivo con Información Nutricional y Maridaje */}
