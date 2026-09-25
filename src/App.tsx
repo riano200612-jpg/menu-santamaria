@@ -5,7 +5,7 @@
 
 import { useState, useMemo, useEffect } from 'react';
 import { QRCodeSVG } from 'qrcode.react';
-import { motion, AnimatePresence } from 'motion/react';
+import { motion, AnimatePresence, useScroll, useTransform, useSpring } from 'motion/react';
 import {
   Compass,
   Plus,
@@ -14,6 +14,7 @@ import {
   ArrowUpDown,
   ArrowUp,
   ArrowDown,
+  ChevronRight,
   Info,
   X,
   Flame,
@@ -21,8 +22,6 @@ import {
   ShieldAlert,
   Sparkles,
   Search,
-  Sun,
-  Moon,
   QrCode,
   Share2,
   Copy,
@@ -43,16 +42,13 @@ import {
 } from './data/translations';
 import { LanguageSwitcher } from './components/LanguageSwitcher';
 import { ResumenPedido } from './components/ResumenPedido';
-import { BannerPromociones } from './components/BannerPromociones';
 import { RestauranteHistoria } from './components/RestauranteHistoria';
 import { RatingEstrellas } from './components/RatingEstrellas';
 import { ToastNotificacion, ToastNotificacionData } from './components/ToastNotificacion';
-import { SeccionRecomendados } from './components/SeccionRecomendados';
-import { PortadaSantaMaria } from './components/LogoSantaMaria';
 
 // Exportación de tipos y platos para compatibilidad con pruebas o extensiones
 export * from './types';
-export { PLATOS_MENU, BannerPromociones };
+export { PLATOS_MENU };
 export const ENTRADAS = PLATOS_MENU;
 
 export interface ItemVolando {
@@ -110,7 +106,15 @@ export function Entrada({
   return (
     <article
       id={`entrada-${plato.id}`}
-      className={`rounded-xl p-5 shadow-xs space-y-3.5 transition-all duration-300 ease-out transform hover:scale-[1.01] ${
+      onClick={(e) => {
+        // Permitir clic en la tarjeta para abrir el modal, evitando interferir con selectores de opción
+        const target = e.target as HTMLElement;
+        if (target.closest('button') && !target.closest(`#nombre-${plato.id}`)) {
+          return;
+        }
+        onVerDetalles?.(platoActualizado);
+      }}
+      className={`group/card cursor-pointer rounded-xl p-5 shadow-xs space-y-3.5 transition-all duration-300 ease-out transform hover:scale-[1.01] ${
         darkMode
           ? 'bg-stone-900/90 text-stone-100 hover:shadow-lg hover:shadow-black/50 border border-stone-800 hover:border-[#8A0C13]/60'
           : 'bg-white text-stone-900 hover:shadow-md hover:shadow-stone-900/5 border border-stone-200/90 hover:border-[#8A0C13]/50'
@@ -126,27 +130,26 @@ export function Entrada({
           <button
             type="button"
             id={`nombre-${plato.id}`}
-            onClick={() => onVerDetalles?.(platoActualizado)}
-            className={`text-xl sm:text-2xl font-serif font-bold transition text-left cursor-pointer group flex items-center gap-2 focus:outline-none ${
+            onClick={(e) => {
+              e.stopPropagation();
+              onVerDetalles?.(platoActualizado);
+            }}
+            className={`text-xl sm:text-2xl font-serif font-bold transition-colors duration-300 text-left cursor-pointer group flex items-center gap-1.5 focus:outline-none ${
               darkMode
-                ? 'text-stone-100 hover:text-rose-300'
-                : 'text-stone-900 hover:text-[#8A0C13]'
+                ? 'text-stone-100 group-hover/card:text-rose-300 hover:text-rose-300'
+                : 'text-stone-900 group-hover/card:text-[#8A0C13] hover:text-[#8A0C13]'
             }`}
-            title={idioma === 'es' ? 'Haz clic para ver detalles' : 'Click to view details'}
+            title={idioma === 'es' ? 'Haz clic para ver descripción y maridaje' : 'Click to view description and pairing'}
           >
             <span
-              className={`group-hover:underline underline-offset-4 ${
-                darkMode ? 'decoration-rose-400/60' : 'decoration-[#8A0C13]/60'
-              }`}
+              className={`border-b border-dashed border-gray-300 dark:border-stone-600 pb-0.5 transition-colors duration-300 group-hover/card:border-[#8A0C13]/70 dark:group-hover/card:border-rose-300/70`}
             >
               {nombrePlato}
             </span>
-            <Info
-              className={`w-4 h-4 transition shrink-0 ${
-                darkMode
-                  ? 'text-stone-500 group-hover:text-rose-300'
-                  : 'text-stone-400 group-hover:text-[#8A0C13]'
-              }`}
+            <ChevronRight
+              className="w-4 h-4 text-[#8A0C13] dark:text-rose-400 shrink-0 transition-transform duration-300 ease-out transform group-hover/card:translate-x-[2.5px] group-hover:translate-x-[2.5px]"
+              strokeWidth={2.4}
+              aria-hidden="true"
             />
           </button>
 
@@ -932,13 +935,8 @@ export default function App() {
     return 'es';
   });
 
-  const [darkMode, setDarkMode] = useState<boolean>(() => {
-    if (typeof window !== 'undefined') {
-      const guardado = localStorage.getItem('santamaria_tema');
-      if (guardado !== null) return guardado === 'dark';
-    }
-    return false; // Predeterminado Blanco Marfil (#FBFBFB) premium
-  });
+  // Modo oscuro eliminado: diseño premium Blanco Marfil / Warm Stone (#FBFBFB) permanente
+  const darkMode = false;
 
   const [categoriaSeleccionada, setCategoriaSeleccionada] = useState<CategoriaFiltro>('todos');
   const [criterioOrden, setCriterioOrden] = useState<CriterioOrden>('original');
@@ -962,6 +960,28 @@ export default function App() {
   const [itemsVolando, setItemsVolando] = useState<ItemVolando[]>([]);
   const [badgeBump, setBadgeBump] = useState<boolean>(false);
 
+  // Escala física fluida y continua al scroll para el logo de cabecera (sin rebotes ni saltos)
+  const { scrollY } = useScroll();
+  const rawLogoScale = useTransform(scrollY, [0, 160], [1, 0.86], { clamp: true });
+  const logoScale = useSpring(rawLogoScale, {
+    stiffness: 220,
+    damping: 30,
+    mass: 0.3,
+    restDelta: 0.0001,
+  });
+
+  // Estado de scroll para el resplandor interno de vidrio en #cabecera-menu
+  const [scrolled, setScrolled] = useState<boolean>(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 25);
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   const t = TEXTOS_UI[idioma];
   const categorias = CATEGORIAS_SELECTOR_I18N[idioma];
 
@@ -977,9 +997,9 @@ export default function App() {
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      localStorage.setItem('santamaria_tema', darkMode ? 'dark' : 'light');
+      localStorage.removeItem('santamaria_tema');
     }
-  }, [darkMode]);
+  }, []);
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -1186,26 +1206,47 @@ export default function App() {
   }, [categoriaSeleccionada, criterioOrden, busqueda]);
 
   return (
-    <div
-      className={`min-h-screen flex flex-col items-center py-10 px-4 sm:px-6 transition-colors duration-300 ${
-        darkMode ? 'bg-stone-950 text-stone-100' : 'bg-[#FBFBFB] text-stone-900'
-      }`}
-    >
-      <div
-        className={`max-w-2xl w-full rounded-2xl p-6 sm:p-8 space-y-6 transition-all duration-300 ${
-          darkMode
-            ? 'bg-stone-900/90 border border-stone-800 shadow-2xl text-stone-100'
-            : 'bg-white border border-stone-200 shadow-xl shadow-stone-900/5 text-stone-900'
-        }`}
-      >
-        {/* Cabecera (header) del Menú con Logo Oficial Santa María del Mar */}
-        <header id="cabecera-menu" className="w-full space-y-5">
-          {/* Logo oficial Santa María del Mar centrado en la parte superior con animación de entrada suave, drop shadow sutil y diseño responsive */}
-          <PortadaSantaMaria idioma={idioma} darkMode={darkMode} />
+    <div className="min-h-screen flex flex-col items-center py-10 px-4 sm:px-6 bg-[#FBFBFB] text-stone-900">
+      <div className="max-w-2xl w-full rounded-2xl p-5 sm:p-7 pt-4 sm:pt-5 space-y-4 sm:space-y-5 bg-white border border-stone-200 shadow-xl shadow-stone-900/5 text-stone-900">
+        {/* Cabecera (header) del Menú con Hero Image Santa María del Mar */}
+        <header
+          id="cabecera-menu"
+          data-scrolled={scrolled}
+          className={`w-full space-y-2.5 sm:space-y-3 m-0 rounded-2xl transition-all duration-500 ease-out border p-1 sm:p-1.5 ${
+            scrolled
+              ? 'border-[#8A0C13]/20 bg-white/40 backdrop-blur-xs shadow-[inset_0_0_22px_rgba(138,12,19,0.14),inset_0_1px_2px_rgba(138,12,19,0.18)]'
+              : 'border-transparent bg-transparent shadow-none'
+          }`}
+        >
+          {/* Única imagen principal (hero image) del menú con contenedor optimizado y escala fluida al scroll */}
+          <div className="w-full flex justify-center items-center p-0 m-0">
+            <motion.div
+              initial={{ opacity: 0, y: -16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+              className="w-[85%] max-w-[370px] p-0 m-0"
+            >
+              <motion.div
+                style={{ scale: logoScale }}
+                className="w-full origin-top rounded-lg overflow-hidden shadow-lg shadow-stone-900/15 drop-shadow-[0_12px_24px_rgba(0,0,0,0.16)] p-0 m-0"
+              >
+                <img
+                  src="/logo_santamaria_2.webp"
+                  alt="Santa María del Mar - Restaurante · Bar by Lety Moreno"
+                  className="w-full h-auto object-contain block rounded-lg select-none pointer-events-none p-0 m-0"
+                  loading="eager"
+                  fetchPriority="high"
+                  onError={(e) => {
+                    e.currentTarget.src = '/logo_santamaria.webp';
+                  }}
+                />
+              </motion.div>
+            </motion.div>
+          </div>
 
           {/* Barra superior de controles: Selector de Idioma, Tema, QR y Totales */}
           <div
-            className={`flex flex-wrap items-center justify-between border-b pb-4 gap-3 ${
+            className={`flex flex-wrap items-center justify-between border-b pb-3.5 gap-2.5 ${
               darkMode ? 'border-stone-800' : 'border-stone-200'
             }`}
           >
@@ -1221,42 +1262,12 @@ export default function App() {
             />
 
             <div className="flex flex-wrap items-center gap-2">
-            {/* Botón de alternancia de tema Light/Dark con Rojo Carmín */}
-            <button
-              type="button"
-              id="btn-toggle-tema"
-              onClick={() => setDarkMode((prev) => !prev)}
-              className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-semibold transition-all duration-200 border cursor-pointer active:scale-95 ${
-                darkMode
-                  ? 'bg-stone-800/90 hover:bg-stone-700 text-rose-300 border-stone-700 shadow-xs'
-                  : 'bg-[#8A0C13]/10 hover:bg-[#8A0C13]/15 text-[#8A0C13] border-[#8A0C13]/25 shadow-xs'
-              }`}
-              title={darkMode ? t.modoClaro : t.modoOscuro}
-              aria-label={darkMode ? t.modoClaro : t.modoOscuro}
-            >
-              {darkMode ? (
-                <>
-                  <Sun className="w-4 h-4 text-[#8A0C13] shrink-0" />
-                  <span>{t.modoClaro}</span>
-                </>
-              ) : (
-                <>
-                  <Moon className="w-4 h-4 text-[#8A0C13] shrink-0" />
-                  <span>{t.modoOscuro}</span>
-                </>
-              )}
-            </button>
-
             {/* Botón para generar y mostrar el Código QR del menú */}
             <button
               type="button"
               id="btn-abrir-qr"
               onClick={() => setMostrarQR(true)}
-              className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-semibold transition-all duration-200 border cursor-pointer active:scale-95 ${
-                darkMode
-                  ? 'bg-[#8A0C13]/20 hover:bg-[#8A0C13]/30 text-rose-300 border-[#8A0C13]/40'
-                  : 'bg-[#8A0C13]/10 hover:bg-[#8A0C13]/15 text-[#8A0C13] border-[#8A0C13]/25 shadow-xs'
-              }`}
+              className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-semibold transition-all duration-200 border cursor-pointer active:scale-95 bg-[#8A0C13]/10 hover:bg-[#8A0C13]/15 text-[#8A0C13] border-[#8A0C13]/25 shadow-xs"
               title={t.verQR}
               aria-label={t.verQR}
             >
@@ -1330,13 +1341,6 @@ export default function App() {
           </div>
         </div>
       </header>
-
-        {/* Banner de Promociones Rotativas de Ofertas del Día */}
-        <BannerPromociones
-          idioma={idioma}
-          darkMode={darkMode}
-          onVerDetallePlato={setPlatoDetalle}
-        />
 
         {/* Buscador y Selector de Categorías */}
         <div id="controles-filtrado" className="space-y-3.5">
@@ -1488,19 +1492,6 @@ export default function App() {
 
         {/* Lista dinámica de Platos */}
         <section id="lista-entradas" className="space-y-4" aria-label="Platos del menú">
-          {/* Sección 'Recomendados para ti' al principio de la lista de platos */}
-          {!busqueda && (
-            <SeccionRecomendados
-              platos={PLATOS_MENU}
-              frecuenciaPedidos={frecuenciaPedidos}
-              pedidosActuales={pedidos}
-              idioma={idioma}
-              darkMode={darkMode}
-              categoriaFiltro={categoriaSeleccionada}
-              onVerDetalles={(p) => setPlatoDetalle(p)}
-            />
-          )}
-
           {platosFiltradosYOrdenados.length > 0 ? (
             <motion.div
               key={categoriaSeleccionada}

@@ -148,9 +148,9 @@ export function TimonNauticoLogo({ className = 'w-16 h-16' }: { className?: stri
 /**
  * Imagen de portada oficial optimizada de Santa María del Mar (Restaurante · Bar by Lety Moreno)
  * Aplica los detalles premium:
- * - Animación: Fade-in suave que desciende ligeramente al cargar la página
- * - Profundidad: Sombra paralela sutil (drop shadow) que destaca sobre el fondo blanco marfil (#FBFBFB)
- * - Responsividad: 70% de ancho en móviles, con ancho máximo de 300px en monitores grandes
+ * - Estructura limpia: Centrada en la parte superior sin bordes extraños
+ * - Tamaño responsivo: 85% en móviles con max-w de 380px en escritorio
+ * - Toque visual: rounded-lg y drop-shadow difuminada sobre fondo blanco marfil
  */
 export function PortadaSantaMaria({
   className = '',
@@ -160,49 +160,25 @@ export function PortadaSantaMaria({
   darkMode?: boolean;
   className?: string;
 }) {
-  const [usarFallbackSvg, setUsarFallbackSvg] = useState(false);
-
   return (
     <motion.div
       id="portada-carta-restaurante"
-      initial={{ opacity: 0, y: -20 }}
+      initial={{ opacity: 0, y: -24 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.85, ease: [0.22, 1, 0.36, 1] }}
-      className={`relative mx-auto w-full flex flex-col justify-center items-center py-2 ${className}`}
+      transition={{ duration: 1.0, ease: [0.16, 1, 0.3, 1] }}
+      className={`relative mx-auto w-full flex justify-center items-center pt-1 pb-1 ${className}`}
     >
-      <div
-        className="w-[70%] max-w-[300px] mx-auto flex justify-center items-center group transition-transform duration-300 hover:scale-[1.015]"
-        style={{ willChange: 'transform, opacity' }}
-      >
-        {!usarFallbackSvg ? (
-          <img
-            src="/logo_santamaria.webp"
-            alt="Restaurante Bar Santa María del Mar by Lety Moreno"
-            className={`w-full h-auto aspect-[600/840] object-contain rounded-2xl transition-all duration-300 ${
-              darkMode
-                ? 'shadow-[0_12px_32px_-4px_rgba(0,0,0,0.7)] drop-shadow-[0_12px_24px_rgba(0,0,0,0.65)] border border-stone-800/60'
-                : 'shadow-[0_14px_30px_-6px_rgba(55,65,81,0.14),0_6px_14px_-3px_rgba(55,65,81,0.08)] drop-shadow-[0_10px_20px_rgba(55,65,81,0.12)] border border-[#8A0C13]/10'
-            }`}
-            onError={() => setUsarFallbackSvg(true)}
-            loading="eager"
-            fetchPriority="high"
-            width={300}
-            height={420}
-          />
-        ) : (
-          <img
-            src="/portada_santamaria.svg"
-            alt="Restaurante Bar Santa María del Mar by Lety Moreno"
-            className={`w-full h-auto aspect-[600/840] object-contain rounded-2xl transition-all duration-300 ${
-              darkMode
-                ? 'shadow-[0_12px_32px_-4px_rgba(0,0,0,0.7)] drop-shadow-[0_12px_24px_rgba(0,0,0,0.65)] border border-stone-800/60'
-                : 'shadow-[0_14px_30px_-6px_rgba(55,65,81,0.14),0_6px_14px_-3px_rgba(55,65,81,0.08)] drop-shadow-[0_10px_20px_rgba(55,65,81,0.12)] border border-[#8A0C13]/10'
-            }`}
-            loading="eager"
-            width={300}
-            height={420}
-          />
-        )}
+      <div className="w-[85%] max-w-[380px] rounded-lg overflow-hidden shadow-lg shadow-stone-900/15 drop-shadow-[0_12px_24px_rgba(0,0,0,0.16)] dark:shadow-black/60 dark:drop-shadow-[0_12px_28px_rgba(0,0,0,0.7)] transition-transform duration-300 hover:scale-[1.01]">
+        <img
+          src="/logo_santamaria_2.webp"
+          alt="Santa María del Mar - Restaurante · Bar by Lety Moreno"
+          className="w-full h-auto object-contain block rounded-lg"
+          loading="eager"
+          fetchPriority="high"
+          onError={(e) => {
+            e.currentTarget.src = '/logo_santamaria.webp';
+          }}
+        />
       </div>
     </motion.div>
   );
