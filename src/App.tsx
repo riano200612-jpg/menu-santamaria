@@ -14,7 +14,6 @@ import {
   ArrowUpDown,
   ArrowUp,
   ArrowDown,
-  ChevronRight,
   Info,
   X,
   Flame,
@@ -134,21 +133,21 @@ export function Entrada({
               e.stopPropagation();
               onVerDetalles?.(platoActualizado);
             }}
-            className={`text-xl sm:text-2xl font-serif font-bold transition-colors duration-300 text-left cursor-pointer group flex items-center gap-1.5 focus:outline-none ${
-              darkMode
-                ? 'text-stone-100 group-hover/card:text-rose-300 hover:text-rose-300'
-                : 'text-stone-900 group-hover/card:text-[#8A0C13] hover:text-[#8A0C13]'
-            }`}
+            className="text-xl sm:text-2xl font-serif font-bold text-left cursor-pointer group flex items-center gap-1.5 focus:outline-none text-stone-900 group-hover/card:text-[#8A0C13] hover:text-[#8A0C13] transition-colors duration-300"
             title={idioma === 'es' ? 'Haz clic para ver descripción y maridaje' : 'Click to view description and pairing'}
           >
-            <span
-              className={`border-b border-dashed border-gray-300 dark:border-stone-600 pb-0.5 transition-colors duration-300 group-hover/card:border-[#8A0C13]/70 dark:group-hover/card:border-rose-300/70`}
-            >
-              {nombrePlato}
+            <span className="relative inline-block pb-0.5">
+              <span>{nombrePlato}</span>
+              {/* Línea animada continua de ultra lujo: 1px Rojo Carmín (#8A0C13), de 0% a 100% al hover */}
+              <span
+                className="absolute left-0 bottom-0 h-[1px] w-0 bg-[#8A0C13] transition-all duration-300 ease-out group-hover/card:w-full group-hover:w-full pointer-events-none"
+                aria-hidden="true"
+              />
             </span>
-            <ChevronRight
-              className="w-4 h-4 text-[#8A0C13] dark:text-rose-400 shrink-0 transition-transform duration-300 ease-out transform group-hover/card:translate-x-[2.5px] group-hover:translate-x-[2.5px]"
-              strokeWidth={2.4}
+            {/* Ícono '+' minimalista, ligero, que cambia a Rojo Carmín y rota 90° al hover */}
+            <Plus
+              className="w-3.5 h-3.5 text-stone-400 group-hover/card:text-[#8A0C13] group-hover:text-[#8A0C13] shrink-0 transition-all duration-300 ease-out transform group-hover/card:rotate-90 group-hover:rotate-90 origin-center"
+              strokeWidth={1.35}
               aria-hidden="true"
             />
           </button>
