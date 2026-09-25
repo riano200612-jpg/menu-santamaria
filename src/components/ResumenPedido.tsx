@@ -18,6 +18,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { Idioma, PlatoEntrada, ItemPedido } from '../types';
 import { TEXTOS_UI, formatearPrecio, formatearTotal } from '../data/translations';
 import { TicketSimplificado } from './TicketSimplificado';
+import { DietaryBadgeGroup } from './EtiquetadoDietetico';
 
 export interface ResumenPedidoProps {
   items: ItemPedido[];
@@ -365,9 +366,7 @@ export function ResumenPedido({
                       {/* Detalles del plato */}
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2 mb-1 flex-wrap">
-                          <span className="text-xs uppercase font-semibold tracking-wider px-2 py-0.5 rounded border border-[#8A0C13] bg-white text-[#8A0C13]">
-                            {etiquetaPlato}
-                          </span>
+                          <DietaryBadgeGroup plato={plato} idioma={idioma} />
                           <span
                             className={`text-xs sm:text-sm ${
                               darkMode ? 'text-stone-400' : 'text-[#374151]'

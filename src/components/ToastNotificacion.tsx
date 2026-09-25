@@ -32,17 +32,20 @@ interface ToastNotificacionProps {
 
 function getCategoriaIcon(categoria: PlatoEntrada['categoria']) {
   switch (categoria) {
-    case 'fuertes-mar':
+    case 'del-mar':
       return Fish;
-    case 'sabores-tierra':
+    case 'fuego-y-sabana':
+    case 'inspiracion-lacydes':
       return Flame;
-    case 'cocteles':
-    case 'licores':
-      return Wine;
-    case 'bebidas':
+    case 'desayunos':
       return Coffee;
+    case 'ceviches-entradas':
+    case 'empanadas-fritos':
+    case 'sopas':
+    case 'ensaladas':
+    case 'pastas':
+    case 'sandwiches':
     case 'postres':
-    case 'entradas':
     default:
       return Utensils;
   }

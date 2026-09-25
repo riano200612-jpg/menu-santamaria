@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo, useEffect, Fragment } from 'react';
 import { QRCodeSVG } from 'qrcode.react';
 import { motion, AnimatePresence } from 'motion/react';
 import {
@@ -13,33 +13,30 @@ import {
   ShoppingBag,
   Info,
   X,
-  Flame,
   Wine,
-  ShieldAlert,
   Sparkles,
   Search,
   QrCode,
   Share2,
   Copy,
+  ChevronDown,
 } from 'lucide-react';
 import {
   Idioma,
-  CategoriaFiltro,
   PlatoEntrada,
   ItemPedido,
 } from './types';
 import { PLATOS_MENU } from './data/menu';
 import {
   TEXTOS_UI,
-  CATEGORIAS_SELECTOR_I18N,
   formatearPrecio,
   formatearTotal,
 } from './data/translations';
-import { LanguageSwitcher } from './components/LanguageSwitcher';
 import { ResumenPedido } from './components/ResumenPedido';
 import { RestauranteHistoria } from './components/RestauranteHistoria';
 import { RatingEstrellas } from './components/RatingEstrellas';
 import { ToastNotificacion, ToastNotificacionData } from './components/ToastNotificacion';
+import { DietaryBadgeGroup, DietaryIconBadge } from './components/EtiquetadoDietetico';
 
 // Exportación de tipos y platos para compatibilidad con pruebas o extensiones
 export * from './types';
@@ -90,8 +87,14 @@ export function Entrada({
     return {
       ...plato,
       precioNumerico: precioActual,
+      presentacion: opcionSeleccionada
+        ? {
+            es: opcionSeleccionada.nombre.es,
+            en: opcionSeleccionada.nombre.en,
+          }
+        : plato.presentacion,
     };
-  }, [plato, precioActual]);
+  }, [plato, precioActual, opcionSeleccionada]);
 
   const nombrePlato = plato.nombre[idioma];
   const descripcionPlato = plato.descripcion[idioma];
@@ -121,7 +124,7 @@ export function Entrada({
         }`}
       >
         <div className="flex items-center gap-2 flex-wrap">
-          {/* Clic en el nombre del plato para abrir información nutricional y maridaje */}
+          {/* Clic en el nombre del plato para abrir información y maridaje */}
           <button
             type="button"
             id={`nombre-${plato.id}`}
@@ -129,8 +132,8 @@ export function Entrada({
               e.stopPropagation();
               onVerDetalles?.(platoActualizado);
             }}
-            className="text-xl sm:text-2xl font-serif font-bold text-left cursor-pointer group flex items-center gap-1.5 focus:outline-none text-stone-900 group-hover/card:text-[#8A0C13] hover:text-[#8A0C13] transition-colors duration-300"
-            title={idioma === 'es' ? 'Haz clic para ver descripción y maridaje' : 'Click to view description and pairing'}
+            className="text-xl sm:text-2xl font-serif font-bold text-left cursor-pointer group flex items-baseline gap-1.5 focus:outline-none text-stone-900 group-hover/card:text-[#8A0C13] hover:text-[#8A0C13] transition-colors duration-300"
+            title={idioma === 'es' ? 'Haz clic para ver maridaje' : 'Click to view pairing'}
           >
             <span className="relative inline-block pb-0.5">
               <span>{nombrePlato}</span>
@@ -142,15 +145,14 @@ export function Entrada({
             </span>
             {/* Ícono '+' minimalista, ligero, que cambia a Rojo Carmín y rota 90° al hover */}
             <Plus
-              className="w-3.5 h-3.5 text-stone-400 group-hover/card:text-[#8A0C13] group-hover:text-[#8A0C13] shrink-0 transition-all duration-300 ease-out transform group-hover/card:rotate-90 group-hover:rotate-90 origin-center"
+              className="w-3.5 h-3.5 text-stone-400 group-hover/card:text-[#8A0C13] group-hover:text-[#8A0C13] shrink-0 transition-all duration-300 ease-out transform group-hover/card:rotate-90 group-hover:rotate-90 origin-center self-center"
               strokeWidth={1.35}
               aria-hidden="true"
             />
           </button>
 
-          <span className="text-xs uppercase font-semibold tracking-wider px-2.5 py-0.5 rounded-md border border-[#8A0C13] bg-white text-[#8A0C13]">
-            {etiquetaPlato}
-          </span>
+          {/* Sistema de etiquetado dietético visual minimalista y monocromático (hoja, pez, recomendación de autor) */}
+          <DietaryBadgeGroup plato={platoActualizado} idioma={idioma} />
 
           {plato.presentacion && (
             <span
@@ -175,11 +177,11 @@ export function Entrada({
         </span>
       </div>
 
-      {/* Información descriptiva del plato con gris carbón elegante */}
-      <div className="space-y-2">
+      {/* Información descriptiva del plato con texto limpio en el idioma seleccionado */}
+      <div className="space-y-1">
         <p
           id={`descripcion-${plato.id}`}
-          className={`text-[15.5px] sm:text-[16.5px] leading-[1.7] sm:leading-[1.75] font-normal tracking-[0.01em] ${
+          className={`text-[15px] sm:text-[16px] leading-[1.65] font-normal tracking-[0.01em] ${
             darkMode ? 'text-stone-300' : 'text-[#374151]'
           }`}
         >
@@ -195,26 +197,31 @@ export function Entrada({
               darkMode ? 'text-stone-400' : 'text-[#374151]'
             }`}
           >
-            {idioma === 'es' ? 'Presentación:' : 'Portion:'}
+            {idioma === 'es' ? 'Opciones:' : 'Options:'}
           </span>
           <div className="flex items-center gap-1.5 flex-wrap">
             {plato.opcionesPresentacion.map((opcion) => {
               const esActiva = (opcionSeleccionada?.id || plato.opcionesPresentacion![0].id) === opcion.id;
+              const nombreOpcion = opcion.nombre[idioma];
               return (
                 <button
                   key={opcion.id}
                   type="button"
                   id={`btn-opcion-${plato.id}-${opcion.id}`}
-                  onClick={() => setOpcionSeleccionadaId(opcion.id)}
-                  className={`text-xs sm:text-sm px-3 py-1.5 rounded-lg font-medium transition cursor-pointer border ${
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setOpcionSeleccionadaId(opcion.id);
+                  }}
+                  className={`text-xs sm:text-sm px-3 py-1.5 rounded-lg font-medium transition-colors duration-300 cursor-pointer border ${
                     esActiva
                       ? 'bg-[#8A0C13] text-white font-bold border-[#8A0C13] shadow-xs'
-                      : darkMode
-                        ? 'bg-stone-800 text-stone-300 border-stone-700 hover:border-[#8A0C13]/60'
-                        : 'bg-white text-[#374151] border-stone-300 hover:border-[#8A0C13]'
+                      : 'bg-white text-[#8A0C13] border border-[#8A0C13] hover:bg-[#8A0C13] hover:text-white'
                   }`}
                 >
-                  {opcion.nombre[idioma]} • {formatearPrecio(opcion.precioNumerico, idioma)}
+                  <span>{nombreOpcion}</span>
+                  <span className="ml-1.5 font-mono font-bold text-xs opacity-90">
+                    {formatearPrecio(opcion.precioNumerico, idioma)}
+                  </span>
                 </button>
               );
             })}
@@ -230,7 +237,7 @@ export function Entrada({
         darkMode={darkMode}
       />
 
-      {/* Acciones del plato: Nutrición & Maridaje */}
+      {/* Acciones del plato: Maridaje */}
       <div className="flex items-center justify-start pt-2 gap-3 flex-wrap">
         <button
           type="button"
@@ -238,8 +245,8 @@ export function Entrada({
           onClick={() => onVerDetalles?.(platoActualizado)}
           className="group inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold transition-colors duration-300 cursor-pointer py-1.5 px-3 rounded-lg border border-[#8A0C13] bg-white text-[#8A0C13] hover:bg-[#8A0C13] hover:text-white"
         >
-          <Sparkles className="w-4 h-4 text-[#8A0C13] group-hover:text-white transition-colors duration-300" />
-          <span>{t.verNutricionMaridaje}</span>
+          <Wine className="w-4 h-4 text-[#8A0C13] group-hover:text-white transition-colors duration-300" />
+          <span>{idioma === 'es' ? 'Maridaje' : 'Pairing'}</span>
         </button>
       </div>
     </article>
@@ -290,7 +297,6 @@ export function ModalDetallePlato({
   const descripcionPlato = plato.descripcion[idioma];
   const etiquetaPlato = plato.etiqueta[idioma];
   const precioFormateado = formatearPrecio(precioActual, idioma);
-  const alergenos = plato.nutricion.alergenos[idioma] || [];
   const maridaje = plato.maridaje;
 
   return (
@@ -319,9 +325,6 @@ export function ModalDetallePlato({
         >
           <div>
             <div className="flex items-center gap-2 mb-1">
-              <span className="text-xs uppercase font-semibold tracking-wider px-2.5 py-0.5 rounded-md border border-[#8A0C13] bg-white text-[#8A0C13]">
-                {etiquetaPlato}
-              </span>
               <span
                 className={`text-sm sm:text-base font-mono font-bold ${
                   darkMode ? 'text-rose-300' : 'text-[#8A0C13]'
@@ -329,12 +332,11 @@ export function ModalDetallePlato({
               >
                 {precioFormateado}
               </span>
+              <DietaryBadgeGroup plato={plato} idioma={idioma} />
             </div>
             <h2
               id="modal-titulo-plato"
-              className={`text-2xl sm:text-3xl font-serif font-bold ${
-                darkMode ? 'text-stone-100' : 'text-stone-900'
-              }`}
+              className="text-2xl sm:text-3xl font-serif font-bold text-stone-900 leading-tight"
             >
               {nombrePlato}
             </h2>
@@ -355,16 +357,12 @@ export function ModalDetallePlato({
           </button>
         </div>
 
-        {/* Descripción del plato */}
-        <p
-          className={`text-[16px] sm:text-[17.5px] leading-[1.75] italic p-4 rounded-xl border ${
-            darkMode
-              ? 'text-stone-200 bg-stone-950/40 border-stone-800/60'
-              : 'text-[#374151] bg-[#FBFBFB] border-stone-200'
-          }`}
-        >
-          "{descripcionPlato}"
-        </p>
+        {/* Descripción del plato en el idioma activo */}
+        <div className="p-4 rounded-xl border bg-[#FBFBFB] border-stone-200">
+          <p className="text-[16px] sm:text-[17.5px] leading-[1.75] italic text-[#374151] font-serif">
+            "{descripcionPlato}"
+          </p>
+        </div>
 
         {/* Aviso de personalización si el plato cuenta con modificaciones */}
         {plato.modificacionesSeleccionadas && plato.modificacionesSeleccionadas.length > 0 && (
@@ -405,13 +403,14 @@ export function ModalDetallePlato({
                   darkMode ? 'text-rose-300' : 'text-[#374151]'
                 }`}
               >
-                {idioma === 'es' ? 'Seleccionar presentación / porción:' : 'Select portion / size:'}
+                {idioma === 'es' ? 'Presentación / Porción:' : 'Portion / Size:'}
               </span>
             </div>
             <div className="flex items-center gap-2 flex-wrap">
               {plato.opcionesPresentacion.map((opcion) => {
                 const esActiva =
                   (opcionSeleccionada?.id || plato.opcionesPresentacion![0].id) === opcion.id;
+                const nombreOpcion = opcion.nombre[idioma];
                 return (
                   <button
                     key={opcion.id}
@@ -421,12 +420,10 @@ export function ModalDetallePlato({
                     className={`text-xs sm:text-sm px-3.5 py-1.5 rounded-lg font-medium transition cursor-pointer border ${
                       esActiva
                         ? 'bg-[#8A0C13] text-white font-bold border-[#8A0C13] shadow-xs'
-                        : darkMode
-                          ? 'bg-stone-800 text-stone-300 border-stone-700 hover:border-[#8A0C13]/60'
-                          : 'bg-white text-[#374151] border-stone-300 hover:border-[#8A0C13]'
+                        : 'bg-white text-[#374151] border-stone-300 hover:border-[#8A0C13]'
                     }`}
                   >
-                    {opcion.nombre[idioma]} • {formatearPrecio(opcion.precioNumerico, idioma)}
+                    {nombreOpcion} • {formatearPrecio(opcion.precioNumerico, idioma)}
                   </button>
                 );
               })}
@@ -450,146 +447,6 @@ export function ModalDetallePlato({
           />
         </div>
 
-        {/* Sección de Información Nutricional */}
-        <div id="seccion-info-nutricional" className="space-y-2.5">
-          <div
-            className={`flex items-center gap-1.5 text-xs sm:text-sm font-semibold uppercase tracking-wider ${
-              darkMode ? 'text-rose-300' : 'text-[#8A0C13]'
-            }`}
-          >
-            <Flame className="w-4 h-4 text-[#8A0C13]" />
-            <h3>{t.infoNutricionalTitulo}</h3>
-          </div>
-
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-center">
-            <div
-              className={`p-2.5 rounded-xl border ${
-                darkMode
-                  ? 'bg-stone-950/70 border-stone-800'
-                  : 'bg-[#FBFBFB] border-stone-200'
-              }`}
-            >
-              <span
-                className={`text-xs block ${
-                  darkMode ? 'text-stone-400' : 'text-[#374151]'
-                }`}
-              >
-                {t.calorias}
-              </span>
-              <span
-                className={`font-mono text-base sm:text-lg font-bold ${
-                  darkMode ? 'text-rose-300' : 'text-[#8A0C13]'
-                }`}
-              >
-                {plato.nutricion.calorias}{' '}
-                <span
-                  className={`text-xs font-normal ${
-                    darkMode ? 'text-stone-400' : 'text-[#374151]'
-                  }`}
-                >
-                  kcal
-                </span>
-              </span>
-            </div>
-
-            <div
-              className={`p-2.5 rounded-xl border ${
-                darkMode
-                  ? 'bg-stone-950/70 border-stone-800'
-                  : 'bg-[#FBFBFB] border-stone-200'
-              }`}
-            >
-              <span
-                className={`text-xs block ${
-                  darkMode ? 'text-stone-400' : 'text-[#374151]'
-                }`}
-              >
-                {t.proteinas}
-              </span>
-              <span
-                className={`font-mono text-base sm:text-lg font-bold ${
-                  darkMode ? 'text-rose-300' : 'text-[#8A0C13]'
-                }`}
-              >
-                {plato.nutricion.proteinas}
-              </span>
-            </div>
-
-            <div
-              className={`p-2.5 rounded-xl border ${
-                darkMode
-                  ? 'bg-stone-950/70 border-stone-800'
-                  : 'bg-[#FBFBFB] border-stone-200'
-              }`}
-            >
-              <span
-                className={`text-xs block ${
-                  darkMode ? 'text-stone-400' : 'text-[#374151]'
-                }`}
-              >
-                {t.grasas}
-              </span>
-              <span
-                className={`font-mono text-base sm:text-lg font-bold ${
-                  darkMode ? 'text-rose-300' : 'text-[#8A0C13]'
-                }`}
-              >
-                {plato.nutricion.grasas}
-              </span>
-            </div>
-
-            <div
-              className={`p-2.5 rounded-xl border ${
-                darkMode
-                  ? 'bg-stone-950/70 border-stone-800'
-                  : 'bg-[#FBFBFB] border-stone-200'
-              }`}
-            >
-              <span
-                className={`text-xs block ${
-                  darkMode ? 'text-stone-400' : 'text-[#374151]'
-                }`}
-              >
-                {t.carbohidratos}
-              </span>
-              <span
-                className={`font-mono text-base sm:text-lg font-bold ${
-                  darkMode ? 'text-rose-300' : 'text-[#8A0C13]'
-                }`}
-              >
-                {plato.nutricion.carbohidratos}
-              </span>
-            </div>
-          </div>
-
-          {/* Alérgenos */}
-          <div
-            className={`p-3 rounded-xl border text-xs sm:text-sm flex items-start gap-2 ${
-              darkMode
-                ? 'bg-stone-950/50 border-stone-800/80 text-stone-300'
-                : 'bg-[#FBFBFB] border-stone-200 text-[#374151]'
-            }`}
-          >
-            <ShieldAlert className="w-4 h-4 text-[#8A0C13] shrink-0 mt-0.5" />
-            <div>
-              <span
-                className={`font-semibold ${
-                  darkMode ? 'text-rose-300/90' : 'text-[#8A0C13]'
-                }`}
-              >
-                {t.alergenosTitulo}{' '}
-              </span>
-              {alergenos.length > 0 ? (
-                <span>{alergenos.join(', ')}</span>
-              ) : (
-                <span className="italic text-stone-400">
-                  {t.sinAlergenos}
-                </span>
-              )}
-            </div>
-          </div>
-        </div>
-
         {/* Sección de Maridaje Recomendado */}
         <div
           id="seccion-maridaje"
@@ -598,25 +455,17 @@ export function ModalDetallePlato({
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-[#8A0C13] uppercase tracking-wider">
               <Wine className="w-4 h-4" />
-              <h3>{t.maridajeTitulo}</h3>
+              <h3>{idioma === 'es' ? 'Maridaje Recomendado' : 'Recommended Pairing'}</h3>
             </div>
             <span className="text-xs font-semibold uppercase px-2.5 py-0.5 rounded-full border border-[#8A0C13] bg-white text-[#8A0C13]">
               {maridaje.tipo[idioma]}
             </span>
           </div>
 
-          <p
-            className={`text-base sm:text-lg font-serif font-bold ${
-              darkMode ? 'text-stone-100' : 'text-stone-900'
-            }`}
-          >
+          <p className="text-base sm:text-lg font-serif font-bold text-stone-900">
             {maridaje.bebida[idioma]}
           </p>
-          <p
-            className={`text-sm sm:text-base leading-[1.65] ${
-              darkMode ? 'text-stone-300' : 'text-[#374151]'
-            }`}
-          >
+          <p className="text-sm sm:text-base leading-[1.65] text-[#374151]">
             {maridaje.descripcion[idioma]}
           </p>
         </div>
@@ -877,6 +726,58 @@ export function ModalCodigoQR({
   );
 }
 
+interface CategoriaAcordeonItem {
+  id: string;
+  nombre: Record<Idioma, string>;
+  subtitulo?: Record<Idioma, string>;
+}
+
+const CATEGORIAS_ACORDEON: CategoriaAcordeonItem[] = [
+  {
+    id: 'desayunos',
+    nombre: { es: 'Desayunos', en: 'Breakfast' },
+    subtitulo: { es: 'Incluyen café colombiano y patacones o pan', en: 'Include Colombian coffee and patacones or bread' },
+  },
+  {
+    id: 'empanadas-fritos',
+    nombre: { es: 'Empanadas y Fritos', en: 'Empanadas & Bites' },
+  },
+  {
+    id: 'ceviches-entradas',
+    nombre: { es: 'Ceviches y Entradas', en: 'Ceviches & Starters' },
+  },
+  {
+    id: 'sopas',
+    nombre: { es: 'Sopas de la Casa', en: 'House Soups' },
+    subtitulo: { es: 'Cada día ofrecemos dos', en: 'Two available daily' },
+  },
+  {
+    id: 'del-mar',
+    nombre: { es: 'Del Mar', en: 'From the Sea' },
+  },
+  {
+    id: 'fuego-y-sabana',
+    nombre: { es: 'Fuego y Sabana', en: 'Fuego y Sabana' },
+    subtitulo: { es: 'Platos fuertes con dos acompañamientos a elección', en: 'Main courses including two sides of your choice' },
+  },
+  {
+    id: 'ensaladas',
+    nombre: { es: 'Ensaladas', en: 'Salads' },
+  },
+  {
+    id: 'pastas',
+    nombre: { es: 'Pastas', en: 'Pasta' },
+  },
+  {
+    id: 'sandwiches',
+    nombre: { es: 'Sándwiches', en: 'Sandwiches' },
+  },
+  {
+    id: 'postres',
+    nombre: { es: 'Postres', en: 'Desserts' },
+  },
+];
+
 export default function App() {
   const [idioma, setIdioma] = useState<Idioma>(() => {
     if (typeof window !== 'undefined') {
@@ -889,7 +790,7 @@ export default function App() {
   // Modo oscuro eliminado: diseño premium Blanco Marfil / Warm Stone (#FBFBFB) permanente
   const darkMode = false;
 
-  const [categoriaSeleccionada, setCategoriaSeleccionada] = useState<CategoriaFiltro>('todos');
+  const [categoriaAbiertaId, setCategoriaAbiertaId] = useState<string | null>('desayunos');
   const [busqueda, setBusqueda] = useState<string>('');
   const [platoDetalle, setPlatoDetalle] = useState<PlatoEntrada | null>(null);
   const [mostrarQR, setMostrarQR] = useState<boolean>(false);
@@ -910,20 +811,7 @@ export default function App() {
   const [itemsVolando, setItemsVolando] = useState<ItemVolando[]>([]);
   const [badgeBump, setBadgeBump] = useState<boolean>(false);
 
-  // Estado de scroll para el resplandor interno de vidrio en #cabecera-menu
-  const [scrolled, setScrolled] = useState<boolean>(false);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 25);
-    };
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    handleScroll();
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
   const t = TEXTOS_UI[idioma];
-  const categorias = CATEGORIAS_SELECTOR_I18N[idioma];
 
   const itemsPedido = useMemo(() => Object.values(pedidos), [pedidos]);
   const totalSeleccionados = useMemo(
@@ -1096,164 +984,225 @@ export default function App() {
     }, 450);
   };
 
-  const platosFiltradosYOrdenados = useMemo(() => {
-    const filtrados = PLATOS_MENU.filter((plato) => {
-      // Filtrado por categoría de la Carta Pirata
-      if (categoriaSeleccionada !== 'todos') {
-        if (plato.categoria !== categoriaSeleccionada) return false;
+  const toggleCategoria = (catId: string) => {
+    setCategoriaAbiertaId((prev) => {
+      const esApertura = prev !== catId;
+      if (esApertura) {
+        // Auto-Scroll inteligente: desplaza suavemente la vista para anclar el encabezado en la parte superior
+        setTimeout(() => {
+          const elemento = document.getElementById(`acordeon-item-${catId}`);
+          if (elemento) {
+            elemento.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+        }, 100);
+        return catId;
       }
-
-      // Filtrado por búsqueda en tiempo real (busca en ambos idiomas para conveniencia del usuario)
-      if (busqueda.trim()) {
-        const q = busqueda.toLowerCase().trim();
-        const coincideNombreEs = plato.nombre.es.toLowerCase().includes(q);
-        const coincideNombreEn = plato.nombre.en.toLowerCase().includes(q);
-        const coincideDescEs = plato.descripcion.es.toLowerCase().includes(q);
-        const coincideDescEn = plato.descripcion.en.toLowerCase().includes(q);
-        const coincideEtiquetaEs = plato.etiqueta.es.toLowerCase().includes(q);
-        const coincideEtiquetaEn = plato.etiqueta.en.toLowerCase().includes(q);
-        const coincideBebidaEs = plato.maridaje.bebida.es.toLowerCase().includes(q);
-        const coincideBebidaEn = plato.maridaje.bebida.en.toLowerCase().includes(q);
-        const coincidePresEs = plato.presentacion?.es.toLowerCase().includes(q) ?? false;
-        const coincidePresEn = plato.presentacion?.en.toLowerCase().includes(q) ?? false;
-
-        if (
-          !coincideNombreEs &&
-          !coincideNombreEn &&
-          !coincideDescEs &&
-          !coincideDescEn &&
-          !coincideEtiquetaEs &&
-          !coincideEtiquetaEn &&
-          !coincideBebidaEs &&
-          !coincideBebidaEn &&
-          !coincidePresEs &&
-          !coincidePresEn
-        ) {
-          return false;
-        }
-      }
-
-      return true;
+      return null;
     });
+  };
 
-    return filtrados;
-  }, [categoriaSeleccionada, busqueda]);
+  const coincideBusqueda = (plato: PlatoEntrada, query: string) => {
+    if (!query.trim()) return true;
+    const q = query.toLowerCase().trim();
+    return (
+      plato.nombre[idioma].toLowerCase().includes(q) ||
+      plato.descripcion[idioma].toLowerCase().includes(q) ||
+      plato.etiqueta[idioma].toLowerCase().includes(q) ||
+      plato.maridaje.bebida[idioma].toLowerCase().includes(q) ||
+      (plato.presentacion?.[idioma]?.toLowerCase().includes(q) ?? false) ||
+      plato.nombre.es.toLowerCase().includes(q) ||
+      plato.nombre.en.toLowerCase().includes(q) ||
+      plato.descripcion.es.toLowerCase().includes(q) ||
+      plato.descripcion.en.toLowerCase().includes(q)
+    );
+  };
+
+  const totalCoincidencias = useMemo(() => {
+    if (!busqueda.trim()) return 0;
+    return PLATOS_MENU.filter((p) => coincideBusqueda(p, busqueda)).length;
+  }, [busqueda, idioma]);
+
+  useEffect(() => {
+    if (busqueda.trim()) {
+      const primeraConResultados = CATEGORIAS_ACORDEON.find((cat) =>
+        PLATOS_MENU.some((p) => p.categoria === cat.id && coincideBusqueda(p, busqueda))
+      );
+      if (primeraConResultados) {
+        setCategoriaAbiertaId(primeraConResultados.id);
+        setTimeout(() => {
+          const elemento = document.getElementById(`acordeon-item-${primeraConResultados.id}`);
+          if (elemento) {
+            elemento.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+        }, 100);
+      } else {
+        setCategoriaAbiertaId(null);
+      }
+    }
+  }, [busqueda]);
 
   return (
-    <div className="min-h-screen flex flex-col items-center py-10 px-4 sm:px-6 bg-[#FBFBFB] text-stone-900">
-      <div className="max-w-2xl w-full rounded-2xl p-5 sm:p-7 pt-4 sm:pt-5 space-y-4 sm:space-y-5 bg-white border border-stone-200 shadow-xl shadow-stone-900/5 text-stone-900">
-        {/* Cabecera (header) del Menú con Hero Image Santa María del Mar */}
-        <header
-          id="cabecera-menu"
-          data-scrolled={scrolled}
-          className={`w-full space-y-2.5 sm:space-y-3 m-0 rounded-2xl transition-all duration-500 ease-out border p-1 sm:p-1.5 ${
-            scrolled
-              ? 'border-[#8A0C13]/20 bg-white/40 backdrop-blur-xs shadow-[inset_0_0_22px_rgba(138,12,19,0.14),inset_0_1px_2px_rgba(138,12,19,0.18)]'
-              : 'border-transparent bg-transparent shadow-none'
-          }`}
-        >
-          {/* Imagen de portada estática del restaurante (proporciones estrictas, escala controlada y sombra difuminada) */}
-          <div className="w-full flex justify-center items-center p-0 m-0">
-            <div className="w-full max-w-xs mx-auto p-0 m-0 flex justify-center">
-              <div className="rounded-lg overflow-hidden shadow-xl p-0 m-0 mx-auto">
-                <img
-                  src="/logo_santamaria_2.webp"
-                  alt="Santa María del Mar - Restaurante · Bar by Lety Moreno"
-                  className="w-auto h-auto max-h-[280px] md:max-h-[350px] object-contain block rounded-lg mx-auto select-none pointer-events-none p-0 m-0"
-                  loading="eager"
-                  fetchPriority="high"
-                  onError={(e) => {
-                    e.currentTarget.src = '/logo_santamaria.webp';
-                  }}
-                />
-              </div>
+    <div className="min-h-screen py-6 sm:py-8 lg:py-12 px-4 sm:px-6 lg:px-8 bg-[#FBFBFB] text-stone-900">
+      <div className="max-w-4xl mx-auto space-y-6 sm:space-y-8">
+        {/* Cabecera Principal + Selector de Idioma con Banderas + Nuestra Historia (DOM Forzado Arriba) */}
+        <header className="relative w-full pt-2 pb-2 text-center">
+          {/* Selector de Idioma Inteligente con Banderas (Esquina superior derecha) */}
+          <div className="flex justify-end w-full mb-3 sm:mb-4">
+            <div
+              id="selector-idioma-banderas"
+              className="inline-flex items-center gap-1 bg-white/95 backdrop-blur-xs p-1 rounded-full border border-stone-200/90 shadow-xs"
+              role="group"
+              aria-label={idioma === 'es' ? 'Seleccionar idioma' : 'Select language'}
+            >
+              <button
+                type="button"
+                id="btn-idioma-es"
+                onClick={() => setIdioma('es')}
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold transition-all duration-300 cursor-pointer ${
+                  idioma === 'es'
+                    ? 'bg-[#8A0C13] text-white shadow-xs'
+                    : 'text-stone-600 hover:text-stone-900 hover:bg-stone-100'
+                }`}
+                title="Español"
+                aria-label="Español"
+                aria-pressed={idioma === 'es'}
+              >
+                <span className="text-base leading-none" role="img" aria-label="Bandera Colombia">🇨🇴</span>
+                <span>ES</span>
+              </button>
+              <button
+                type="button"
+                id="btn-idioma-en"
+                onClick={() => setIdioma('en')}
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold transition-all duration-300 cursor-pointer ${
+                  idioma === 'en'
+                    ? 'bg-[#8A0C13] text-white shadow-xs'
+                    : 'text-stone-600 hover:text-stone-900 hover:bg-stone-100'
+                }`}
+                title="English"
+                aria-label="English"
+                aria-pressed={idioma === 'en'}
+              >
+                <span className="text-base leading-none" role="img" aria-label="Bandera Estados Unidos">🇺🇸</span>
+                <span>EN</span>
+              </button>
             </div>
           </div>
 
-          {/* Barra superior de controles: Selector de Idioma, Tema, QR y Totales */}
-          <div className="flex flex-wrap items-center justify-between border-b pb-3.5 gap-2.5 border-stone-200">
-            <h1 className="sr-only">
-              {t.nombreRestaurante} - {t.subtituloRestaurante}
-            </h1>
+          {/* Título elegante 'Santa María del Mar' */}
+          <span className="text-xs uppercase tracking-[0.25em] font-semibold text-[#8A0C13] font-serif block">
+            {idioma === 'es' ? 'Restaurante · Bar by Lety Moreno' : 'Restaurant & Bar by Lety Moreno'}
+          </span>
+          <h1 className="text-3xl sm:text-5xl lg:text-5xl font-serif font-black tracking-tight text-stone-900 mt-1 leading-tight">
+            Santa María del Mar
+          </h1>
+          <div className="w-16 h-[2px] bg-[#8A0C13] mx-auto mt-3" aria-hidden="true" />
 
-            {/* Componente selector de idioma (ES / EN) */}
-            <LanguageSwitcher
-              idioma={idioma}
-              onCambiarIdioma={setIdioma}
-              darkMode={darkMode}
-            />
+          {/* Reubicación Forzada de la Historia (DOM): Citas de Lety Moreno y Lacydes Moreno Blanco */}
+          <section
+            id="bloque-nuestra-historia"
+            className="max-w-2xl mx-auto mt-6 px-4 space-y-3.5 text-center"
+            aria-label={idioma === 'es' ? 'Nuestra Historia' : 'Our Story'}
+          >
+            <p className="text-xs uppercase tracking-widest font-bold text-[#8A0C13] font-serif">
+              {idioma === 'es' ? 'Nuestra Historia' : 'Our Story'}
+            </p>
+            <p className="text-[14.5px] sm:text-[16px] text-stone-700 italic leading-[1.8] font-serif">
+              {idioma === 'es'
+                ? '“Soy Lety Moreno. En Santa María del Mar comparto la cocina cartagenera que aprendí de mi familia y el legado gastronómico de mi tío Lacydes Moreno Blanco. Cada plato une tradición, Caribe y hospitalidad junto al Museo Naval.”'
+                : '“I am Lety Moreno. At Santa María del Mar, I share the Cartagena cuisine I learned from my family and the culinary legacy of my uncle Lacydes Moreno Blanco. Every dish brings together tradition, Caribbean flavor, and hospitality beside the Naval Museum.”'}
+            </p>
+            <div className="pt-1">
+              <p className="text-xs sm:text-[13.5px] text-stone-500 italic font-serif leading-relaxed">
+                {idioma === 'es'
+                  ? '“Esencialmente, la cocina, como el amor, es una forma de la contemplación y del sabio manejo del fuego.”'
+                  : '“Essentially, cooking, like love, is a form of contemplation and the wise mastery of fire.”'}
+              </p>
+              <span className="text-[11px] uppercase tracking-wider text-[#8A0C13] font-serif font-semibold mt-1 block">
+                — Lacydes Moreno Blanco
+              </span>
+            </div>
+          </section>
+        </header>
+
+        {/* Barra superior de controles: QR, Totales y Búsqueda */}
+        <div className="bg-white border border-stone-200/90 rounded-2xl p-4 sm:p-5 shadow-xs space-y-4">
+          <div className="flex flex-wrap items-center justify-between gap-3 border-b pb-3.5 border-stone-200">
+            <div className="flex items-center gap-2">
+              <span className="w-2.5 h-2.5 rounded-full bg-[#8A0C13]" aria-hidden="true" />
+              <span className="font-serif font-bold text-sm sm:text-base text-stone-900">
+                {idioma === 'es' ? 'Menú Santa María' : 'Santa María Menu'}
+              </span>
+            </div>
 
             <div className="flex flex-wrap items-center gap-2">
-            {/* Botón para generar y mostrar el Código QR del menú */}
-            <button
-              type="button"
-              id="btn-abrir-qr"
-              onClick={() => setMostrarQR(true)}
-              className="group flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-semibold transition-colors duration-300 border border-[#8A0C13] cursor-pointer active:scale-95 bg-white text-[#8A0C13] hover:bg-[#8A0C13] hover:text-white shadow-xs"
-              title={t.verQR}
-              aria-label={t.verQR}
-            >
-              <QrCode className="w-4 h-4 text-[#8A0C13] group-hover:text-white transition-colors duration-300 shrink-0" />
-              <span>{t.verQR}</span>
-            </button>
-
-            {/* Badge de cantidad total de platos seleccionados (solo si hay items seleccionados) */}
-            {totalSeleccionados > 0 && (
-              <motion.button
-                type="button"
-                id="badge-total-seleccionados"
-                onClick={() => setMostrarResumen(true)}
-                animate={
-                  badgeBump
-                    ? {
-                        scale: [1, 1.25, 0.94, 1.06, 1],
-                        boxShadow: [
-                          '0 0 0 rgba(138, 12, 19, 0)',
-                          '0 0 20px rgba(138, 12, 19, 0.85)',
-                          '0 0 0 rgba(138, 12, 19, 0)',
-                        ],
-                      }
-                    : { scale: 1 }
-                }
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                transition={{ duration: 0.45, ease: 'easeOut' }}
-                className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-semibold transition-colors duration-200 border cursor-pointer bg-[#8A0C13] text-white border-[#8A0C13] shadow-md hover:bg-[#720a10]"
-                title={t.verResumenPedido}
-                aria-label={t.verResumenPedido}
-              >
-                <ShoppingBag className="w-4 h-4" />
-                <span>
-                  {totalSeleccionados}{' '}
-                  {totalSeleccionados === 1 ? t.platoSingular : t.platoPlural}
-                </span>
-              </motion.button>
-            )}
-
-            {/* Etiqueta con el precio total acumulado (solo si es mayor a 0) */}
-            {precioTotal > 0 && (
+              {/* Botón para generar y mostrar el Código QR del menú */}
               <button
                 type="button"
-                id="badge-precio-total"
-                onClick={() => setMostrarResumen(true)}
+                id="btn-abrir-qr"
+                onClick={() => setMostrarQR(true)}
                 className="group flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-semibold transition-colors duration-300 border border-[#8A0C13] cursor-pointer active:scale-95 bg-white text-[#8A0C13] hover:bg-[#8A0C13] hover:text-white shadow-xs"
-                title={t.verResumenPedido}
-                aria-label={t.verResumenPedido}
+                title={t.verQR}
+                aria-label={t.verQR}
               >
-                <span className="text-xs font-normal text-[#374151] group-hover:text-white transition-colors duration-300">
-                  {t.totalAcumulado}
-                </span>
-                <span className="font-mono font-bold text-[#8A0C13] group-hover:text-white transition-colors duration-300">
-                  {formatearTotal(precioTotal, idioma)}
-                </span>
+                <QrCode className="w-4 h-4 text-[#8A0C13] group-hover:text-white transition-colors duration-300 shrink-0" />
+                <span>{t.verQR}</span>
               </button>
-            )}
-          </div>
-        </div>
-      </header>
 
-        {/* Buscador y Selector de Categorías con amplio espacio negativo de alta gama */}
-        <div id="controles-filtrado" className="mt-12 sm:mt-16 space-y-3.5">
+              {/* Badge de cantidad total de platos seleccionados */}
+              {totalSeleccionados > 0 && (
+                <motion.button
+                  type="button"
+                  id="badge-total-seleccionados"
+                  onClick={() => setMostrarResumen(true)}
+                  animate={
+                    badgeBump
+                      ? {
+                          scale: [1, 1.25, 0.94, 1.06, 1],
+                          boxShadow: [
+                            '0 0 0 rgba(138, 12, 19, 0)',
+                            '0 0 20px rgba(138, 12, 19, 0.85)',
+                            '0 0 0 rgba(138, 12, 19, 0)',
+                          ],
+                        }
+                      : { scale: 1 }
+                  }
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  transition={{ duration: 0.45, ease: 'easeOut' }}
+                  className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-semibold transition-colors duration-200 border cursor-pointer bg-[#8A0C13] text-white border-[#8A0C13] shadow-md hover:bg-[#720a10]"
+                  title={t.verResumenPedido}
+                  aria-label={t.verResumenPedido}
+                >
+                  <ShoppingBag className="w-4 h-4" />
+                  <span>
+                    {totalSeleccionados}{' '}
+                    {totalSeleccionados === 1 ? t.platoSingular : t.platoPlural}
+                  </span>
+                </motion.button>
+              )}
+
+              {/* Etiqueta con el precio total acumulado */}
+              {precioTotal > 0 && (
+                <button
+                  type="button"
+                  id="badge-precio-total"
+                  onClick={() => setMostrarResumen(true)}
+                  className="group flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-semibold transition-colors duration-300 border border-[#8A0C13] cursor-pointer active:scale-95 bg-white text-[#8A0C13] hover:bg-[#8A0C13] hover:text-white shadow-xs"
+                  title={t.verResumenPedido}
+                  aria-label={t.verResumenPedido}
+                >
+                  <span className="text-xs font-normal text-[#374151] group-hover:text-white transition-colors duration-300">
+                    {t.totalAcumulado}
+                  </span>
+                  <span className="font-mono font-bold text-[#8A0C13] group-hover:text-white transition-colors duration-300">
+                    {formatearTotal(precioTotal, idioma)}
+                  </span>
+                </button>
+              )}
+            </div>
+          </div>
+
           {/* Barra de búsqueda interactiva */}
           <div className="relative">
             <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-[#8A0C13]">
@@ -1265,11 +1214,7 @@ export default function App() {
               value={busqueda}
               onChange={(e) => setBusqueda(e.target.value)}
               placeholder={t.placeholderBuscar}
-              className={`w-full pl-10 pr-9 py-2.5 sm:py-3 rounded-xl text-base transition duration-200 focus:outline-none focus:ring-2 focus:ring-[#8A0C13]/20 ${
-                darkMode
-                  ? 'bg-stone-950/60 border border-stone-800 text-stone-100 placeholder:text-stone-500 focus:border-[#8A0C13]'
-                  : 'bg-[#FBFBFB] border border-stone-300 text-stone-900 placeholder:text-stone-400 focus:border-[#8A0C13]'
-              }`}
+              className="w-full pl-10 pr-9 py-2.5 sm:py-3 rounded-xl text-sm sm:text-base transition duration-200 focus:outline-none focus:ring-2 focus:ring-[#8A0C13]/20 bg-[#FBFBFB] border border-stone-300 text-stone-900 placeholder:text-stone-400 focus:border-[#8A0C13]"
             />
             {busqueda && (
               <button
@@ -1283,41 +1228,17 @@ export default function App() {
               </button>
             )}
           </div>
-
-          {/* Selector interactivo de categorías */}
-          <div className="flex flex-wrap gap-2" role="tablist" aria-label="Categorías de la carta">
-            {categorias.map((cat) => {
-              const estaSeleccionado = categoriaSeleccionada === cat.id;
-              return (
-                <button
-                  key={cat.id}
-                  id={`btn-filtro-${cat.id}`}
-                  type="button"
-                  role="tab"
-                  aria-selected={estaSeleccionado}
-                  onClick={() => setCategoriaSeleccionada(cat.id)}
-                  className={`px-3.5 sm:px-4 py-2 rounded-xl text-sm sm:text-base font-semibold border transition-colors duration-300 ease-out cursor-pointer active:scale-95 transform select-none ${
-                    estaSeleccionado
-                      ? 'bg-[#8A0C13] text-white font-bold border-[#8A0C13] shadow-md shadow-[#8A0C13]/30'
-                      : 'bg-white border-[#8A0C13] text-[#8A0C13] hover:bg-[#8A0C13] hover:text-white hover:border-[#8A0C13]'
-                  }`}
-                >
-                  {cat.label}
-                </button>
-              );
-            })}
-          </div>
         </div>
 
         {/* Indicador de resultados activos de búsqueda */}
         {busqueda && (
           <div
             id="indicador-busqueda"
-            className="flex items-center justify-between text-xs sm:text-sm px-3.5 py-2 rounded-lg border border-[#8A0C13] bg-white text-[#8A0C13]"
+            className="flex items-center justify-between text-xs sm:text-sm px-4 py-2.5 rounded-xl border border-[#8A0C13] bg-white text-[#8A0C13]"
           >
             <span>
-              {t.resultadosPara} <strong>"{busqueda}"</strong> ({platosFiltradosYOrdenados.length}{' '}
-              {platosFiltradosYOrdenados.length === 1 ? t.platoSingular : t.platoPlural})
+              {t.resultadosPara} <strong>"{busqueda}"</strong> ({totalCoincidencias}{' '}
+              {totalCoincidencias === 1 ? t.platoSingular : t.platoPlural})
             </span>
             <button
               type="button"
@@ -1329,68 +1250,172 @@ export default function App() {
           </div>
         )}
 
-        {/* Lista dinámica de Platos */}
-        <section id="lista-entradas" className="space-y-4" aria-label="Platos del menú">
-          {platosFiltradosYOrdenados.length > 0 ? (
-            <motion.div
-              key={categoriaSeleccionada}
-              initial="hidden"
-              animate="visible"
-              variants={{
-                hidden: { opacity: 0 },
-                visible: {
-                  opacity: 1,
-                  transition: {
-                    staggerChildren: 0.05,
-                  },
-                },
-              }}
-              className="space-y-4"
-            >
-              {platosFiltradosYOrdenados.map((plato, index) => (
-                <motion.div
-                  key={plato.id}
-                  variants={{
-                    hidden: { opacity: 0, y: 18 },
-                    visible: {
-                      opacity: 1,
-                      y: 0,
-                      transition: {
-                        duration: 0.35,
-                        ease: [0.16, 1, 0.3, 1],
-                      },
-                    },
-                  }}
-                  className="animate-fade-in-up"
-                  style={{ animationDelay: `${Math.min(index * 40, 400)}ms` }}
+        {/* Guía visual minimalista de etiquetado dietético (sin recuadros ni cajas) */}
+        <div
+          id="guia-dietetica"
+          className="flex items-center justify-center flex-wrap gap-x-6 gap-y-2 pt-1 pb-1 text-xs text-stone-600 select-none"
+        >
+          <div className="inline-flex items-center gap-1.5">
+            <DietaryIconBadge tipo="recomendacion" idioma={idioma} />
+            <span className="text-[12px] tracking-normal text-stone-700 font-medium">
+              {idioma === 'es' ? 'Recomendación de la Casa' : 'House Recommendation'}
+            </span>
+          </div>
+          <div className="inline-flex items-center gap-1.5">
+            <DietaryIconBadge tipo="mariscos" idioma={idioma} />
+            <span className="text-[12px] tracking-normal text-stone-700 font-medium">
+              {idioma === 'es' ? 'Mariscos' : 'Seafood'}
+            </span>
+          </div>
+          <div className="inline-flex items-center gap-1.5">
+            <DietaryIconBadge tipo="vegetariano" idioma={idioma} />
+            <span className="text-[12px] tracking-normal text-stone-700 font-medium">
+              {idioma === 'es' ? 'Vegetariano' : 'Vegetarian'}
+            </span>
+          </div>
+        </div>
+
+        {/* Menú en Acordeón: Lista vertical de categorías colapsables */}
+        <section id="menu-acordeon" className="space-y-3.5" aria-label={idioma === 'es' ? 'Menú por categorías' : 'Menu by categories'}>
+          {CATEGORIAS_ACORDEON.map((cat) => {
+            const platosDeEstaCategoria = PLATOS_MENU.filter((p) => p.categoria === cat.id);
+            const platosVisibles = busqueda.trim()
+              ? platosDeEstaCategoria.filter((p) => coincideBusqueda(p, busqueda))
+              : platosDeEstaCategoria;
+
+            // Si hay búsqueda y esta categoría no tiene platos coincidentes, no mostrarla para mantener la pantalla limpia
+            if (busqueda.trim() && platosVisibles.length === 0) {
+              return null;
+            }
+
+            const estaAbierta = categoriaAbiertaId === cat.id;
+
+            return (
+              <div
+                key={cat.id}
+                id={`acordeon-item-${cat.id}`}
+                className={`rounded-2xl border transition-all duration-500 ease-out bg-white overflow-hidden scroll-mt-6 sm:scroll-mt-8 lg:scroll-mt-10 ${
+                  estaAbierta
+                    ? 'border-[#8A0C13] shadow-md shadow-[#8A0C13]/10 ring-1 ring-[#8A0C13]/30'
+                    : 'border-stone-200/90 hover:border-[#8A0C13]/50 shadow-xs'
+                }`}
+              >
+                {/* Encabezado del Acordeón con interacción sedosa y anclaje superior */}
+                <button
+                  type="button"
+                  id={`btn-acordeon-${cat.id}`}
+                  onClick={() => toggleCategoria(cat.id)}
+                  aria-expanded={estaAbierta}
+                  aria-controls={`seccion-acordeon-${cat.id}`}
+                  className={`w-full flex items-center justify-between p-4 sm:p-5 text-left cursor-pointer transition-all duration-500 ease-out group select-none ${
+                    estaAbierta ? 'bg-stone-50/80 border-b border-[#8A0C13]/20' : 'bg-white hover:bg-stone-50/50'
+                  }`}
                 >
-                  <Entrada
-                    plato={plato}
-                    idioma={idioma}
-                    darkMode={darkMode}
-                    onOrdenar={handleOrdenar}
-                    onVerDetalles={(p) => setPlatoDetalle(p)}
-                  />
-                </motion.div>
-              ))}
-            </motion.div>
-          ) : (
-            <div
-              className={`text-center py-8 px-4 rounded-xl border text-sm sm:text-base ${
-                darkMode
-                  ? 'bg-stone-900/50 border-stone-800 text-stone-300'
-                  : 'bg-white border-stone-200 text-[#374151]'
-              }`}
-            >
-              {busqueda
-                ? t.sinResultadosBusqueda(busqueda)
-                : t.sinPlatosCategoria}
+                  <div className="space-y-1 pr-3">
+                    <div className="flex items-center gap-2.5 flex-wrap">
+                      <span
+                        className={`w-2.5 h-2.5 rounded-full transition-colors duration-500 ease-out shrink-0 ${
+                          estaAbierta ? 'bg-[#8A0C13]' : 'bg-stone-300 group-hover:bg-[#8A0C13]'
+                        }`}
+                      />
+                      <h2 className="text-lg sm:text-xl font-serif font-bold text-stone-900 group-hover:text-[#8A0C13] transition-colors duration-500 ease-out">
+                        {cat.nombre[idioma]}
+                      </h2>
+                      <span className="text-xs font-semibold px-2 py-0.5 rounded-full border border-stone-200 bg-white text-stone-600 transition-colors duration-500 ease-out">
+                        {platosVisibles.length} {platosVisibles.length === 1 ? t.platoSingular : t.platoPlural}
+                      </span>
+                    </div>
+                    {cat.subtitulo && (
+                      <p className="text-xs text-stone-500 italic pl-5 font-serif">
+                        {cat.subtitulo[idioma]}
+                      </p>
+                    )}
+                  </div>
+
+                  <div className="shrink-0 flex items-center pl-2">
+                    <span
+                      className={`p-2 rounded-full border transition-all duration-500 ease-out ${
+                        estaAbierta
+                          ? 'bg-[#8A0C13] text-white border-[#8A0C13]'
+                          : 'bg-stone-50 text-stone-600 border-stone-200 group-hover:border-[#8A0C13] group-hover:text-[#8A0C13]'
+                      }`}
+                    >
+                      <ChevronDown
+                        className={`w-4 h-4 transition-transform duration-500 ease-out ${
+                          estaAbierta ? 'rotate-180' : ''
+                        }`}
+                      />
+                    </span>
+                  </div>
+                </button>
+
+                {/* Contenedor de platos: CSS Hack con max-h-[5000px] / max-h-0 y transition-all duration-700 ease-in-out */}
+                <div
+                  id={`seccion-acordeon-${cat.id}`}
+                  className={`transition-all duration-700 ease-in-out ${
+                    estaAbierta
+                      ? 'max-h-[5000px] opacity-100'
+                      : 'max-h-0 opacity-0 overflow-hidden pointer-events-none'
+                  }`}
+                >
+                  <div className="p-4 sm:p-5 space-y-4 bg-[#FBFBFB]/50">
+                    {platosVisibles.map((plato) => (
+                      <Fragment key={plato.id}>
+                        <Entrada
+                          plato={plato}
+                          idioma={idioma}
+                          darkMode={darkMode}
+                          onOrdenar={handleOrdenar}
+                          onVerDetalles={(p) => setPlatoDetalle(p)}
+                        />
+
+                        {/* Nota oficial sobre acompañamientos de carnes (al final de carnes) */}
+                        {plato.id === 'cordero-lechal-en-salsa-criolla' && (
+                          <div
+                            id="nota-acompanamientos-carnes"
+                            className="my-3 p-4 rounded-xl border border-[#8A0C13] bg-white text-stone-700 shadow-xs"
+                          >
+                            <div className="flex items-start gap-3">
+                              <Sparkles className="w-4 h-4 text-[#8A0C13] shrink-0 mt-0.5" />
+                              <div className="space-y-1">
+                                <span className="font-bold text-[#8A0C13] uppercase tracking-wide text-xs block">
+                                  {idioma === 'es' ? 'Acompañamientos Incluidos' : 'Sides Included'}
+                                </span>
+                                <p className="text-xs sm:text-sm leading-relaxed text-[#374151]">
+                                  {idioma === 'es'
+                                    ? 'Cada plato fuerte incluye dos acompañamientos a elección: patacones, papas fritas, arroz blanco, arroz con coco o ensalada de estación. Adición $18.000.'
+                                    : 'Each main course includes two sides of your choice: patacones, French fries, white rice, coconut rice, or seasonal salad. Additional side $18.000.'}
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+                        )}
+                      </Fragment>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+
+          {busqueda.trim() && totalCoincidencias === 0 && (
+            <div className="text-center py-10 px-4 rounded-2xl border border-stone-200 bg-white text-[#374151] space-y-2">
+              <p className="font-serif text-lg font-bold text-stone-800">
+                {t.sinResultadosBusqueda(busqueda)}
+              </p>
+              <button
+                type="button"
+                onClick={() => setBusqueda('')}
+                className="text-xs font-semibold uppercase tracking-wider text-[#8A0C13] underline hover:text-[#720a10] cursor-pointer"
+              >
+                {t.limpiarBusqueda}
+              </button>
             </div>
           )}
         </section>
 
-        {/* Sección de Historia, Citas Poéticas de Leti y Lacydes Moreno, y Premios */}
-        <RestauranteHistoria idioma={idioma} darkMode={darkMode} onCambiarIdioma={setIdioma} />
+        {/* Sección Libre, Sin Cajas (Footer): Premios, Aviso de Alergias y Contacto */}
+        <RestauranteHistoria idioma={idioma} darkMode={darkMode} />
       </div>
 
       {/* Modal interactivo con Información Nutricional y Maridaje */}

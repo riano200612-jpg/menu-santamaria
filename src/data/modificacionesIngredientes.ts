@@ -212,14 +212,6 @@ export function obtenerModificacionesParaPlato(plato: PlatoEntrada): Modificacio
     return plato.modificacionesDisponibles;
   }
 
-  if (
-    plato.categoria === 'bebidas' ||
-    plato.categoria === 'cocteles' ||
-    plato.categoria === 'licores'
-  ) {
-    return MODIFICACIONES_COMUNES_BEBIDAS;
-  }
-
   if (plato.categoria === 'postres') {
     return MODIFICACIONES_COMUNES_POSTRES;
   }

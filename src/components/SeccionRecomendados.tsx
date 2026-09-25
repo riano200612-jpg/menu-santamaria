@@ -29,17 +29,20 @@ export interface SeccionRecomendadosProps {
 
 function getCategoriaIcon(categoria: PlatoEntrada['categoria']) {
   switch (categoria) {
-    case 'fuertes-mar':
+    case 'del-mar':
       return Fish;
-    case 'sabores-tierra':
+    case 'fuego-y-sabana':
+    case 'inspiracion-lacydes':
       return Flame;
-    case 'cocteles':
-    case 'licores':
-      return Wine;
-    case 'bebidas':
+    case 'desayunos':
       return Coffee;
+    case 'ceviches-entradas':
+    case 'empanadas-fritos':
+    case 'sopas':
+    case 'ensaladas':
+    case 'pastas':
+    case 'sandwiches':
     case 'postres':
-    case 'entradas':
     default:
       return Utensils;
   }
@@ -48,9 +51,9 @@ function getCategoriaIcon(categoria: PlatoEntrada['categoria']) {
 // Platos insignia por defecto en caso de que el usuario aún no tenga historial suficiente
 const PLATOS_INSIGNIA_DEFAULT = [
   'posta-negra-cartagenera',
-  'ceviche-santa-maria',
-  'cazuela-del-corsario',
-  'arroz-del-galeon',
+  'ceviche-santa-maria-del-mar',
+  'cazuela-de-mariscos-santa-maria',
+  'nasi-goreng-de-la-casa',
 ];
 
 export function SeccionRecomendados({

@@ -4,13 +4,17 @@ export type CriterioOrden = 'original' | 'menor-mayor' | 'mayor-menor';
 
 export type CategoriaFiltro =
   | 'todos'
-  | 'entradas'
-  | 'fuertes-mar'
-  | 'sabores-tierra'
-  | 'postres'
-  | 'cocteles'
-  | 'licores'
-  | 'bebidas';
+  | 'desayunos'
+  | 'empanadas-fritos'
+  | 'ceviches-entradas'
+  | 'sopas'
+  | 'del-mar'
+  | 'fuego-y-sabana'
+  | 'inspiracion-lacydes'
+  | 'ensaladas'
+  | 'pastas'
+  | 'sandwiches'
+  | 'postres';
 
 export interface InformacionNutricional {
   calorias: number;
@@ -68,6 +72,8 @@ export interface ModificacionIngrediente {
   };
 }
 
+export type TipoDietetico = 'vegetariano' | 'mariscos' | 'recomendacion';
+
 export interface PlatoEntrada {
   id: string;
   nombre: {
@@ -76,19 +82,24 @@ export interface PlatoEntrada {
   };
   precioNumerico: number; // en pesos colombianos (COP)
   categoria:
-    | 'entradas'
-    | 'fuertes-mar'
-    | 'sabores-tierra'
-    | 'postres'
-    | 'cocteles'
-    | 'licores'
-    | 'bebidas';
+    | 'desayunos'
+    | 'empanadas-fritos'
+    | 'ceviches-entradas'
+    | 'sopas'
+    | 'del-mar'
+    | 'fuego-y-sabana'
+    | 'inspiracion-lacydes'
+    | 'ensaladas'
+    | 'pastas'
+    | 'sandwiches'
+    | 'postres';
   subcategoria?: string;
   presentacion?: {
     es: string;
     en: string;
   };
   opcionesPresentacion?: OpcionPresentacion[];
+  dietetico?: TipoDietetico[];
   etiqueta: {
     es: string;
     en: string;
