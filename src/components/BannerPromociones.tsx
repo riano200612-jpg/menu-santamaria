@@ -122,7 +122,7 @@ export function BannerPromociones({
         }`}
       >
         <div className="flex items-center gap-2">
-          <div className="flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#8A0C13]/10 text-[#8A0C13] font-bold border border-[#8A0C13]/30">
+          <div className="flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-white text-[#8A0C13] font-bold border border-[#8A0C13]">
             <Flame className="w-3.5 h-3.5 text-[#8A0C13] animate-pulse" />
             <span id="badge-ofertas-titulo" className="uppercase tracking-wider text-xs">
               {t.ofertasDelDiaTitulo}
@@ -131,11 +131,7 @@ export function BannerPromociones({
 
           <span
             id="badge-promo-categoria"
-            className={`hidden sm:inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md text-xs uppercase font-bold border ${
-              darkMode
-                ? 'bg-stone-800 text-rose-300 border-[#8A0C13]/40'
-                : 'bg-white text-[#8A0C13] border-[#8A0C13]/30'
-            }`}
+            className="hidden sm:inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md text-xs uppercase font-bold border border-[#8A0C13] bg-white text-[#8A0C13]"
           >
             <Sparkles className="w-3 h-3 text-[#8A0C13]" />
             <span>{promoActual.badge[idioma]}</span>
@@ -148,11 +144,7 @@ export function BannerPromociones({
             type="button"
             id="btn-toggle-pausa-promo"
             onClick={() => setPausaManual((prev) => !prev)}
-            className={`p-1 rounded-md transition cursor-pointer ${
-              darkMode
-                ? 'text-stone-400 hover:text-rose-300 hover:bg-stone-800'
-                : 'text-[#374151] hover:text-[#8A0C13] hover:bg-[#8A0C13]/10'
-            }`}
+            className="p-1 rounded-md transition-colors duration-300 cursor-pointer text-[#374151] hover:text-white hover:bg-[#8A0C13]"
             title={pausaManual ? t.reanudarOfertas : t.pausarOfertas}
             aria-label={pausaManual ? t.reanudarOfertas : t.pausarOfertas}
           >
@@ -163,11 +155,7 @@ export function BannerPromociones({
             type="button"
             id="btn-promo-anterior"
             onClick={handleAnterior}
-            className={`p-1 rounded-md transition cursor-pointer ${
-              darkMode
-                ? 'text-stone-400 hover:text-rose-300 hover:bg-stone-800'
-                : 'text-[#374151] hover:text-[#8A0C13] hover:bg-[#8A0C13]/10'
-            }`}
+            className="p-1 rounded-md transition-colors duration-300 cursor-pointer text-[#374151] hover:text-white hover:bg-[#8A0C13]"
             title={t.ofertaAnterior}
             aria-label={t.ofertaAnterior}
           >
@@ -185,11 +173,7 @@ export function BannerPromociones({
             type="button"
             id="btn-promo-siguiente"
             onClick={handleSiguiente}
-            className={`p-1 rounded-md transition cursor-pointer ${
-              darkMode
-                ? 'text-stone-400 hover:text-rose-300 hover:bg-stone-800'
-                : 'text-[#374151] hover:text-[#8A0C13] hover:bg-[#8A0C13]/10'
-            }`}
+            className="p-1 rounded-md transition-colors duration-300 cursor-pointer text-[#374151] hover:text-white hover:bg-[#8A0C13]"
             title={t.ofertaSiguiente}
             aria-label={t.ofertaSiguiente}
           >
@@ -287,11 +271,7 @@ export function BannerPromociones({
                     type="button"
                     id={`btn-info-promo-${promoActual.id}`}
                     onClick={handleVerDetalles}
-                    className={`px-3 py-1.5 rounded-xl text-xs sm:text-sm font-semibold transition cursor-pointer border ${
-                      darkMode
-                        ? 'bg-stone-800/80 hover:bg-stone-700 text-stone-300 border-stone-700'
-                        : 'bg-white hover:bg-stone-50 text-[#374151] hover:text-[#8A0C13] border-stone-200'
-                    }`}
+                    className="px-3 py-1.5 rounded-xl text-xs sm:text-sm font-semibold transition-colors duration-300 cursor-pointer border border-[#8A0C13] bg-white text-[#8A0C13] hover:bg-[#8A0C13] hover:text-white"
                   >
                     {t.verNutricionMaridaje}
                   </button>

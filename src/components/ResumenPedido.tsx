@@ -188,14 +188,8 @@ export function ResumenPedido({
               }`}
             >
               <div className="flex items-center gap-3">
-                <div
-                  className={`p-2 rounded-xl flex items-center justify-center ${
-                    darkMode
-                      ? 'bg-[#8A0C13]/20 text-rose-300 border border-[#8A0C13]/30'
-                      : 'bg-[#8A0C13]/10 text-[#8A0C13] border border-[#8A0C13]/25'
-                  }`}
-                >
-                  <Receipt className="w-5 h-5" />
+                <div className="p-2 rounded-xl flex items-center justify-center border border-[#8A0C13] bg-white text-[#8A0C13]">
+                  <Receipt className="w-5 h-5 text-[#8A0C13]" />
                 </div>
                 <div>
                   <div className="flex items-center gap-2">
@@ -249,15 +243,11 @@ export function ResumenPedido({
                       type="button"
                       id="btn-version-imprimible-cabecera"
                       onClick={() => setMostrarVersionImprimible(true)}
-                      className={`p-2 rounded-xl transition cursor-pointer flex items-center gap-1.5 text-xs sm:text-sm font-semibold ${
-                        darkMode
-                          ? 'text-rose-300 hover:text-rose-200 bg-[#8A0C13]/20 hover:bg-[#8A0C13]/30 border border-[#8A0C13]/40'
-                          : 'text-[#8A0C13] hover:text-[#720a10] bg-[#8A0C13]/10 hover:bg-[#8A0C13]/15 border border-[#8A0C13]/30'
-                      }`}
+                      className="group p-2 rounded-xl transition-colors duration-300 cursor-pointer flex items-center gap-1.5 text-xs sm:text-sm font-semibold border border-[#8A0C13] bg-white text-[#8A0C13] hover:bg-[#8A0C13] hover:text-white"
                       title={t.versionImprimible}
                       aria-label={t.versionImprimible}
                     >
-                      <Printer className="w-4 h-4 text-[#8A0C13]" />
+                      <Printer className="w-4 h-4 text-[#8A0C13] group-hover:text-white transition-colors duration-300" />
                       <span className="hidden sm:inline">{t.versionImprimible}</span>
                     </button>
                   </>
@@ -375,13 +365,7 @@ export function ResumenPedido({
                       {/* Detalles del plato */}
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2 mb-1 flex-wrap">
-                          <span
-                            className={`text-xs uppercase font-semibold tracking-wider px-2 py-0.5 rounded border ${
-                              darkMode
-                                ? 'bg-stone-700/70 text-rose-300 border-stone-600'
-                                : 'bg-[#8A0C13]/10 text-[#8A0C13] border-[#8A0C13]/25'
-                            }`}
-                          >
+                          <span className="text-xs uppercase font-semibold tracking-wider px-2 py-0.5 rounded border border-[#8A0C13] bg-white text-[#8A0C13]">
                             {etiquetaPlato}
                           </span>
                           <span
@@ -453,11 +437,7 @@ export function ResumenPedido({
                             type="button"
                             id={`btn-decrementar-${plato.id}`}
                             onClick={() => onDecrementar(plato.id)}
-                            className={`p-1.5 transition cursor-pointer ${
-                              darkMode
-                                ? 'text-stone-300 hover:text-rose-300 hover:bg-stone-800'
-                                : 'text-[#374151] hover:text-[#8A0C13] hover:bg-[#8A0C13]/10'
-                            }`}
+                            className="p-1.5 transition-colors duration-300 cursor-pointer text-[#374151] hover:text-white hover:bg-[#8A0C13]"
                             title={t.quitarUno}
                             aria-label={`${t.quitarUno} ${nombrePlato}`}
                           >
@@ -475,11 +455,7 @@ export function ResumenPedido({
                             type="button"
                             id={`btn-incrementar-${plato.id}`}
                             onClick={() => onIncrementar(plato)}
-                            className={`p-1.5 transition cursor-pointer ${
-                              darkMode
-                                ? 'text-stone-300 hover:text-rose-300 hover:bg-stone-800'
-                                : 'text-[#374151] hover:text-[#8A0C13] hover:bg-[#8A0C13]/10'
-                            }`}
+                            className="p-1.5 transition-colors duration-300 cursor-pointer text-[#374151] hover:text-white hover:bg-[#8A0C13]"
                             title={t.agregarUnoMas}
                             aria-label={`${t.agregarUnoMas} ${nombrePlato}`}
                           >
@@ -526,28 +502,16 @@ export function ResumenPedido({
             {/* Caja destacada del Subtotal Final Calculado */}
             <div
               id="subtotal-resumen-pedido"
-              className={`p-4 rounded-xl border flex flex-col sm:flex-row sm:items-center justify-between gap-3 ${
-                darkMode
-                  ? 'bg-[#8A0C13]/20 border-[#8A0C13]/40 shadow-inner'
-                  : 'bg-[#8A0C13]/10 border-[#8A0C13]/30 shadow-xs'
-              }`}
+              className="p-4 rounded-xl border-2 border-[#8A0C13] bg-white shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-3"
             >
               <div>
                 <div className="flex items-center gap-1.5">
                   <Sparkles className="w-4 h-4 text-[#8A0C13]" />
-                  <span
-                    className={`text-xs sm:text-sm font-semibold uppercase tracking-wider ${
-                      darkMode ? 'text-rose-300' : 'text-[#8A0C13]'
-                    }`}
-                  >
+                  <span className="text-xs sm:text-sm font-semibold uppercase tracking-wider text-[#8A0C13]">
                     {t.subtotalCalculado}
                   </span>
                 </div>
-                <p
-                  className={`text-xs mt-0.5 ${
-                    darkMode ? 'text-stone-400' : 'text-[#374151]'
-                  }`}
-                >
+                <p className="text-xs mt-0.5 text-[#374151]">
                   {t.totalPlatos} <span className="font-bold">{totalCantidad}</span>
                 </p>
               </div>
@@ -555,7 +519,7 @@ export function ResumenPedido({
               <div className="text-right">
                 <span
                   id="valor-subtotal-final"
-                  className="text-xl sm:text-2xl font-mono font-extrabold text-[#8A0C13] dark:text-rose-300 drop-shadow-xs"
+                  className="text-xl sm:text-2xl font-mono font-extrabold text-[#8A0C13] drop-shadow-xs"
                 >
                   {formatearTotal(subtotalFinal, idioma)}
                 </span>
@@ -584,14 +548,10 @@ export function ResumenPedido({
                   type="button"
                   id="btn-version-imprimible"
                   onClick={() => setMostrarVersionImprimible(true)}
-                  className={`inline-flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs sm:text-sm font-semibold transition cursor-pointer ${
-                    darkMode
-                      ? 'text-rose-300 hover:text-rose-200 bg-[#8A0C13]/20 hover:bg-[#8A0C13]/30 border border-[#8A0C13]/40'
-                      : 'text-[#8A0C13] hover:text-[#720a10] bg-[#8A0C13]/10 hover:bg-[#8A0C13]/15 border border-[#8A0C13]/30'
-                  }`}
+                  className="group inline-flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-colors duration-300 cursor-pointer border border-[#8A0C13] bg-white text-[#8A0C13] hover:bg-[#8A0C13] hover:text-white"
                   title={t.versionImprimible}
                 >
-                  <Printer className="w-3.5 h-3.5 text-[#8A0C13]" />
+                  <Printer className="w-3.5 h-3.5 text-[#8A0C13] group-hover:text-white transition-colors duration-300" />
                   <span>{t.versionImprimible}</span>
                 </button>
 

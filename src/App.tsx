@@ -5,15 +5,12 @@
 
 import { useState, useMemo, useEffect } from 'react';
 import { QRCodeSVG } from 'qrcode.react';
-import { motion, AnimatePresence, useScroll, useTransform, useSpring } from 'motion/react';
+import { motion, AnimatePresence } from 'motion/react';
 import {
   Compass,
   Plus,
   Check,
   ShoppingBag,
-  ArrowUpDown,
-  ArrowUp,
-  ArrowDown,
   Info,
   X,
   Flame,
@@ -27,7 +24,6 @@ import {
 } from 'lucide-react';
 import {
   Idioma,
-  CriterioOrden,
   CategoriaFiltro,
   PlatoEntrada,
   ItemPedido,
@@ -152,13 +148,7 @@ export function Entrada({
             />
           </button>
 
-          <span
-            className={`text-xs uppercase font-semibold tracking-wider px-2.5 py-0.5 rounded-md border ${
-              darkMode
-                ? 'bg-[#8A0C13]/20 text-rose-300 border-[#8A0C13]/40'
-                : 'bg-[#8A0C13]/10 text-[#8A0C13] border-[#8A0C13]/25'
-            }`}
-          >
+          <span className="text-xs uppercase font-semibold tracking-wider px-2.5 py-0.5 rounded-md border border-[#8A0C13] bg-white text-[#8A0C13]">
             {etiquetaPlato}
           </span>
 
@@ -246,13 +236,9 @@ export function Entrada({
           type="button"
           id={`btn-detalles-${plato.id}`}
           onClick={() => onVerDetalles?.(platoActualizado)}
-          className={`inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold transition cursor-pointer py-1.5 px-3 rounded-lg border ${
-            darkMode
-              ? 'text-rose-300 hover:text-rose-200 bg-[#8A0C13]/20 hover:bg-[#8A0C13]/30 border-[#8A0C13]/40'
-              : 'text-[#8A0C13] hover:text-[#720a10] bg-[#8A0C13]/10 hover:bg-[#8A0C13]/15 border-[#8A0C13]/30'
-          }`}
+          className="group inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold transition-colors duration-300 cursor-pointer py-1.5 px-3 rounded-lg border border-[#8A0C13] bg-white text-[#8A0C13] hover:bg-[#8A0C13] hover:text-white"
         >
-          <Sparkles className="w-4 h-4 text-[#8A0C13]" />
+          <Sparkles className="w-4 h-4 text-[#8A0C13] group-hover:text-white transition-colors duration-300" />
           <span>{t.verNutricionMaridaje}</span>
         </button>
       </div>
@@ -333,13 +319,7 @@ export function ModalDetallePlato({
         >
           <div>
             <div className="flex items-center gap-2 mb-1">
-              <span
-                className={`text-xs uppercase font-semibold tracking-wider px-2.5 py-0.5 rounded-md border ${
-                  darkMode
-                    ? 'bg-[#8A0C13]/20 text-rose-300 border-[#8A0C13]/40'
-                    : 'bg-[#8A0C13]/10 text-[#8A0C13] border-[#8A0C13]/25'
-                }`}
-              >
+              <span className="text-xs uppercase font-semibold tracking-wider px-2.5 py-0.5 rounded-md border border-[#8A0C13] bg-white text-[#8A0C13]">
                 {etiquetaPlato}
               </span>
               <span
@@ -390,11 +370,7 @@ export function ModalDetallePlato({
         {plato.modificacionesSeleccionadas && plato.modificacionesSeleccionadas.length > 0 && (
           <div
             id="modal-aviso-modificaciones"
-            className={`p-3.5 rounded-xl border text-xs sm:text-sm flex items-start gap-2.5 ${
-              darkMode
-                ? 'bg-[#8A0C13]/20 border-[#8A0C13]/40 text-rose-200'
-                : 'bg-[#8A0C13]/10 text-[#8A0C13] border-[#8A0C13]/30'
-            }`}
+            className="p-3.5 rounded-xl border border-[#8A0C13] bg-white text-xs sm:text-sm flex items-start gap-2.5 text-[#8A0C13]"
           >
             <Sparkles className="w-4 h-4 text-[#8A0C13] shrink-0 mt-0.5" />
             <div className="space-y-1">
@@ -403,11 +379,7 @@ export function ModalDetallePlato({
                 {plato.modificacionesSeleccionadas.map((mod, idx) => (
                   <span
                     key={idx}
-                    className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md text-xs font-semibold border ${
-                      darkMode
-                        ? 'bg-stone-900 text-rose-300 border-[#8A0C13]/40'
-                        : 'bg-white text-stone-900 border-[#8A0C13]/30'
-                    }`}
+                    className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md text-xs font-semibold border border-[#8A0C13] bg-white text-[#8A0C13]"
                   >
                     <Check className="w-3 h-3 text-[#8A0C13] stroke-[3]" />
                     <span>{mod}</span>
@@ -621,24 +593,14 @@ export function ModalDetallePlato({
         {/* Sección de Maridaje Recomendado */}
         <div
           id="seccion-maridaje"
-          className={`p-4 rounded-xl border space-y-2 ${
-            darkMode
-              ? 'bg-[#8A0C13]/15 border-[#8A0C13]/30 text-stone-200'
-              : 'bg-[#FBFBFB] border-[#8A0C13]/25 text-stone-800'
-          }`}
+          className="p-4 rounded-xl border border-[#8A0C13] bg-white space-y-2 text-stone-800"
         >
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-[#8A0C13] uppercase tracking-wider">
               <Wine className="w-4 h-4" />
               <h3>{t.maridajeTitulo}</h3>
             </div>
-            <span
-              className={`text-xs font-semibold uppercase px-2.5 py-0.5 rounded-full border ${
-                darkMode
-                  ? 'bg-stone-900 text-rose-300 border-[#8A0C13]/40'
-                  : 'bg-white text-[#8A0C13] border-[#8A0C13]/30'
-              }`}
-            >
+            <span className="text-xs font-semibold uppercase px-2.5 py-0.5 rounded-full border border-[#8A0C13] bg-white text-[#8A0C13]">
               {maridaje.tipo[idioma]}
             </span>
           </div>
@@ -771,14 +733,8 @@ export function ModalCodigoQR({
           }`}
         >
           <div className="flex items-center gap-2.5 text-left">
-            <div
-              className={`p-2 rounded-xl border ${
-                darkMode
-                  ? 'bg-[#8A0C13]/20 text-rose-300 border-[#8A0C13]/30'
-                  : 'bg-[#8A0C13]/10 text-[#8A0C13] border-[#8A0C13]/25'
-              }`}
-            >
-              <QrCode className="w-5 h-5" />
+            <div className="p-2 rounded-xl border border-[#8A0C13] bg-white text-[#8A0C13]">
+              <QrCode className="w-5 h-5 text-[#8A0C13]" />
             </div>
             <div>
               <h2
@@ -897,13 +853,9 @@ export function ModalCodigoQR({
             type="button"
             id="btn-compartir-menu"
             onClick={handleCompartir}
-            className={`inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold transition cursor-pointer active:scale-95 ${
-              darkMode
-                ? 'bg-stone-800 hover:bg-stone-700 text-rose-300 border border-stone-700'
-                : 'bg-[#8A0C13]/10 hover:bg-[#8A0C13]/15 text-[#8A0C13] border border-[#8A0C13]/25'
-            }`}
+            className="group inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold transition-colors duration-300 cursor-pointer active:scale-95 border border-[#8A0C13] bg-white text-[#8A0C13] hover:bg-[#8A0C13] hover:text-white"
           >
-            <Share2 className="w-3.5 h-3.5" />
+            <Share2 className="w-3.5 h-3.5 text-[#8A0C13] group-hover:text-white transition-colors duration-300" />
             <span>{compartido ? t.enlaceCompartido : t.compartirEnlace}</span>
           </button>
 
@@ -938,7 +890,6 @@ export default function App() {
   const darkMode = false;
 
   const [categoriaSeleccionada, setCategoriaSeleccionada] = useState<CategoriaFiltro>('todos');
-  const [criterioOrden, setCriterioOrden] = useState<CriterioOrden>('original');
   const [busqueda, setBusqueda] = useState<string>('');
   const [platoDetalle, setPlatoDetalle] = useState<PlatoEntrada | null>(null);
   const [mostrarQR, setMostrarQR] = useState<boolean>(false);
@@ -958,16 +909,6 @@ export default function App() {
   const [toastNotificacion, setToastNotificacion] = useState<ToastNotificacionData | null>(null);
   const [itemsVolando, setItemsVolando] = useState<ItemVolando[]>([]);
   const [badgeBump, setBadgeBump] = useState<boolean>(false);
-
-  // Escala física fluida y continua al scroll para el logo de cabecera (sin rebotes ni saltos)
-  const { scrollY } = useScroll();
-  const rawLogoScale = useTransform(scrollY, [0, 160], [1, 0.86], { clamp: true });
-  const logoScale = useSpring(rawLogoScale, {
-    stiffness: 220,
-    damping: 30,
-    mass: 0.3,
-    restDelta: 0.0001,
-  });
 
   // Estado de scroll para el resplandor interno de vidrio en #cabecera-menu
   const [scrolled, setScrolled] = useState<boolean>(false);
@@ -1195,14 +1136,8 @@ export default function App() {
       return true;
     });
 
-    if (criterioOrden === 'menor-mayor') {
-      return [...filtrados].sort((a, b) => a.precioNumerico - b.precioNumerico);
-    }
-    if (criterioOrden === 'mayor-menor') {
-      return [...filtrados].sort((a, b) => b.precioNumerico - a.precioNumerico);
-    }
     return filtrados;
-  }, [categoriaSeleccionada, criterioOrden, busqueda]);
+  }, [categoriaSeleccionada, busqueda]);
 
   return (
     <div className="min-h-screen flex flex-col items-center py-10 px-4 sm:px-6 bg-[#FBFBFB] text-stone-900">
@@ -1217,38 +1152,26 @@ export default function App() {
               : 'border-transparent bg-transparent shadow-none'
           }`}
         >
-          {/* Única imagen principal (hero image) del menú con contenedor optimizado y escala fluida al scroll */}
+          {/* Imagen de portada estática del restaurante (proporciones estrictas, escala controlada y sombra difuminada) */}
           <div className="w-full flex justify-center items-center p-0 m-0">
-            <motion.div
-              initial={{ opacity: 0, y: -16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-              className="w-[85%] max-w-[370px] p-0 m-0"
-            >
-              <motion.div
-                style={{ scale: logoScale }}
-                className="w-full origin-top rounded-lg overflow-hidden shadow-lg shadow-stone-900/15 drop-shadow-[0_12px_24px_rgba(0,0,0,0.16)] p-0 m-0"
-              >
+            <div className="w-full max-w-xs mx-auto p-0 m-0 flex justify-center">
+              <div className="rounded-lg overflow-hidden shadow-xl p-0 m-0 mx-auto">
                 <img
                   src="/logo_santamaria_2.webp"
                   alt="Santa María del Mar - Restaurante · Bar by Lety Moreno"
-                  className="w-full h-auto object-contain block rounded-lg select-none pointer-events-none p-0 m-0"
+                  className="w-auto h-auto max-h-[280px] md:max-h-[350px] object-contain block rounded-lg mx-auto select-none pointer-events-none p-0 m-0"
                   loading="eager"
                   fetchPriority="high"
                   onError={(e) => {
                     e.currentTarget.src = '/logo_santamaria.webp';
                   }}
                 />
-              </motion.div>
-            </motion.div>
+              </div>
+            </div>
           </div>
 
           {/* Barra superior de controles: Selector de Idioma, Tema, QR y Totales */}
-          <div
-            className={`flex flex-wrap items-center justify-between border-b pb-3.5 gap-2.5 ${
-              darkMode ? 'border-stone-800' : 'border-stone-200'
-            }`}
-          >
+          <div className="flex flex-wrap items-center justify-between border-b pb-3.5 gap-2.5 border-stone-200">
             <h1 className="sr-only">
               {t.nombreRestaurante} - {t.subtituloRestaurante}
             </h1>
@@ -1266,11 +1189,11 @@ export default function App() {
               type="button"
               id="btn-abrir-qr"
               onClick={() => setMostrarQR(true)}
-              className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-semibold transition-all duration-200 border cursor-pointer active:scale-95 bg-[#8A0C13]/10 hover:bg-[#8A0C13]/15 text-[#8A0C13] border-[#8A0C13]/25 shadow-xs"
+              className="group flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-semibold transition-colors duration-300 border border-[#8A0C13] cursor-pointer active:scale-95 bg-white text-[#8A0C13] hover:bg-[#8A0C13] hover:text-white shadow-xs"
               title={t.verQR}
               aria-label={t.verQR}
             >
-              <QrCode className="w-4 h-4 text-[#8A0C13] shrink-0" />
+              <QrCode className="w-4 h-4 text-[#8A0C13] group-hover:text-white transition-colors duration-300 shrink-0" />
               <span>{t.verQR}</span>
             </button>
 
@@ -1313,26 +1236,14 @@ export default function App() {
                 type="button"
                 id="badge-precio-total"
                 onClick={() => setMostrarResumen(true)}
-                className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-semibold transition-all duration-200 border cursor-pointer hover:scale-105 active:scale-95 ${
-                  darkMode
-                    ? 'bg-[#8A0C13]/20 text-rose-300 border-[#8A0C13]/40 shadow-xs hover:bg-[#8A0C13]/30'
-                    : 'bg-[#8A0C13]/10 text-[#8A0C13] border-[#8A0C13]/30 shadow-xs hover:bg-[#8A0C13]/15'
-                }`}
+                className="group flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-semibold transition-colors duration-300 border border-[#8A0C13] cursor-pointer active:scale-95 bg-white text-[#8A0C13] hover:bg-[#8A0C13] hover:text-white shadow-xs"
                 title={t.verResumenPedido}
                 aria-label={t.verResumenPedido}
               >
-                <span
-                  className={`text-xs font-normal ${
-                    darkMode ? 'text-stone-400' : 'text-[#374151]'
-                  }`}
-                >
+                <span className="text-xs font-normal text-[#374151] group-hover:text-white transition-colors duration-300">
                   {t.totalAcumulado}
                 </span>
-                <span
-                  className={`font-mono font-bold ${
-                    darkMode ? 'text-rose-300' : 'text-[#8A0C13]'
-                  }`}
-                >
+                <span className="font-mono font-bold text-[#8A0C13] group-hover:text-white transition-colors duration-300">
                   {formatearTotal(precioTotal, idioma)}
                 </span>
               </button>
@@ -1341,8 +1252,8 @@ export default function App() {
         </div>
       </header>
 
-        {/* Buscador y Selector de Categorías */}
-        <div id="controles-filtrado" className="space-y-3.5">
+        {/* Buscador y Selector de Categorías con amplio espacio negativo de alta gama */}
+        <div id="controles-filtrado" className="mt-12 sm:mt-16 space-y-3.5">
           {/* Barra de búsqueda interactiva */}
           <div className="relative">
             <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-[#8A0C13]">
@@ -1385,12 +1296,10 @@ export default function App() {
                   role="tab"
                   aria-selected={estaSeleccionado}
                   onClick={() => setCategoriaSeleccionada(cat.id)}
-                  className={`px-3.5 sm:px-4 py-2 rounded-xl text-sm sm:text-base font-semibold border transition-all duration-200 ease-out cursor-pointer active:scale-95 transform select-none ${
+                  className={`px-3.5 sm:px-4 py-2 rounded-xl text-sm sm:text-base font-semibold border transition-colors duration-300 ease-out cursor-pointer active:scale-95 transform select-none ${
                     estaSeleccionado
-                      ? 'bg-[#8A0C13] text-white font-bold border-[#8A0C13] shadow-md shadow-[#8A0C13]/30 hover:shadow-xl hover:shadow-[#8A0C13]/50 hover:drop-shadow-[0_4px_14px_rgba(138,12,19,0.5)]'
-                      : darkMode
-                        ? 'bg-transparent border-[#8A0C13] text-rose-300 hover:bg-[#8A0C13]/15 hover:text-rose-200'
-                        : 'bg-transparent border-[#8A0C13] text-[#8A0C13] hover:bg-[#8A0C13]/[0.08] hover:text-[#8A0C13]'
+                      ? 'bg-[#8A0C13] text-white font-bold border-[#8A0C13] shadow-md shadow-[#8A0C13]/30'
+                      : 'bg-white border-[#8A0C13] text-[#8A0C13] hover:bg-[#8A0C13] hover:text-white hover:border-[#8A0C13]'
                   }`}
                 >
                   {cat.label}
@@ -1398,82 +1307,13 @@ export default function App() {
               );
             })}
           </div>
-
-          {/* Barra de Ordenamiento por Precio */}
-          <div
-            id="barra-ordenamiento-precio"
-            className={`flex flex-wrap items-center justify-between gap-2 pt-2.5 border-t text-xs sm:text-sm ${
-              darkMode ? 'border-stone-800/80 text-stone-400' : 'border-stone-200 text-[#374151]'
-            }`}
-          >
-            <div className="flex items-center gap-1.5">
-              <ArrowUpDown className="w-4 h-4 text-[#8A0C13]" />
-              <span className="font-semibold">{t.ordenarPor}</span>
-            </div>
-
-            <div className="flex items-center gap-1.5">
-              <button
-                type="button"
-                id="btn-orden-original"
-                onClick={() => setCriterioOrden('original')}
-                className={`px-3 py-1.5 rounded-lg transition text-xs sm:text-sm cursor-pointer ${
-                  criterioOrden === 'original'
-                    ? 'bg-[#8A0C13]/15 text-[#8A0C13] font-bold border border-[#8A0C13]/40'
-                    : darkMode
-                      ? 'hover:bg-stone-800 text-stone-400 hover:text-stone-200'
-                      : 'hover:bg-stone-100 text-[#374151] hover:text-[#8A0C13]'
-                }`}
-                title={t.ordenOriginal}
-              >
-                {t.ordenOriginal}
-              </button>
-
-              <button
-                type="button"
-                id="btn-orden-menor"
-                onClick={() => setCriterioOrden('menor-mayor')}
-                className={`inline-flex items-center gap-1 px-3 py-1.5 rounded-lg transition text-xs sm:text-sm cursor-pointer ${
-                  criterioOrden === 'menor-mayor'
-                    ? 'bg-[#8A0C13]/15 text-[#8A0C13] font-bold border border-[#8A0C13]/40'
-                    : darkMode
-                      ? 'hover:bg-stone-800 text-stone-400 hover:text-stone-200'
-                      : 'hover:bg-stone-100 text-[#374151] hover:text-[#8A0C13]'
-                }`}
-                title={t.ordenMenorPrecio}
-              >
-                <ArrowDown className="w-3.5 h-3.5" />
-                <span>{t.ordenMenorPrecio}</span>
-              </button>
-
-              <button
-                type="button"
-                id="btn-orden-mayor"
-                onClick={() => setCriterioOrden('mayor-menor')}
-                className={`inline-flex items-center gap-1 px-3 py-1.5 rounded-lg transition text-xs sm:text-sm cursor-pointer ${
-                  criterioOrden === 'mayor-menor'
-                    ? 'bg-[#8A0C13]/15 text-[#8A0C13] font-bold border border-[#8A0C13]/40'
-                    : darkMode
-                      ? 'hover:bg-stone-800 text-stone-400 hover:text-stone-200'
-                      : 'hover:bg-stone-100 text-[#374151] hover:text-[#8A0C13]'
-                }`}
-                title={t.ordenMayorPrecio}
-              >
-                <ArrowUp className="w-3.5 h-3.5" />
-                <span>{t.ordenMayorPrecio}</span>
-              </button>
-            </div>
-          </div>
         </div>
 
         {/* Indicador de resultados activos de búsqueda */}
         {busqueda && (
           <div
             id="indicador-busqueda"
-            className={`flex items-center justify-between text-xs sm:text-sm px-3.5 py-2 rounded-lg border ${
-              darkMode
-                ? 'bg-[#8A0C13]/20 border-[#8A0C13]/40 text-rose-300'
-                : 'bg-[#8A0C13]/10 border-[#8A0C13]/25 text-[#8A0C13]'
-            }`}
+            className="flex items-center justify-between text-xs sm:text-sm px-3.5 py-2 rounded-lg border border-[#8A0C13] bg-white text-[#8A0C13]"
           >
             <span>
               {t.resultadosPara} <strong>"{busqueda}"</strong> ({platosFiltradosYOrdenados.length}{' '}
@@ -1622,9 +1462,9 @@ export default function App() {
                 ease: [0.22, 1, 0.36, 1],
               }}
               onAnimationComplete={() => handleAnimacionCompletada(item.id)}
-              className="fixed top-0 left-0 flex items-center justify-center w-9 h-9 rounded-full bg-gradient-to-tr from-[#8A0C13] via-[#a3121b] to-[#c71d27] text-white font-bold shadow-xl shadow-[#8A0C13]/50 border-2 border-rose-100 ring-2 ring-[#8A0C13]/40"
+              className="fixed top-0 left-0 flex items-center justify-center w-9 h-9 rounded-full bg-[#8A0C13] text-white font-bold shadow-xl shadow-stone-900/30 border-2 border-white ring-2 ring-[#8A0C13]"
             >
-              <span className="absolute inset-0 rounded-full bg-[#8A0C13]/40 animate-ping opacity-60 pointer-events-none" />
+              <span className="absolute inset-0 rounded-full border border-[#8A0C13] animate-ping opacity-60 pointer-events-none" />
               <div className="relative flex items-center justify-center gap-0.5">
                 <ShoppingBag className="w-3.5 h-3.5 fill-white/30 text-white" />
                 <span className="text-[10px] font-black leading-none">+1</span>

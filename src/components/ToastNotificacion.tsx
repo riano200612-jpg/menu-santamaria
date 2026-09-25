@@ -107,13 +107,9 @@ export function ToastNotificacion({
               <div className="relative shrink-0">
                 <div
                   id={`toast-icono-categoria-${toast.plato.id}`}
-                  className={`w-11 h-11 rounded-xl flex items-center justify-center border shadow-xs transition ${
-                    darkMode
-                      ? 'bg-[#8A0C13]/20 border-[#8A0C13]/40 text-rose-300'
-                      : 'bg-[#8A0C13]/10 border-[#8A0C13]/25 text-[#8A0C13]'
-                  }`}
+                  className="w-11 h-11 rounded-xl flex items-center justify-center border border-[#8A0C13] bg-white text-[#8A0C13] shadow-xs"
                 >
-                  <IconoCategoria className="w-5 h-5" />
+                  <IconoCategoria className="w-5 h-5 text-[#8A0C13]" />
                 </div>
                 <div
                   id="toast-icono-check"
@@ -131,7 +127,7 @@ export function ToastNotificacion({
                   {toast.cantidad > 1 && (
                     <span
                       id={`toast-badge-cantidad-${toast.plato.id}`}
-                      className="px-1.5 py-0.5 rounded-full text-xs font-bold bg-[#8A0C13]/15 text-[#8A0C13] border border-[#8A0C13]/30 shrink-0"
+                      className="px-1.5 py-0.5 rounded-full text-xs font-bold bg-[#8A0C13] text-white shrink-0"
                     >
                       x{toast.cantidad}
                     </span>
@@ -152,13 +148,7 @@ export function ToastNotificacion({
                   >
                     {formatearPrecio(toast.plato.precioNumerico, idioma)}
                   </p>
-                  <span
-                    className={`text-[10px] sm:text-xs uppercase font-semibold px-2 py-0.5 rounded-sm border ${
-                      darkMode
-                        ? 'bg-stone-800 text-stone-300 border-stone-700'
-                        : 'bg-[#FBFBFB] text-[#374151] border-stone-200'
-                    }`}
-                  >
+                  <span className="text-[10px] sm:text-xs uppercase font-semibold px-2 py-0.5 rounded-sm border border-[#8A0C13] bg-white text-[#8A0C13]">
                     {toast.plato.etiqueta[idioma]}
                   </span>
                 </div>
@@ -197,7 +187,7 @@ export function ToastNotificacion({
                   onCerrar();
                   onVerPedido();
                 }}
-                className="inline-flex items-center gap-1.5 text-xs font-bold text-[#8A0C13] hover:text-[#720a10] px-2.5 py-1 rounded-md hover:bg-[#8A0C13]/10 transition-colors cursor-pointer shrink-0 ml-2"
+                className="group inline-flex items-center gap-1.5 text-xs font-bold text-[#8A0C13] hover:text-white px-2.5 py-1 rounded-md border border-[#8A0C13] bg-white hover:bg-[#8A0C13] transition-colors duration-300 cursor-pointer shrink-0 ml-2"
               >
                 <ShoppingBag className="w-3.5 h-3.5" />
                 <span>{t.toastVerPedido}</span>

@@ -105,7 +105,7 @@ export function RatingEstrellas({
         {/* Separador sutil */}
         <span
           className={`hidden sm:inline-block w-1 h-1 rounded-full ${
-            darkMode ? 'bg-stone-700' : 'bg-[#8A0C13]/30'
+            darkMode ? 'bg-stone-700' : 'bg-stone-300'
           }`}
         />
 
@@ -163,11 +163,7 @@ export function RatingEstrellas({
             id={`btn-eliminar-voto-${platoId}`}
             onClick={handleEliminarVoto}
             title={t.eliminarVoto}
-            className={`text-xs inline-flex items-center gap-0.5 px-2 py-0.5 rounded transition-colors cursor-pointer ${
-              darkMode
-                ? 'bg-stone-800/80 hover:bg-rose-950/60 text-stone-400 hover:text-rose-300 border border-stone-700/60'
-                : 'bg-stone-100 hover:bg-rose-50 text-[#374151] hover:text-[#8A0C13] border border-stone-200'
-            }`}
+            className="text-xs inline-flex items-center gap-0.5 px-2 py-0.5 rounded transition-colors duration-300 cursor-pointer border border-[#8A0C13] bg-white text-[#8A0C13] hover:bg-[#8A0C13] hover:text-white"
           >
             <X className="w-3 h-3" />
             <span className="hidden sm:inline">{t.eliminarVoto}</span>

@@ -159,13 +159,7 @@ export function SeccionRecomendados({
       {/* Cabecera de la sección */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 pb-3.5 border-b border-stone-200 dark:border-stone-800 mb-4">
         <div className="flex items-center gap-2.5">
-          <div
-            className={`w-8 h-8 rounded-xl flex items-center justify-center shrink-0 border ${
-              darkMode
-                ? 'bg-[#8A0C13]/20 text-rose-300 border-[#8A0C13]/30'
-                : 'bg-[#8A0C13]/10 text-[#8A0C13] border-[#8A0C13]/25'
-            }`}
-          >
+          <div className="w-8 h-8 rounded-xl flex items-center justify-center shrink-0 border border-[#8A0C13] bg-white text-[#8A0C13]">
             <Sparkles className="w-4 h-4 text-[#8A0C13] animate-pulse" />
           </div>
           <div>
@@ -222,12 +216,10 @@ export function SeccionRecomendados({
                 {vecesAñadido > 0 ? (
                   <span
                     id={`badge-frecuencia-${plato.id}`}
-                    className={`inline-flex items-center gap-1 text-xs font-bold px-2.5 py-0.5 rounded-md ${
+                    className={`inline-flex items-center gap-1 text-xs font-bold px-2.5 py-0.5 rounded-md border ${
                       esElMasPedido
-                        ? 'bg-[#8A0C13] text-white font-black shadow-xs'
-                        : darkMode
-                          ? 'bg-[#8A0C13]/20 text-rose-300 border border-[#8A0C13]/30'
-                          : 'bg-[#8A0C13]/10 text-[#8A0C13] border border-[#8A0C13]/25'
+                        ? 'bg-[#8A0C13] text-white font-black shadow-xs border-[#8A0C13]'
+                        : 'bg-white text-[#8A0C13] border-[#8A0C13]'
                     }`}
                   >
                     <TrendingUp className="w-3 h-3" />
@@ -238,11 +230,7 @@ export function SeccionRecomendados({
                 ) : (
                   <span
                     id={`badge-insignia-${plato.id}`}
-                    className={`inline-flex items-center gap-1 text-xs font-semibold px-2.5 py-0.5 rounded-md ${
-                      darkMode
-                        ? 'bg-stone-800 text-stone-300 border border-stone-700'
-                        : 'bg-[#8A0C13]/10 text-[#8A0C13] border border-[#8A0C13]/25'
-                    }`}
+                    className="inline-flex items-center gap-1 text-xs font-semibold px-2.5 py-0.5 rounded-md border border-[#8A0C13] bg-white text-[#8A0C13]"
                   >
                     <Award className="w-3.5 h-3.5 text-[#8A0C13]" />
                     <span>{t.insigniaDeLaCasa}</span>
@@ -250,11 +238,7 @@ export function SeccionRecomendados({
                 )}
 
                 <div
-                  className={`w-7 h-7 rounded-lg flex items-center justify-center shrink-0 ${
-                    darkMode
-                      ? 'bg-stone-800/80 text-rose-300'
-                      : 'bg-[#8A0C13]/10 text-[#8A0C13]'
-                  }`}
+                  className="w-7 h-7 rounded-lg flex items-center justify-center shrink-0 border border-[#8A0C13] bg-white text-[#8A0C13]"
                   title={plato.etiqueta[idioma]}
                 >
                   <Icono className="w-4 h-4" />
@@ -321,13 +305,9 @@ export function SeccionRecomendados({
                     type="button"
                     id={`btn-detalle-recomendado-link-${plato.id}`}
                     onClick={() => onVerDetalles(plato)}
-                    className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs sm:text-sm font-semibold transition cursor-pointer border ${
-                      darkMode
-                        ? 'bg-stone-800/80 hover:bg-stone-700 text-rose-300 border-stone-700'
-                        : 'bg-white hover:bg-[#8A0C13]/10 text-[#8A0C13] border-[#8A0C13]/30'
-                    }`}
+                    className="group inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs sm:text-sm font-semibold transition-colors duration-300 cursor-pointer border border-[#8A0C13] bg-white text-[#8A0C13] hover:bg-[#8A0C13] hover:text-white"
                   >
-                    <Sparkles className="w-3.5 h-3.5 text-[#8A0C13]" />
+                    <Sparkles className="w-3.5 h-3.5 text-[#8A0C13] group-hover:text-white transition-colors duration-300" />
                     <span>{t.verNutricionMaridaje}</span>
                   </button>
                 ) : null}
